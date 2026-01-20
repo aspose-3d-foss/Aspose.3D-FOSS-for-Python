@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+recursive-include examples *.obj
+recursive-include examples *.mtl
+recursive-exclude examples *.md
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude tests/*
+global-exclude pyi/*
