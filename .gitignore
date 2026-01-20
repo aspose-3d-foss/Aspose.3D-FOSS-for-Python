@@ -2,3 +2,4 @@ pyi/
 dist
 aspose_3d.egg-info
 build
+__pycache__
