@@ -4,12 +4,12 @@ with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="aspose-3d",
-    version="24.12.0",
+    name="aspose-3d-foss",
+    version="26.1.0",
     packages=find_packages(exclude=["tests*", "pyi*"]),
     python_requires=">=3.7",
     author="Aspose",
-    description="Aspose.3D for Python - A powerful 3D file format library",
+    description="Aspose.3D FOSS for Python - An open-source 3D file format library",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/aspose-3d/Aspose.3D-for-Python",

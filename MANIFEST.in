@@ -7,3 +7,4 @@ global-exclude *.pyc
 global-exclude __pycache__
 global-exclude tests/*
 global-exclude pyi/*
+global-exclude examples/*

@@ -1,4 +1,4 @@
-# Aspose.3D for Python
+# Aspose.3D FOSS for Python
 
 A powerful and open-source 3D file format library for Python. Aspose.3D for Python enables developers to create, manipulate, and convert 3D scenes and models programmatically. Supports popular 3D file formats including OBJ, STL, FBX, GLTF, and more.
 
@@ -25,7 +25,7 @@ A powerful and open-source 3D file format library for Python. Aspose.3D for Pyth
 ## Installation
 
 ```bash
-pip install aspose-3d
+pip install aspose-3d-foss
 ```
 
 ## Quick Start
