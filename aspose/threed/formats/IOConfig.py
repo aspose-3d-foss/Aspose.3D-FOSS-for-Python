@@ -8,10 +8,10 @@ if TYPE_CHECKING:
 class IOConfig:
     def __init__(self):
         self._file_format: 'FileFormat' = None
-        self._encoding = ''
+        self._encoding = None
         self._file_system: 'FileSystem' = None
         self._lookup_paths: List[str] = []
-        self._file_name = ''
+        self._file_name = None
 
     @property
     def file_format(self) -> 'FileFormat':

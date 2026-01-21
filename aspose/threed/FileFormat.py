@@ -37,10 +37,19 @@ class FileFormat:
     DISCREET_3DS = None
     COLLADA = None
     UNIVERSAL_3D = None
+
+    _gltf_instance = None
+
+    @staticmethod
+    def GLTF2():
+        if FileFormat._gltf_instance is None:
+            from .formats.gltf.GltfFormat import GltfFormat
+            FileFormat._gltf_instance = GltfFormat()
+        return FileFormat._gltf_instance
+
     GLTF = None
-    GLTF2 = None
-    GLTF_BINARY = None
     GLTF2_BINARY = None
+    GLTF_BINARY = None
     PDF = None
     BLENDER = None
     DXF = None
@@ -124,6 +133,9 @@ class FileFormat:
         elif ext == 'stl':
             from .formats.stl.StlFormat import StlFormat
             return StlFormat()
+        elif ext in ('gltf', 'glb'):
+            from .formats.gltf.GltfFormat import GltfFormat
+            return GltfFormat()
         return None
 
     def create_load_options(self) -> 'LoadOptions':

@@ -13,5 +13,8 @@ from .MappingMode import MappingMode
 from .ReferenceMode import ReferenceMode
 from .TextureMapping import TextureMapping
 from .BooleanOperation import BooleanOperation
+from .VertexElementNormal import VertexElementNormal
+from .VertexElementTangent import VertexElementTangent
+from .VertexElementVertexColor import VertexElementVertexColor
 
-__all__ = ['Camera', 'Light', 'Mesh', 'Geometry', 'VertexElement', 'VertexElementFVector', 'VertexElementUV', 'VertexElementIntsTemplate', 'VertexElementSmoothingGroup', 'IIndexedVertexElement', 'VertexElementType', 'MappingMode', 'ReferenceMode', 'TextureMapping', 'BooleanOperation']
+__all__ = ['Camera', 'Light', 'Mesh', 'Geometry', 'VertexElement', 'VertexElementFVector', 'VertexElementUV', 'VertexElementIntsTemplate', 'VertexElementSmoothingGroup', 'IIndexedVertexElement', 'VertexElementType', 'MappingMode', 'ReferenceMode', 'TextureMapping', 'BooleanOperation', 'VertexElementNormal', 'VertexElementTangent', 'VertexElementVertexColor']

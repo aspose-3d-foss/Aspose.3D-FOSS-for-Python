@@ -9,3 +9,4 @@ if TYPE_CHECKING:
 class LoadOptions(IOConfig):
     def __init__(self):
         super().__init__()
+        self._encoding = None

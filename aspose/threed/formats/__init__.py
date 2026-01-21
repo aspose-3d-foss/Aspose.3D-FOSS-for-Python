@@ -12,12 +12,16 @@ from .stl.StlLoadOptions import StlLoadOptions
 from .stl.StlSaveOptions import StlSaveOptions
 from .obj.ObjPlugin import ObjPlugin
 from .stl.StlPlugin import StlPlugin
+from .gltf.GltfLoadOptions import GltfLoadOptions
+from .gltf.GltfSaveOptions import GltfSaveOptions
+from .gltf.GltfPlugin import GltfPlugin
 
 
 def _register_plugins():
     io_service = IOService()
     io_service.register_plugin(ObjPlugin())
     io_service.register_plugin(StlPlugin())
+    io_service.register_plugin(GltfPlugin())
 
 
 _register_plugins()
@@ -34,5 +38,7 @@ __all__ = [
     'ObjLoadOptions',
     'ObjSaveOptions',
     'StlLoadOptions',
-    'StlSaveOptions'
+    'StlSaveOptions',
+    'GltfLoadOptions',
+    'GltfSaveOptions'
 ]
