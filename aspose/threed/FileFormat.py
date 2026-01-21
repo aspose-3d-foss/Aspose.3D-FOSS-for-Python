@@ -136,8 +136,7 @@ class FileFormat:
         
         from .formats import LoadOptions
         options = LoadOptions()
-        from .formats.IOConfig import IOConfig
-        IOConfig._file_format.fset(self, self)
+        options._file_format = self
         return options
 
     def create_save_options(self) -> 'SaveOptions':
@@ -146,13 +145,10 @@ class FileFormat:
         if hasattr(self, 'file_format_type') and self.file_format_type is not None:
             plugin = IOService().get_plugin_for_format(self)
             if plugin is not None:
-                options = plugin.create_save_options()
-                from .formats.IOConfig import IOConfig
-                IOConfig._file_format.fset(self, self)
-                return options
+                return plugin.create_save_options()
         
         from .formats import SaveOptions
         options = SaveOptions()
-        from .formats.IOConfig import IOConfig
-        IOConfig._file_format.fset(self, self)
+        options._file_format = self
         return options
+

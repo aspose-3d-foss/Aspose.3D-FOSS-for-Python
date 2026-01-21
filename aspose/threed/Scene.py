@@ -73,6 +73,7 @@ class Scene(SceneObject):
         return []
 
     def clear(self):
+        from .Node import Node
         self._root_node = Node()
         self._sub_scenes.clear()
         self._library.clear()
@@ -85,6 +86,7 @@ class Scene(SceneObject):
         raise NotImplementedError("get_animation_clip is not implemented")
 
     def open(self, file_or_stream, options=None):
+        self.clear()
         from .formats import IOService, LoadOptions
         from .FileFormat import FileFormat
 
