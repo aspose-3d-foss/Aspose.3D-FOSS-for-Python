@@ -16,5 +16,6 @@ from .BooleanOperation import BooleanOperation
 from .VertexElementNormal import VertexElementNormal
 from .VertexElementTangent import VertexElementTangent
 from .VertexElementVertexColor import VertexElementVertexColor
+from .PolygonModifier import PolygonModifier
 
-__all__ = ['Camera', 'Light', 'Mesh', 'Geometry', 'VertexElement', 'VertexElementFVector', 'VertexElementUV', 'VertexElementIntsTemplate', 'VertexElementSmoothingGroup', 'IIndexedVertexElement', 'VertexElementType', 'MappingMode', 'ReferenceMode', 'TextureMapping', 'BooleanOperation', 'VertexElementNormal', 'VertexElementTangent', 'VertexElementVertexColor']
+__all__ = ['Camera', 'Light', 'Mesh', 'Geometry', 'VertexElement', 'VertexElementFVector', 'VertexElementUV', 'VertexElementIntsTemplate', 'VertexElementSmoothingGroup', 'IIndexedVertexElement', 'VertexElementType', 'MappingMode', 'ReferenceMode', 'TextureMapping', 'BooleanOperation', 'VertexElementNormal', 'VertexElementTangent', 'VertexElementVertexColor', 'PolygonModifier']

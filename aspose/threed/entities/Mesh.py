@@ -109,7 +109,9 @@ class Mesh(Geometry):
         raise NotImplementedError("intersect is not implemented")
 
     def triangulate(self) -> 'Mesh':
-        raise NotImplementedError("triangulate is not implemented")
+        from .PolygonModifier import PolygonModifier
+
+        return PolygonModifier.triangulate(self)
 
     @property
     def deformers(self):
