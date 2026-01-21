@@ -126,6 +126,12 @@ __all__ = ['Vector2', 'Vector3']
 - Type hints must match pyi specifications
 - Constructor signatures must match pyi overloads
 
+
+### Different Format Supports
+
+SaveOptions/LoadOptions for different formats will be exported in module `aspose.threed.formats`, but the implementation of exporter/importer/related classes should not be exposed, and placed under a sub-module under `aspose.threed.formats` module, for example, ObjSaveOptions is public defined in `aspose.threed.formats`, but its exporter implementation will be in `aspose.threed.formats.obj` and only internally visible.
+
+
 ### Architecture Rules
 - NO license-related code - this is open-source
 - NO importer/exporter implementations - leave as abstract (raise NotImplementedError)

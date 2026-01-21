@@ -99,7 +99,7 @@ class Scene(SceneObject):
                 raise RuntimeError("Unable to detect file format from stream")
         else:
             file_name = file_or_stream
-            detected_format = FileFormat.detect(file_name)
+            detected_format = FileFormat.get_format_by_extension('.' + file_name.split('.')[-1])
             if detected_format is None:
                 raise RuntimeError(f"Unable to detect file format from file name: {file_name}")
             stream = open(file_name, 'rb')
@@ -141,14 +141,13 @@ class Scene(SceneObject):
             if isinstance(format_or_options, SaveOptions):
                 detected_format = format_or_options.file_format
                 options = format_or_options
+                if detected_format is None:
+                    detected_format = FileFormat.get_format_by_extension('.' + file_name.split('.')[-1])
             elif format_or_options is not None:
                 detected_format = format_or_options
             else:
                 detected_format = FileFormat.get_format_by_extension('.' + file_name.split('.')[-1])
-
-            if detected_format is None:
-                raise RuntimeError(f"Unable to detect file format from file name: {file_name}")
-
+            
             stream = open(file_name, 'wb')
 
         try:

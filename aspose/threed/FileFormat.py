@@ -118,19 +118,41 @@ class FileFormat:
         if ext.startswith('.'):
             ext = ext[1:]
         
-        from .formats.obj.ObjFormat import ObjFormat
         if ext == 'obj':
+            from .formats.obj.ObjFormat import ObjFormat
             return ObjFormat()
+        elif ext == 'stl':
+            from .formats.stl.StlFormat import StlFormat
+            return StlFormat()
         return None
 
     def create_load_options(self) -> 'LoadOptions':
+        from .formats import IOService
+        
+        if hasattr(self, 'file_format_type') and self.file_format_type is not None:
+            plugin = IOService().get_plugin_for_format(self)
+            if plugin is not None:
+                return plugin.create_load_options()
+        
         from .formats import LoadOptions
         options = LoadOptions()
-        options._file_format = self
+        from .formats.IOConfig import IOConfig
+        IOConfig._file_format.fset(self, self)
         return options
 
     def create_save_options(self) -> 'SaveOptions':
+        from .formats import IOService
+        
+        if hasattr(self, 'file_format_type') and self.file_format_type is not None:
+            plugin = IOService().get_plugin_for_format(self)
+            if plugin is not None:
+                options = plugin.create_save_options()
+                from .formats.IOConfig import IOConfig
+                IOConfig._file_format.fset(self, self)
+                return options
+        
         from .formats import SaveOptions
         options = SaveOptions()
-        options._file_format = self
+        from .formats.IOConfig import IOConfig
+        IOConfig._file_format.fset(self, self)
         return options

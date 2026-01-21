@@ -5,8 +5,22 @@ from .IOService import IOService
 from .IOConfig import IOConfig
 from .LoadOptions import LoadOptions
 from .SaveOptions import SaveOptions
+from .Plugin import Plugin
 from .obj.ObjLoadOptions import ObjLoadOptions
 from .obj.ObjSaveOptions import ObjSaveOptions
+from .stl.StlLoadOptions import StlLoadOptions
+from .stl.StlSaveOptions import StlSaveOptions
+from .obj.ObjPlugin import ObjPlugin
+from .stl.StlPlugin import StlPlugin
+
+
+def _register_plugins():
+    io_service = IOService()
+    io_service.register_plugin(ObjPlugin())
+    io_service.register_plugin(StlPlugin())
+
+
+_register_plugins()
 
 __all__ = [
     'Exporter',
@@ -16,6 +30,9 @@ __all__ = [
     'IOConfig',
     'LoadOptions',
     'SaveOptions',
+    'Plugin',
     'ObjLoadOptions',
-    'ObjSaveOptions'
+    'ObjSaveOptions',
+    'StlLoadOptions',
+    'StlSaveOptions'
 ]
