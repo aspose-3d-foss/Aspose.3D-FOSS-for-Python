@@ -63,8 +63,10 @@ class GltfExporter(Exporter):
         buffers = []
         buffer_views = []
         accessors = []
+        materials = []
         meshes = []
         nodes = []
+        mesh_to_material = {}
 
         binary_buffer_data = bytearray()
 
@@ -74,8 +76,14 @@ class GltfExporter(Exporter):
         for i, node in enumerate(all_nodes):
             node_index_map[node] = i
 
+        for node in all_nodes:
+            if node.material and node.entity and isinstance(node.entity, Mesh):
+                mesh_to_material[node.entity] = node.material
+
+        materials, material_index_map = self._build_materials(mesh_to_material, options)
+
         for i, mesh in enumerate(all_meshes):
-            mesh_data = self._build_mesh_data(mesh, options, binary_buffer_data, buffer_views, accessors, buffers, i)
+            mesh_data = self._build_mesh_data(mesh, options, binary_buffer_data, buffer_views, accessors, buffers, i, mesh_to_material, material_index_map)
             meshes.append(mesh_data)
             mesh_index_map[mesh] = i
 
@@ -123,9 +131,12 @@ class GltfExporter(Exporter):
             'accessors': accessors
         }
 
+        if materials:
+            gltf_json['materials'] = materials
+
         return gltf_json, binary_buffer_data
 
-    def _build_mesh_data(self, mesh, options: 'GltfSaveOptions', binary_buffer_data, buffer_views, accessors, buffers, mesh_index):
+    def _build_mesh_data(self, mesh, options: 'GltfSaveOptions', binary_buffer_data, buffer_views, accessors, buffers, mesh_index, mesh_to_material, material_index_map):
         from aspose.threed.entities import VertexElementNormal, VertexElementUV, VertexElementVertexColor
 
         primitive_data = {'attributes': {}, 'mode': 4}
@@ -285,6 +296,10 @@ class GltfExporter(Exporter):
 
             primitive_data['indices'] = indices_accessor_idx
 
+        if mesh in mesh_to_material and mesh_to_material[mesh] in material_index_map:
+            material_idx = material_index_map[mesh_to_material[mesh]]
+            primitive_data['material'] = material_idx
+
         mesh_name = mesh.name if mesh.name else f'mesh_{mesh_index}'
         mesh_data = {
             'name': mesh_name,
@@ -304,6 +319,52 @@ class GltfExporter(Exporter):
         for v in values:
             data.extend(struct.pack('<H', v))
         return data
+
+    def _build_materials(self, mesh_to_material, options: 'GltfSaveOptions'):
+        from aspose.threed.shading import PbrMaterial
+
+        materials = []
+        material_index_map = {}
+
+        for mesh, mat in mesh_to_material.items():
+            if mat and isinstance(mat, PbrMaterial):
+                if mat not in material_index_map:
+                    material_idx = len(materials)
+                    material_index_map[mat] = material_idx
+
+                    material_data = {}
+                    if mat.name:
+                        material_data['name'] = mat.name
+
+                    pbr_data = {}
+
+                    if mat.albedo:
+                        albedo = mat.albedo
+                        pbr_data['baseColorFactor'] = [albedo.x, albedo.y, albedo.z, 1.0]
+
+                    if mat.metallic_factor != 0.0:
+                        pbr_data['metallicFactor'] = mat.metallic_factor
+
+                    if mat.roughness_factor != 1.0:
+                        pbr_data['roughnessFactor'] = mat.roughness_factor
+
+                    if pbr_data:
+                        material_data['pbrMetallicRoughness'] = pbr_data
+
+                    if mat.emissive_color:
+                        emissive = mat.emissive_color
+                        material_data['emissiveFactor'] = [emissive.x, emissive.y, emissive.z]
+
+                    if mat.transparency != 0.0:
+                        if mat.transparency == 1.0:
+                            material_data['alphaMode'] = 'BLEND'
+                        else:
+                            material_data['alphaMode'] = 'MASK'
+                            material_data['alphaCutoff'] = 1.0 - mat.transparency
+
+                    materials.append(material_data)
+
+        return materials, material_index_map
 
     def _write_ascii_gltf(self, stream, gltf_json, binary_buffer_data):
         if binary_buffer_data:

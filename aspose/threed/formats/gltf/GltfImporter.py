@@ -110,15 +110,17 @@ class GltfImporter(Importer):
         accessors = gltf_json.get('accessors', [])
         meshes = gltf_json.get('meshes', [])
         nodes = gltf_json.get('nodes', [])
+        materials = gltf_json.get('materials', [])
 
         mesh_objects = {}
+        material_objects = self._load_materials(materials)
 
         for mesh_idx, mesh_data in enumerate(meshes):
             mesh_name = mesh_data.get('name', f'mesh_{mesh_idx}')
             mesh = Mesh(mesh_name)
 
             for primitive in mesh_data.get('primitives', []):
-                self._build_primitive(mesh, primitive, accessors, buffer_views, buffers, options)
+                self._build_primitive(mesh, primitive, accessors, buffer_views, buffers, options, material_objects)
 
             mesh_objects[mesh_idx] = mesh
 
@@ -132,6 +134,12 @@ class GltfImporter(Importer):
                 mesh_idx = node_data['mesh']
                 if mesh_idx in mesh_objects:
                     node.entity = mesh_objects[mesh_idx]
+                    mesh_data = gltf_json['meshes'][mesh_idx]
+                    primitives = mesh_data.get('primitives', [])
+                    if primitives:
+                        material_idx = primitives[0].get('material')
+                        if material_idx is not None and material_idx < len(material_objects):
+                            node.material = material_objects[material_idx]
 
             if 'translation' in node_data:
                 translation = node_data['translation']
@@ -168,7 +176,7 @@ class GltfImporter(Importer):
                 if node_idx in node_objects:
                     node_objects[node_idx].parent_node = scene.root_node
 
-    def _build_primitive(self, mesh, primitive, accessors, buffer_views, buffers, options):
+    def _build_primitive(self, mesh, primitive, accessors, buffer_views, buffers, options, materials):
         from aspose.threed.utilities import Vector4
 
         attributes = primitive.get('attributes', {})
@@ -282,6 +290,41 @@ class GltfImporter(Importer):
         data = buffer[data_start:data_end]
 
         return self._decode_buffer(data, accessor.get('componentType'), accessor_type, count)
+
+    def _load_materials(self, materials):
+        from aspose.threed.shading import PbrMaterial
+        from aspose.threed.utilities import Vector3
+
+        material_objects = []
+
+        for material_data in materials:
+            material_name = material_data.get('name', f'material_{len(material_objects)}')
+            material = PbrMaterial(material_name)
+
+            pbr_data = material_data.get('pbrMetallicRoughness', {})
+            base_color_factor = pbr_data.get('baseColorFactor', [1.0, 1.0, 1.0])
+            metallic_factor = pbr_data.get('metallicFactor', 0.0)
+            roughness_factor = pbr_data.get('roughnessFactor', 1.0)
+
+            material.albedo = Vector3(base_color_factor[0], base_color_factor[1], base_color_factor[2])
+            material.metallic_factor = metallic_factor
+            material.roughness_factor = roughness_factor
+
+            emissive_factor = material_data.get('emissiveFactor', [0.0, 0.0, 0.0])
+            if emissive_factor:
+                material.emissive_color = Vector3(emissive_factor[0], emissive_factor[1], emissive_factor[2])
+
+            alpha_mode = material_data.get('alphaMode', 'OPAQUE')
+            if alpha_mode == 'BLEND':
+                material.transparency = 1.0
+            elif alpha_mode == 'MASK':
+                alpha_cutoff = material_data.get('alphaCutoff', 0.5)
+                if alpha_cutoff < 1.0:
+                    material.transparency = 1.0 - alpha_cutoff
+
+            material_objects.append(material)
+
+        return material_objects
 
     def _decode_buffer(self, data, component_type, accessor_type, count):
         components_per_value = 1
