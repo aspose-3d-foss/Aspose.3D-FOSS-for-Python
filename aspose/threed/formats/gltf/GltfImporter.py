@@ -39,7 +39,8 @@ class GltfImporter(Importer):
             gltf_json = json.loads(content.decode('utf-8'))
             binary_data = b''
 
-        self._build_scene(scene, gltf_json, binary_data, options)
+        base_path = self._get_base_path(stream, options)
+        self._build_scene(scene, gltf_json, binary_data, options, base_path)
 
     def _read_stream(self, stream) -> bytes:
         if hasattr(stream, 'read'):
@@ -91,12 +92,20 @@ class GltfImporter(Importer):
         gltf_json = json.loads(json_chunk.decode('utf-8'))
         return gltf_json, binary_chunk if binary_chunk else b''
 
-    def _build_scene(self, scene, gltf_json, binary_data, options):
+    def _get_base_path(self, stream, options):
+        import os
+        if hasattr(stream, 'name') and stream.name:
+            return os.path.dirname(stream.name)
+        elif hasattr(options, 'file_name') and options.file_name:
+            return os.path.dirname(options.file_name)
+        return ''
+
+    def _build_scene(self, scene, gltf_json, binary_data, options, base_path=''):
         from aspose.threed import Node
         from aspose.threed.entities import Mesh
         from aspose.threed.utilities import Vector4
 
-        buffers = self._load_buffers(gltf_json, binary_data)
+        buffers = self._load_buffers(gltf_json, binary_data, base_path)
         buffer_views = gltf_json.get('bufferViews', [])
         accessors = gltf_json.get('accessors', [])
         meshes = gltf_json.get('meshes', [])
@@ -219,7 +228,8 @@ class GltfImporter(Importer):
                                    base_vertex_index + i + 1,
                                    base_vertex_index + i + 2)
 
-    def _load_buffers(self, gltf_json, binary_data):
+    def _load_buffers(self, gltf_json, binary_data, base_path=''):
+        import os
         buffers = gltf_json.get('buffers', [])
         loaded_buffers = []
 
@@ -232,7 +242,15 @@ class GltfImporter(Importer):
             elif uri.startswith('data:'):
                 loaded_buffers.append(self._decode_data_uri(uri))
             else:
-                loaded_buffers.append(b'')
+                buffer_path = uri
+                if base_path:
+                    buffer_path = os.path.join(base_path, uri)
+                try:
+                    with open(buffer_path, 'rb') as f:
+                        buffer_data = f.read()
+                    loaded_buffers.append(buffer_data)
+                except (IOError, FileNotFoundError):
+                    loaded_buffers.append(b'')
 
         return loaded_buffers
 

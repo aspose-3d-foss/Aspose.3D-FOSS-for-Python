@@ -31,7 +31,7 @@ class GltfFormat:
 
     @property
     def can_export(self) -> bool:
-        return False
+        return True
 
     @property
     def can_import(self) -> bool:

@@ -35,7 +35,7 @@ class TestGltfImport(unittest.TestCase):
 
         gltf_format = GltfFormat()
         self.assertTrue(gltf_format.can_import)
-        self.assertFalse(gltf_format.can_export)
+        self.assertTrue(gltf_format.can_export)
         self.assertEqual(gltf_format.version, '2.0')
         self.assertIn('gltf', gltf_format.extensions)
         self.assertIn('glb', gltf_format.extensions)
