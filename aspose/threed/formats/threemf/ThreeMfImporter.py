@@ -9,6 +9,10 @@ if TYPE_CHECKING:
     from aspose.threed import Scene
     from .ThreeMfLoadOptions import ThreeMfLoadOptions
 
+from aspose.threed.utilities.FVector4 import FVector4
+from aspose.threed.entities.MappingMode import MappingMode
+from aspose.threed.entities.ReferenceMode import ReferenceMode
+
 
 class ThreeMfImporter(Importer):
     def __init__(self):
@@ -44,24 +48,31 @@ class ThreeMfImporter(Importer):
         model_unit = root.get('unit', 'millimeter')
         scale_factor = self._get_unit_scale(model_unit)
         
+        ns = None
+        for key, value in root.attrib.items():
+            if 'schemas.microsoft.com' in key and '3dmanufacturing' in value:
+                ns = key.split('}')[0]
+                break
+        
         resources = {}
         vertices_map = {}
         triangles_map = {}
-        object_transforms = {}
+        object_materials = {}
+        triangle_materials = {}
         
         resources_elem = root.find('.//{http://schemas.microsoft.com/3dmanufacturing/core/2015/02}resources')
         if resources_elem is None:
             resources_elem = root.find('.//resources')
         
         if resources_elem is not None:
-            self._parse_resources(resources_elem, resources, vertices_map, triangles_map, object_transforms, options, scale_factor)
+            self._parse_resources(resources_elem, resources, vertices_map, triangles_map, object_materials, triangle_materials, options, scale_factor)
         
         build_elem = root.find('.//{http://schemas.microsoft.com/3dmanufacturing/core/2015/02}build')
         if build_elem is None:
             build_elem = root.find('.//build')
         
         if build_elem is not None:
-            self._parse_build(build_elem, scene, resources, vertices_map, triangles_map, options)
+            self._parse_build(build_elem, scene, resources, vertices_map, triangles_map, object_materials, triangle_materials, options)
         
         zip_file.close()
 
@@ -85,13 +96,25 @@ class ThreeMfImporter(Importer):
         }
         return scales.get(unit.lower(), 0.001)
 
-    def _parse_resources(self, resources_elem, resources, vertices_map, triangles_map, object_transforms, options, scale):
+    def _parse_resources(self, resources_elem, resources, vertices_map, triangles_map, object_materials, triangle_materials, options, scale):
         from aspose.threed.utilities import Vector4
         ns = {'m': 'http://schemas.microsoft.com/3dmanufacturing/core/2015/02'}
         
-        for obj_elem in resources_elem.findall('.//m:object', ns):
-            if resources_elem.findall('.//m:object', ns):
-                break
+        color_map = {}
+        material_map = {}
+        
+        color_elems = resources_elem.findall('color')
+        for color_elem in color_elems:
+            color_id = color_elem.get('id')
+            color_value = color_elem.get('value')
+            color_map[color_id] = color_value
+        
+        material_elems = resources_elem.findall('material')
+        for material_elem in material_elems:
+            material_id = material_elem.get('id')
+            color_id = material_elem.get('colorid')
+            if color_id in color_map:
+                material_map[material_id] = color_map[color_id]
         
         obj_elems = resources_elem.findall('.//m:object', ns)
         if not obj_elems:
@@ -100,6 +123,7 @@ class ThreeMfImporter(Importer):
         for obj_elem in obj_elems:
             obj_id = obj_elem.get('id')
             obj_name = obj_elem.get('name', f'object_{obj_id}')
+            obj_material_id = obj_elem.get('materialid')
             
             mesh_elem = obj_elem.find('m:mesh', ns)
             if mesh_elem is None:
@@ -141,11 +165,14 @@ class ThreeMfImporter(Importer):
                         v1 = int(t_elem.get('v1', 0))
                         v2 = int(t_elem.get('v2', 0))
                         v3 = int(t_elem.get('v3', 0))
-                        triangles.append([v1, v2, v3])
+                        tri_material_id = t_elem.get('materialid')
+                        triangles.append([v1, v2, v3, tri_material_id])
                 
                 vertices_map[obj_id] = vertices
                 triangles_map[obj_id] = triangles
                 resources[obj_id] = {'name': obj_name, 'type': 'mesh'}
+                if obj_material_id is not None:
+                    object_materials[obj_id] = obj_material_id
             
             comp_elems = obj_elem.findall('m:components/m:component', ns)
             if not comp_elems:
@@ -176,7 +203,7 @@ class ThreeMfImporter(Importer):
         
         return None
 
-    def _parse_build(self, build_elem, scene, resources, vertices_map, triangles_map, options):
+    def _parse_build(self, build_elem, scene, resources, vertices_map, triangles_map, object_materials, triangle_materials, options):
         ns = {'m': 'http://schemas.microsoft.com/3dmanufacturing/core/2015/02'}
         
         item_elems = build_elem.findall('m:item', ns)
@@ -191,12 +218,14 @@ class ThreeMfImporter(Importer):
             transform = self._parse_transform(transform_str)
             
             if obj_id in resources and resources[obj_id]['type'] == 'mesh':
-                self._create_mesh_node(scene, obj_id, item_name, transform, vertices_map, triangles_map)
+                self._create_mesh_node(scene, obj_id, item_name, transform, vertices_map, triangles_map, object_materials, triangle_materials)
 
-    def _create_mesh_node(self, scene, obj_id, name, transform, vertices_map, triangles_map):
+    def _create_mesh_node(self, scene, obj_id, name, transform, vertices_map, triangles_map, object_materials, triangle_materials):
         from aspose.threed import Node
         from aspose.threed.entities import Mesh
         from aspose.threed.utilities import Vector4
+        from aspose.threed.shading import LambertMaterial
+        from aspose.threed.utilities import Vector3
         
         if obj_id not in vertices_map or obj_id not in triangles_map:
             return
@@ -210,7 +239,10 @@ class ThreeMfImporter(Importer):
             mesh._control_points.append(v)
         
         for tri in triangles:
-            mesh.create_polygon(tri[0], tri[1], tri[2])
+            if len(tri) == 3:
+                mesh.create_polygon(tri[0], tri[1], tri[2])
+            elif len(tri) == 4:
+                mesh.create_polygon(tri[0], tri[1], tri[2], tri[3])
         
         node = Node(name)
         node.entity = mesh
@@ -218,3 +250,84 @@ class ThreeMfImporter(Importer):
         
         if transform is not None:
             node.transform.transform_matrix = transform
+        
+        if obj_id in object_materials:
+            self._apply_object_material(node, object_materials[obj_id])
+        
+        self._apply_triangle_materials(mesh, vertices, triangles, triangle_materials)
+    
+    def _apply_object_material(self, node, material_id):
+        from aspose.threed.shading import LambertMaterial
+        from aspose.threed.utilities import Vector3
+        
+        material = LambertMaterial(f'material_{material_id}')
+        color = self._parse_color(material_id)
+        if color is not None:
+            material.diffuse_color = color
+        node.material = material
+    
+    def _apply_triangle_materials(self, mesh, vertices, triangles, triangle_materials):
+        from aspose.threed.entities import VertexElementVertexColor
+        from aspose.threed.utilities.FVector4 import FVector4
+        from aspose.threed.entities.MappingMode import MappingMode
+        from aspose.threed.entities.ReferenceMode import ReferenceMode
+        
+        triangle_material_ids = set()
+        for tri in triangles:
+            if len(tri) > 3:
+                tri_mat_id = tri[3]
+                if tri_mat_id is not None:
+                    triangle_material_ids.add(tri_mat_id)
+        
+        if len(triangle_material_ids) <= 1:
+            return
+        
+        triangle_colors = {}
+        for mat_id in triangle_materials:
+            color = self._parse_color(mat_id)
+            if color is not None:
+                triangle_colors[mat_id] = color
+        
+        vertex_color_element = VertexElementVertexColor()
+        from aspose.threed.entities.MappingMode import MappingMode
+        from aspose.threed.entities.ReferenceMode import ReferenceMode
+        vertex_color_element.mapping_mode = MappingMode.POLYGON
+        vertex_color_element.reference_mode = ReferenceMode.INDEX_TO_DIRECT
+        
+        vertex_colors = []
+        for tri in triangles:
+            if len(tri) > 3:
+                tri_mat_id = tri[3]
+                if tri_mat_id is not None and tri_mat_id in triangle_colors:
+                    color = triangle_colors[tri_mat_id]
+                    vertex_colors.append(FVector4(color.x, color.y, color.z, 1.0))
+                else:
+                    vertex_colors.append(FVector4(1.0, 1.0, 1.0, 1.0))
+            else:
+                vertex_colors.append(FVector4(1.0, 1.0, 1.0, 1.0))
+        
+        vertex_color_element.set_data(vertex_colors)
+        mesh._vertex_elements.append(vertex_color_element)
+    
+    def _parse_color(self, material_id):
+        from aspose.threed.utilities import Vector3
+        
+        hex_color = material_id
+        if hex_color is None or not hex_color.startswith('#'):
+            return None
+        
+        hex_color = hex_color.lstrip('#')
+        
+        if len(hex_color) == 6:
+            r = int(hex_color[0:2], 16) / 255.0
+            g = int(hex_color[2:4], 16) / 255.0
+            b = int(hex_color[4:6], 16) / 255.0
+            return Vector3(r, g, b)
+        elif len(hex_color) == 8:
+            r = int(hex_color[0:2], 16) / 255.0
+            g = int(hex_color[2:4], 16) / 255.0
+            b = int(hex_color[4:6], 16) / 255.0
+            a = int(hex_color[6:8], 16) / 255.0
+            return Vector3(r, g, b)
+        
+        return None

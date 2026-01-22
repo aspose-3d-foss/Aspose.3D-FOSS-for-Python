@@ -3,3 +3,5 @@ dist
 aspose_3d.egg-info
 build
 __pycache__
+specs
+examples
