@@ -28,11 +28,12 @@ class ThreeMfExporter(Exporter):
             options = ThreeMfSaveOptions()
         
         mesh_data_list = self._collect_meshes(scene, options)
+        materials = self._collect_materials(mesh_data_list)
         
         if not mesh_data_list:
             return
         
-        self._write_3mf_file(stream, mesh_data_list, scene, options)
+        self._write_3mf_file(stream, mesh_data_list, scene, options, materials)
     
     def _collect_meshes(self, scene: 'Scene', options: 'ThreeMfSaveOptions'):
         from aspose.threed.entities import Mesh
@@ -68,7 +69,8 @@ class ThreeMfExporter(Exporter):
                     'name': node.name or f'mesh_{obj_id}',
                     'type': object_type,
                     'mesh': mesh,
-                    'transform': current_transform
+                    'transform': current_transform,
+                    'node': node
                 }
                 mesh_data_list.append(mesh_data)
                 obj_id += 1
@@ -87,11 +89,63 @@ class ThreeMfExporter(Exporter):
                 return False
         return True
     
-    def _write_3mf_file(self, stream, mesh_data_list, scene: 'Scene', options: 'ThreeMfSaveOptions'):
+    def _collect_materials(self, mesh_data_list):
+        from aspose.threed.shading import LambertMaterial, PhongMaterial
+        
+        materials = []
+        material_to_index = {}
+        
+        for mesh_data in mesh_data_list:
+            node = mesh_data.get('node')
+            if node is not None and node.material is not None:
+                material = node.material
+                
+                if isinstance(material, (LambertMaterial, PhongMaterial)):
+                    material_key = self._get_material_key(material)
+                    
+                    if material_key not in material_to_index:
+                        material_index = len(materials)
+                        material_to_index[material_key] = material_index
+                        materials.append({
+                            'material': material,
+                            'index': material_index
+                        })
+                    
+                    mesh_data['material_index'] = material_to_index[material_key]
+        
+        return materials
+    
+    def _get_material_key(self, material):
+        from aspose.threed.shading import PhongMaterial
+        
+        key = f"{material.name}|{material.diffuse_color.x},{material.diffuse_color.y},{material.diffuse_color.z}"
+        
+        if isinstance(material, PhongMaterial):
+            key += f"|{material.specular_color.x},{material.specular_color.y},{material.specular_color.z}"
+            key += f"|{material.specular_factor}"
+        
+        transparency = getattr(material, 'transparency', 0)
+        key += f"|{transparency}"
+        
+        return key
+    
+    def _material_color_to_string(self, material):
+        r = int(material.diffuse_color.x * 255)
+        g = int(material.diffuse_color.y * 255)
+        b = int(material.diffuse_color.z * 255)
+        
+        transparency = getattr(material, 'transparency', 0)
+        if transparency > 0:
+            a = int((1.0 - transparency) * 255)
+            return f'#{r:02X}{g:02X}{b:02X}{a:02X}'
+        
+        return f'#{r:02X}{g:02X}{b:02X}'
+    
+    def _write_3mf_file(self, stream, mesh_data_list, scene: 'Scene', options: 'ThreeMfSaveOptions', materials):
         import xml.etree.ElementTree as ET
         from aspose.threed.utilities import Vector4
         
-        xml_content = self._build_3mf_xml(mesh_data_list, options)
+        xml_content = self._build_3mf_xml(mesh_data_list, options, materials)
         
         compression = zipfile.ZIP_DEFLATED if options.enable_compression else zipfile.ZIP_STORED
         
@@ -107,23 +161,45 @@ class ThreeMfExporter(Exporter):
             except TypeError:
                 stream.write(zip_buffer.getvalue())
     
-    def _build_3mf_xml(self, mesh_data_list, options: 'ThreeMfSaveOptions'):
+    def _build_3mf_xml(self, mesh_data_list, options: 'ThreeMfSaveOptions', materials):
         root = ET.Element('model', {
             'unit': options.unit,
-            'xmlns': 'http://schemas.microsoft.com/3dmanufacturing/core/2015/02'
+            'xmlns': 'http://schemas.microsoft.com/3dmanufacturing/core/2015/02',
+            'xmlns:m': 'http://schemas.microsoft.com/3dmanufacturing/material/2015/02'
         })
         
         resources_elem = ET.SubElement(root, 'resources')
+        
+        if materials:
+            base_materials_elem = ET.SubElement(resources_elem, '{http://schemas.microsoft.com/3dmanufacturing/material/2015/02}basematerials', {
+                'id': '1'
+            })
+            
+            for mat_data in materials:
+                material = mat_data['material']
+                color = self._material_color_to_string(material)
+                name = material.name or f'Material_{mat_data["index"]}'
+                
+                ET.SubElement(base_materials_elem, '{http://schemas.microsoft.com/3dmanufacturing/material/2015/02}base', {
+                    'name': name,
+                    'displaycolor': color
+                })
         
         scale_factor = self._get_unit_scale_factor(options.unit)
         
         for mesh_data in mesh_data_list:
             object_type = mesh_data.get('type', 'model')
-            obj_elem = ET.SubElement(resources_elem, 'object', {
+            obj_attrs = {
                 'id': str(mesh_data['id']),
                 'name': mesh_data['name'],
                 'type': object_type
-            })
+            }
+            
+            if 'material_index' in mesh_data:
+                obj_attrs['pid'] = '1'
+                obj_attrs['pindex'] = str(mesh_data['material_index'])
+            
+            obj_elem = ET.SubElement(resources_elem, 'object', obj_attrs)
             
             mesh_elem = ET.SubElement(obj_elem, 'mesh')
             
