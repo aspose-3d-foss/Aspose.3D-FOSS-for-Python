@@ -15,6 +15,10 @@ from .stl.StlPlugin import StlPlugin
 from .gltf.GltfLoadOptions import GltfLoadOptions
 from .gltf.GltfSaveOptions import GltfSaveOptions
 from .gltf.GltfPlugin import GltfPlugin
+from .threemf.ThreeMfLoadOptions import ThreeMfLoadOptions
+from .threemf.ThreeMfSaveOptions import ThreeMfSaveOptions
+from .threemf.ThreeMfPlugin import ThreeMfPlugin
+from .threemf.ThreeMfFormat import ThreeMfFormat
 
 
 def _register_plugins():
@@ -22,6 +26,7 @@ def _register_plugins():
     io_service.register_plugin(ObjPlugin())
     io_service.register_plugin(StlPlugin())
     io_service.register_plugin(GltfPlugin())
+    io_service.register_plugin(ThreeMfPlugin())
 
 
 _register_plugins()
@@ -40,5 +45,8 @@ __all__ = [
     'StlLoadOptions',
     'StlSaveOptions',
     'GltfLoadOptions',
-    'GltfSaveOptions'
+    'GltfSaveOptions',
+    'ThreeMfLoadOptions',
+    'ThreeMfSaveOptions',
+    'ThreeMfFormat'
 ]

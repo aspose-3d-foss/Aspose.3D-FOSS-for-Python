@@ -298,8 +298,8 @@ class Matrix4:
         return inv
 
     def decompose(self, translation, scaling, rotation):
-        from .vector3 import Vector3
-        from .quaternion import Quaternion
+        from .Vector3 import Vector3
+        from .Quaternion import Quaternion
 
         m = self._m
 
@@ -352,8 +352,8 @@ class Matrix4:
         rotation[0] = Quaternion(w, x, y, z)
 
     def set_trs(self, translation, rotation, scale):
-        from .vector3 import Vector3
-        from .quaternion import Quaternion
+        from .Vector3 import Vector3
+        from .Quaternion import Quaternion
 
         if isinstance(translation, Vector3):
             tx, ty, tz = translation.x, translation.y, translation.z
@@ -448,7 +448,7 @@ class Matrix4:
 
     @staticmethod
     def rotate_from_euler(rx, ry=None, rz=None) -> 'Matrix4':
-        from .quaternion import Quaternion
+        from .Quaternion import Quaternion
 
         if ry is None:
             if hasattr(rx, 'x') and hasattr(rx, 'y') and hasattr(rx, 'z'):
@@ -465,8 +465,8 @@ class Matrix4:
 
     @staticmethod
     def rotate(angle, axis=None) -> 'Matrix4':
-        from .quaternion import Quaternion
-        from .vector3 import Vector3
+        from .Quaternion import Quaternion
+        from .Vector3 import Vector3
 
         if isinstance(angle, Quaternion):
             return angle.to_matrix()

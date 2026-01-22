@@ -58,6 +58,16 @@ class FileFormat:
     X_TEXT = None
     DRACO = None
     MICROSOFT_3MF = None
+    
+    _threemf_instance = None
+    
+    @staticmethod
+    def MICROSOFT_3MF_FORMAT():
+        if FileFormat._threemf_instance is None:
+            from .formats.threemf.ThreeMfFormat import ThreeMfFormat
+            FileFormat._threemf_instance = ThreeMfFormat()
+        return FileFormat._threemf_instance
+    
     RVM_TEXT = None
     RVM_BINARY = None
     ASE = None
@@ -136,6 +146,9 @@ class FileFormat:
         elif ext in ('gltf', 'glb'):
             from .formats.gltf.GltfFormat import GltfFormat
             return GltfFormat()
+        elif ext == '3mf':
+            from .formats.threemf.ThreeMfFormat import ThreeMfFormat
+            return ThreeMfFormat()
         return None
 
     def create_load_options(self) -> 'LoadOptions':

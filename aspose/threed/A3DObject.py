@@ -1,5 +1,6 @@
 from .INamedObject import INamedObject
 from .PropertyCollection import PropertyCollection
+from .Property import Property
 
 
 class A3DObject(INamedObject):
@@ -30,7 +31,6 @@ class A3DObject(INamedObject):
         if existing:
             existing.value = value
         else:
-            from .property import Property
             new_prop = Property(property, value)
             self._properties._properties.append(new_prop)
 

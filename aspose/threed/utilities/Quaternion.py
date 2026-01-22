@@ -89,7 +89,7 @@ class Quaternion:
         )
 
     def euler_angles(self) -> 'Vector3':
-        from .vector3 import Vector3
+        from .Vector3 import Vector3
 
         sin_x = 2.0 * (self._w * self._x + self._y * self._z)
         cos_x = 1.0 - 2.0 * (self._x ** 2 + self._y ** 2)
@@ -108,8 +108,8 @@ class Quaternion:
         return Vector3(rx, ry, rz)
 
     def to_matrix(self, translation=None) -> 'Matrix4':
-        from .matrix4 import Matrix4
-        from .vector3 import Vector3
+        from .Matrix4 import Matrix4
+        from .Vector3 import Vector3
 
         xx = self._x * self._x
         xy = self._x * self._y
@@ -151,7 +151,7 @@ class Quaternion:
             )
 
     def to_angle_axis(self, angle, axis):
-        from .vector3 import Vector3
+        from .Vector3 import Vector3
 
         q = self.normalize()
         if q._w > 1.0:
@@ -167,7 +167,7 @@ class Quaternion:
 
     @staticmethod
     def from_euler_angle(pitch, yaw, roll) -> 'Quaternion':
-        from .vector3 import Vector3
+        from .Vector3 import Vector3
 
         if isinstance(pitch, Vector3):
             pitch, yaw, roll = pitch.x, pitch.y, pitch.z
@@ -188,7 +188,7 @@ class Quaternion:
 
     @staticmethod
     def from_angle_axis(a: float, axis) -> 'Quaternion':
-        from .vector3 import Vector3
+        from .Vector3 import Vector3
 
         half_angle = a * 0.5
         s = math.sin(half_angle)
@@ -213,7 +213,7 @@ class Quaternion:
         dot = orig_n.dot(dest_n)
 
         if dot < -0.999999:
-            from .vector3 import Vector3
+            from .Vector3 import Vector3
             axis = Vector3(1.0, 0.0, 0.0)
             if abs(orig_n.x) < 0.9:
                 axis = Vector3(0.0, 1.0, 0.0)
