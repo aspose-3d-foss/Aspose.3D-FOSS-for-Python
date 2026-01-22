@@ -6,6 +6,7 @@ from ..Exporter import Exporter
 
 if TYPE_CHECKING:
     from aspose.threed import Scene
+    from aspose.threed.entities import Mesh
     from .StlSaveOptions import StlSaveOptions
 
 
@@ -39,12 +40,21 @@ class StlExporter(Exporter):
             if node.entity:
                 from aspose.threed.entities import Mesh
                 if isinstance(node.entity, Mesh):
-                    meshes.append(node.entity)
+                    mesh = node.entity
+                    if not self._is_triangulated(mesh):
+                        mesh = mesh.triangulate()
+                    meshes.append(mesh)
             for child in node.child_nodes:
                 visit_node(child)
         
         visit_node(scene.root_node)
         return meshes
+
+    def _is_triangulated(self, mesh: 'Mesh') -> bool:
+        for i in range(mesh.polygon_count):
+            if mesh.get_polygon_size(i) != 3:
+                return False
+        return True
 
     def _write_ascii_stl(self, stream, meshes, scene: 'Scene', options: 'StlSaveOptions'):
         from aspose.threed.utilities import Vector4
@@ -61,54 +71,41 @@ class StlExporter(Exporter):
         
         for mesh in meshes:
             for i in range(mesh.polygon_count):
-                size = mesh.get_polygon_size(i)
+                v0_idx = mesh._polygons[i * 3]
+                v1_idx = mesh._polygons[i * 3 + 1]
+                v2_idx = mesh._polygons[i * 3 + 2]
                 
-                if size < 3:
-                    continue
+                v1 = mesh._control_points[v0_idx]
+                v2 = mesh._control_points[v1_idx]
+                v3 = mesh._control_points[v2_idx]
                 
-                vertices_indices = []
-                offset = 0
-                for j in range(i):
-                    offset += mesh.get_polygon_size(j)
+                normal = self._compute_normal(v1, v2, v3)
                 
-                for j in range(size):
-                    idx = offset + j
-                    vertices_indices.append(mesh._polygons[idx])
+                if options.flip_coordinate_system:
+                    y1, z1 = v1.y, v1.z
+                    v1 = Vector4(v1.x, z1, y1, v1.w)
+                    y2, z2 = v2.y, v2.z
+                    v2 = Vector4(v2.x, z2, y2, v2.w)
+                    y3, z3 = v3.y, v3.z
+                    v3 = Vector4(v3.x, z3, y3, v3.w)
+                    ny, nz = normal.y, normal.z
+                    normal = Vector4(normal.x, nz, ny, normal.w)
                 
-                triangles = self._triangulate_polygon(vertices_indices)
+                nx = normal.x
+                ny = normal.y
+                nz = normal.z
                 
-                for tri in triangles:
-                    v1 = mesh._control_points[tri[0]]
-                    v2 = mesh._control_points[tri[1]]
-                    v3 = mesh._control_points[tri[2]]
-                    
-                    normal = self._compute_normal(v1, v2, v3)
-                    
-                    if options.flip_coordinate_system:
-                        y1, z1 = v1.y, v1.z
-                        v1 = Vector4(v1.x, z1, y1, v1.w)
-                        y2, z2 = v2.y, v2.z
-                        v2 = Vector4(v2.x, z2, y2, v2.w)
-                        y3, z3 = v3.y, v3.z
-                        v3 = Vector4(v3.x, z3, y3, v3.w)
-                        ny, nz = normal.y, normal.z
-                        normal = Vector4(normal.x, nz, ny, normal.w)
-                    
-                    nx = normal.x
-                    ny = normal.y
-                    nz = normal.z
-                    
-                    x1, y1, z1 = v1.x * options.scale, v1.y * options.scale, v1.z * options.scale
-                    x2, y2, z2 = v2.x * options.scale, v2.y * options.scale, v2.z * options.scale
-                    x3, y3, z3 = v3.x * options.scale, v3.y * options.scale, v3.z * options.scale
-                    
-                    lines.append(f"  facet normal {nx:.6e} {ny:.6e} {nz:.6e}")
-                    lines.append("    outer loop")
-                    lines.append(f"      vertex {x1:.6e} {y1:.6e} {z1:.6e}")
-                    lines.append(f"      vertex {x2:.6e} {y2:.6e} {z2:.6e}")
-                    lines.append(f"      vertex {x3:.6e} {y3:.6e} {z3:.6e}")
-                    lines.append("    endloop")
-                    lines.append("  endfacet")
+                x1, y1, z1 = v1.x * options.scale, v1.y * options.scale, v1.z * options.scale
+                x2, y2, z2 = v2.x * options.scale, v2.y * options.scale, v2.z * options.scale
+                x3, y3, z3 = v3.x * options.scale, v3.y * options.scale, v3.z * options.scale
+                
+                lines.append(f"  facet normal {nx:.6e} {ny:.6e} {nz:.6e}")
+                lines.append("    outer loop")
+                lines.append(f"      vertex {x1:.6e} {y1:.6e} {z1:.6e}")
+                lines.append(f"      vertex {x2:.6e} {y2:.6e} {z2:.6e}")
+                lines.append(f"      vertex {x3:.6e} {y3:.6e} {z3:.6e}")
+                lines.append("    endloop")
+                lines.append("  endfacet")
         
         lines.append(f"endsolid {header_name}")
         
@@ -126,47 +123,34 @@ class StlExporter(Exporter):
         
         for mesh in meshes:
             for i in range(mesh.polygon_count):
-                size = mesh.get_polygon_size(i)
+                v0_idx = mesh._polygons[i * 3]
+                v1_idx = mesh._polygons[i * 3 + 1]
+                v2_idx = mesh._polygons[i * 3 + 2]
                 
-                if size < 3:
-                    continue
+                v1 = mesh._control_points[v0_idx]
+                v2 = mesh._control_points[v1_idx]
+                v3 = mesh._control_points[v2_idx]
                 
-                vertices_indices = []
-                offset = 0
-                for j in range(i):
-                    offset += mesh.get_polygon_size(j)
+                normal = self._compute_normal(v1, v2, v3)
                 
-                for j in range(size):
-                    idx = offset + j
-                    vertices_indices.append(mesh._polygons[idx])
+                if options.flip_coordinate_system:
+                    y1, z1 = v1.y, v1.z
+                    v1 = Vector4(v1.x, z1, y1, v1.w)
+                    y2, z2 = v2.y, v2.z
+                    v2 = Vector4(v2.x, z2, y2, v2.w)
+                    y3, z3 = v3.y, v3.z
+                    v3 = Vector4(v3.x, z3, y3, v3.w)
+                    ny, nz = normal.y, normal.z
+                    normal = Vector4(normal.x, nz, ny, normal.w)
                 
-                triangles = self._triangulate_polygon(vertices_indices)
+                x1, y1, z1 = v1.x * options.scale, v1.y * options.scale, v1.z * options.scale
+                x2, y2, z2 = v2.x * options.scale, v2.y * options.scale, v2.z * options.scale
+                x3, y3, z3 = v3.x * options.scale, v3.y * options.scale, v3.z * options.scale
                 
-                for tri in triangles:
-                    v1 = mesh._control_points[tri[0]]
-                    v2 = mesh._control_points[tri[1]]
-                    v3 = mesh._control_points[tri[2]]
-                    
-                    normal = self._compute_normal(v1, v2, v3)
-                    
-                    if options.flip_coordinate_system:
-                        y1, z1 = v1.y, v1.z
-                        v1 = Vector4(v1.x, z1, y1, v1.w)
-                        y2, z2 = v2.y, v2.z
-                        v2 = Vector4(v2.x, z2, y2, v2.w)
-                        y3, z3 = v3.y, v3.z
-                        v3 = Vector4(v3.x, z3, y3, v3.w)
-                        ny, nz = normal.y, normal.z
-                        normal = Vector4(normal.x, nz, ny, normal.w)
-                    
-                    x1, y1, z1 = v1.x * options.scale, v1.y * options.scale, v1.z * options.scale
-                    x2, y2, z2 = v2.x * options.scale, v2.y * options.scale, v2.z * options.scale
-                    x3, y3, z3 = v3.x * options.scale, v3.y * options.scale, v3.z * options.scale
-                    
-                    nx, ny, nz = normal.x, normal.y, normal.z
-                    
-                    triangles_data += struct.pack('<12f', nx, ny, nz, x1, y1, z1, x2, y2, z2, x3, y3, z3)
-                    triangles_data += struct.pack('<H', 0)
+                nx, ny, nz = normal.x, normal.y, normal.z
+                
+                triangles_data += struct.pack('<12f', nx, ny, nz, x1, y1, z1, x2, y2, z2, x3, y3, z3)
+                triangles_data += struct.pack('<H', 0)
         
         header_name = options.file_name if options.file_name else "exported"
         header_name = header_name.encode('utf-8', errors='ignore')[:80]
@@ -178,18 +162,6 @@ class StlExporter(Exporter):
         
         if hasattr(stream, 'write'):
             stream.write(content)
-
-    def _triangulate_polygon(self, vertices_indices):
-        if len(vertices_indices) == 3:
-            return [vertices_indices]
-        elif len(vertices_indices) == 4:
-            v0, v1, v2, v3 = vertices_indices
-            return [[v0, v1, v2], [v0, v2, v3]]
-        else:
-            result = []
-            for i in range(1, len(vertices_indices) - 1):
-                result.append([vertices_indices[0], vertices_indices[i], vertices_indices[i + 1]])
-            return result
 
     def _compute_normal(self, v1, v2, v3):
         from aspose.threed.utilities import Vector4
