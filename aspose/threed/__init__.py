@@ -13,6 +13,19 @@ from .CustomObject import CustomObject
 from .ImageRenderOptions import ImageRenderOptions
 from .FileFormat import FileFormat
 from .entities import Mesh, Light, Camera, Geometry
+from .animation import (
+    ExtrapolationType,
+    Interpolation,
+    WeightedMode,
+    StepMode,
+    Extrapolation,
+    KeyFrame,
+    KeyframeSequence,
+    AnimationChannel,
+    BindPoint,
+    AnimationNode,
+    AnimationClip,
+)
 
 __all__ = [
     'INamedObject',
@@ -33,4 +46,15 @@ __all__ = [
     'Light',
     'Camera',
     'Geometry',
+    'ExtrapolationType',
+    'Interpolation',
+    'WeightedMode',
+    'StepMode',
+    'Extrapolation',
+    'KeyFrame',
+    'KeyframeSequence',
+    'AnimationChannel',
+    'BindPoint',
+    'AnimationNode',
+    'AnimationClip',
 ]

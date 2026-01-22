@@ -9,16 +9,20 @@ from .ImageRenderOptions import ImageRenderOptions
 if TYPE_CHECKING:
     from .FileFormat import FileFormat
     from .Node import Node
+    from .animation import AnimationClip
 
 
 class Scene(SceneObject):
     VERSION = "24.12.0"
 
     def __init__(self, entity: Optional[Entity] = None, parent_scene=None, name: Optional[str] = None):
-        super().__init__(name)
+        super().__init__(name if name is not None else "")
         self._sub_scenes: List[Scene] = []
         self._library: List[CustomObject] = []
         self._asset_info = AssetInfo()
+        self._animation_clips: List['AnimationClip'] = []
+        self._current_animation_clip: Optional['AnimationClip'] = None
+        self._poses = []
 
         from .Node import Node
         self._root_node = Node()
@@ -57,33 +61,45 @@ class Scene(SceneObject):
         self._asset_info = value
 
     @property
-    def animation_clips(self) -> List:
-        return []
+    def animation_clips(self) -> List['AnimationClip']:
+        return list(self._animation_clips)
 
     @property
-    def current_animation_clip(self):
-        return None
+    def current_animation_clip(self) -> Optional['AnimationClip']:
+        return self._current_animation_clip
 
     @current_animation_clip.setter
-    def current_animation_clip(self, value):
-        pass
+    def current_animation_clip(self, value: 'AnimationClip'):
+        self._current_animation_clip = value
 
     @property
     def poses(self) -> List:
-        return []
+        return list(self._poses)
 
     def clear(self):
         from .Node import Node
         self._root_node = Node()
         self._sub_scenes.clear()
         self._library.clear()
+        self._animation_clips.clear()
+        self._current_animation_clip = None
+        self._poses.clear()
         self._propagate_scene()
 
-    def create_animation_clip(self, name: str):
-        raise NotImplementedError("create_animation_clip is not implemented")
+    def create_animation_clip(self, name: str) -> 'AnimationClip':
+        from .animation import AnimationClip
+        clip = AnimationClip(name)
+        clip.scene = self
+        self._animation_clips.append(clip)
+        if self._current_animation_clip is None:
+            self._current_animation_clip = clip
+        return clip
 
-    def get_animation_clip(self, name: str):
-        raise NotImplementedError("get_animation_clip is not implemented")
+    def get_animation_clip(self, name: str) -> Optional['AnimationClip']:
+        for clip in self._animation_clips:
+            if clip.name == name:
+                return clip
+        return None
 
     def open(self, file_or_stream, options=None):
         self.clear()

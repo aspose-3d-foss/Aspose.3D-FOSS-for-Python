@@ -1,3 +1,10 @@
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from .animation import AnimationNode, BindPoint, KeyframeSequence
+
+
 class Property:
     def __init__(self, name: str, value=None):
         self._name = name
@@ -26,11 +33,11 @@ class Property:
     def set_extra(self, name: str, value):
         self._extra_data[name] = value
 
-    def get_bind_point(self, anim, create):
-        raise NotImplementedError("get_bind_point is not implemented")
+    def get_bind_point(self, anim: 'AnimationNode', create: bool) -> 'BindPoint':
+        return None
 
-    def get_keyframe_sequence(self, anim, create):
-        raise NotImplementedError("get_keyframe_sequence is not implemented")
+    def get_keyframe_sequence(self, anim: 'AnimationNode', create: bool) -> 'KeyframeSequence':
+        return None
 
     def __repr__(self) -> str:
         return f"Property({self._name}, {self._value})"
