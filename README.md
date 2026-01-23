@@ -4,23 +4,30 @@ A powerful and open-source 3D file format library for Python. Aspose.3D for Pyth
 
 ## Features
 
-- **OBJ Format Support**
-  - Import OBJ files with vertices, normals, and texture coordinates
-  - Multiple objects and grouping
-  - Material loading from MTL files
-  - Smoothing groups
-  - Configurable coordinate system flipping and scaling
-  
+- **Format Support**
+  - OBJ - Import/export with materials, textures, and grouping
+  - GLTF - GL Transmission Format with full PBR material support
+  - STL - Stereo Lithography format for 3D printing
+  - 3MF - 3D Manufacturing Format for modern 3D printing workflows
+
 - **Scene Management**
   - Create and manipulate 3D scenes
   - Hierarchical node structure
   - Mesh and entity management
-  - Material system with Lambert and Phong shading
+  - Material system with Lambert, Phong, and PBR materials
 
 - **3D Primitives**
   - Vector math (Vector2, Vector3, Vector4, Matrix4, Quaternion)
   - Bounding boxes and transformations
   - Camera and light objects
+
+- **Mesh Operations**
+  - Triangulation support for polygon conversion
+  - Mesh manipulation and modification
+
+- **Animation System**
+  - Keyframe animation support
+  - Animation curves and interpolation
 
 ## Installation
 
@@ -56,20 +63,21 @@ for node in scene.root_node.child_nodes:
 
 ### Import (Implemented)
 - **OBJ** - Wavefront OBJ with full material support
+- **GLTF** - GL Transmission Format (glTF 2.0)
+- **STL** - Stereo Lithography format
+- **3MF** - 3D Manufacturing Format
 - More formats coming soon...
 
-### Export (Partial)
-- **OBJ** - Basic OBJ export (vertices, faces, materials)
+### Export (Implemented)
+- **OBJ** - Export with vertices, faces, and materials
+- **GLTF** - Export to glTF 2.0 format
+- **STL** - Export to STL format
+- **3MF** - Export to 3MF format
 - More formats coming soon...
-
-## Examples
-
-See the [examples/](examples/) directory for sample OBJ files and usage examples.
 
 ## Documentation
 
-- [API Reference](https://reference.aspose.com/3d/python/) - Complete API documentation
-- [Examples](examples/) - Example files and usage
+- [API Reference](https://reference.aspose.com/3d/python-net/) - Complete API documentation
 
 ## Python Version Support
 
@@ -85,14 +93,10 @@ See the [examples/](examples/) directory for sample OBJ files and usage examples
 ### OBJ Format
 
 **Import Features:**
-- Vertices (v)
-- Texture coordinates (vt)
-- Vertex normals (vn)
+- Vertices (v), texture coordinates (vt), vertex normals (vn)
 - Faces (f) with multiple index formats
-- Objects (o)
-- Groups (g)
+- Objects (o), groups (g), smoothing groups (s)
 - Materials (usemtl, mtllib)
-- Smoothing groups (s)
 
 **Load Options:**
 - `flip_coordinate_system` - Swap Y and Z coordinates
@@ -108,15 +112,41 @@ See the [examples/](examples/) directory for sample OBJ files and usage examples
 - `enable_materials` - Export materials
 - `flip_coordinate_system` - Flip coordinate system
 
+### GLTF Format
+
+**Features:**
+- glTF 2.0 specification support
+- PBR material system (metallic/roughness workflow)
+- Mesh primitives with attributes
+- Node hierarchy and transforms
+- Texture and image support
+
+### STL Format
+
+**Features:**
+- Binary and ASCII STL support
+- Triangular mesh representation
+- Unit conversion and scaling
+- Import for 3D printing workflows
+
+### 3MF Format
+
+**Features:**
+- 3D Manufacturing Format 1.2 support
+- Rich metadata support
+- Production-grade 3D printing
+- Color and material support
+
 ## Architecture
 
 The library is organized into several modules:
 
 - `aspose.threed` - Core scene classes (Scene, Node, Entity)
 - `aspose.threed.entities` - 3D entities (Mesh, Camera, Light)
-- `aspose.threed.formats` - File format importers and exporters
-- `aspose.threed.shading` - Material system
+- `aspose.threed.formats` - File format importers and exporters (OBJ, GLTF, STL, 3MF)
+- `aspose.threed.shading` - Material system (Lambert, Phong, PBR materials)
 - `aspose.threed.utilities` - Math utilities (vectors, matrices, quaternions)
+- `aspose.threed.animation` - Animation system (keyframes, curves)
 
 ## Contributing
 
@@ -129,4 +159,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - Aspose.3D for Python is inspired by the original Aspose.3D API
-- OBJ format specification maintained by various 3D software vendors
+- 3D format specification maintained by various 3D software vendors
