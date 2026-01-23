@@ -19,6 +19,9 @@ from .threemf.ThreeMfLoadOptions import ThreeMfLoadOptions
 from .threemf.ThreeMfSaveOptions import ThreeMfSaveOptions
 from .threemf.ThreeMfPlugin import ThreeMfPlugin
 from .threemf.ThreeMfFormat import ThreeMfFormat
+from .fbx.FbxLoadOptions import FbxLoadOptions
+from .fbx.FbxSaveOptions import FbxSaveOptions
+from .fbx.FbxPlugin import FbxPlugin
 
 
 def _register_plugins():
@@ -27,6 +30,7 @@ def _register_plugins():
     io_service.register_plugin(StlPlugin())
     io_service.register_plugin(GltfPlugin())
     io_service.register_plugin(ThreeMfPlugin())
+    io_service.register_plugin(FbxPlugin())
 
 
 _register_plugins()
@@ -48,5 +52,7 @@ __all__ = [
     'GltfSaveOptions',
     'ThreeMfLoadOptions',
     'ThreeMfSaveOptions',
-    'ThreeMfFormat'
+    'ThreeMfFormat',
+    'FbxLoadOptions',
+    'FbxSaveOptions'
 ]

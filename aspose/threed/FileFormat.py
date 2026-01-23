@@ -60,14 +60,23 @@ class FileFormat:
     MICROSOFT_3MF = None
     
     _threemf_instance = None
-    
+
     @staticmethod
     def MICROSOFT_3MF_FORMAT():
         if FileFormat._threemf_instance is None:
             from .formats.threemf.ThreeMfFormat import ThreeMfFormat
             FileFormat._threemf_instance = ThreeMfFormat()
         return FileFormat._threemf_instance
-    
+
+    _fbx7400_ascii_instance = None
+
+    @staticmethod
+    def FBX7400ASCII():
+        if FileFormat._fbx7400_ascii_instance is None:
+            from .formats.fbx.FbxFormat import FbxFormat
+            FileFormat._fbx7400_ascii_instance = FbxFormat()
+        return FileFormat._fbx7400_ascii_instance
+
     RVM_TEXT = None
     RVM_BINARY = None
     ASE = None
@@ -149,6 +158,9 @@ class FileFormat:
         elif ext == '3mf':
             from .formats.threemf.ThreeMfFormat import ThreeMfFormat
             return ThreeMfFormat()
+        elif ext.lower() == 'fbx':
+            from .formats.fbx.FbxFormat import FbxFormat
+            return FbxFormat()
         return None
 
     def create_load_options(self) -> 'LoadOptions':

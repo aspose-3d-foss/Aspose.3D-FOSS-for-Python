@@ -18,12 +18,12 @@ class FVector4:
                 self._x = x
                 self._y = float(y)
                 self._z = 0.0
-                self._w = 0.0
+                self._w = float(w)
             else:
                 self._x = x
                 self._y = float(y)
                 self._z = float(z)
-                self._w = 0.0
+                self._w = float(w)
         else:
             from .vector3 import Vector3
             from .vector4 import Vector4
