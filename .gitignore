@@ -5,3 +5,8 @@ build
 __pycache__
 specs
 examples
+references/
+*.py
+!setup.py
+*.obj
+test.*
