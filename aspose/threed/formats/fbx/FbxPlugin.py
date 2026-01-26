@@ -3,12 +3,9 @@ from typing import TYPE_CHECKING
 from ..Plugin import Plugin
 
 if TYPE_CHECKING:
-    from .Importer import Importer
-    from .Exporter import Exporter
-    from .FormatDetector import FormatDetector
-    from .LoadOptions import LoadOptions
-    from .SaveOptions import SaveOptions
-    from .FbxFormat import FbxFormat
+    from .FbxImporter import FbxImporter
+    from .FbxExporter import FbxExporter
+    from .FbxFormatDetector import FbxFormatDetector
     from .FbxLoadOptions import FbxLoadOptions
     from .FbxSaveOptions import FbxSaveOptions
 
@@ -23,23 +20,24 @@ class FbxPlugin(Plugin):
 
     def __init__(self):
         from .FbxImporter import FbxImporter
+        from .FbxExporter import FbxExporter
         from .FbxFormatDetector import FbxFormatDetector
 
         self._importer = FbxImporter()
-        self._exporter = None
+        self._exporter = FbxExporter()
         self._format_detector = FbxFormatDetector()
 
-    def get_file_format(self) -> 'FbxFormat':
+    def get_file_format(self):
         from .FbxFormat import FbxFormat
         return FbxFormat()
 
-    def get_importer(self) -> 'Importer':
+    def get_importer(self) -> 'FbxImporter':
         return self._importer
 
-    def get_exporter(self) -> 'Exporter':
+    def get_exporter(self) -> 'FbxExporter':
         return self._exporter
 
-    def get_format_detector(self) -> 'FormatDetector':
+    def get_format_detector(self) -> 'FbxFormatDetector':
         return self._format_detector
 
     def create_load_options(self) -> 'FbxLoadOptions':

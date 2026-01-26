@@ -3,13 +3,16 @@ from typing import TYPE_CHECKING
 from ..LoadOptions import LoadOptions
 
 if TYPE_CHECKING:
-    pass
+    from aspose.threed import FileFormat
+
 
 class FbxLoadOptions(LoadOptions):
-    def __init__(self):
+    def __init__(self, format=None):
         super().__init__()
         self._keep_builtin_global_settings = False
         self._compatible_mode = False
+        if format is not None:
+            self._file_format = format
 
     @property
     def keep_builtin_global_settings(self) -> bool:

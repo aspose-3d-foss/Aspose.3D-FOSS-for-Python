@@ -1,12 +1,12 @@
 from typing import TYPE_CHECKING
 
-from ..A3DObject import A3DObject
+from .Material import Material
 
 if TYPE_CHECKING:
     from ..utilities import Vector3
 
 
-class LambertMaterial(A3DObject):
+class LambertMaterial(Material):
     MAP_SPECULAR = "Specular"
     MAP_DIFFUSE = "Diffuse"
     MAP_EMISSIVE = "Emissive"
@@ -20,12 +20,6 @@ class LambertMaterial(A3DObject):
         self._diffuse_color = None
         self._transparent_color = None
         self._transparency = 0.0
-
-    def get_texture(self, slot_name: str):
-        raise NotImplementedError("get_texture is not implemented")
-
-    def set_texture(self, slot_name: str, texture):
-        raise NotImplementedError("set_texture is not implemented")
 
     @property
     def emissive_color(self) -> 'Vector3':

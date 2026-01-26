@@ -1,13 +1,12 @@
 from typing import List
 
+
 class FbxFormat:
     _instance = None
 
-    def __new__(cls, version="7.4.0", content_type="ASCII"):
+    def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._instance._version = version
-            cls._instance._content_type = content_type
         return cls._instance
 
     @property
@@ -16,11 +15,11 @@ class FbxFormat:
 
     @property
     def extensions(self) -> List[str]:
-        return ["fbx", "FBX"]
+        return ["fbx"]
 
     @property
     def content_type(self) -> str:
-        return f"model/fbx-{self._version.lower()}-{self._content_type.lower()}"
+        return "application/octet-stream"
 
     @property
     def file_format_type(self):
@@ -28,7 +27,7 @@ class FbxFormat:
 
     @property
     def version(self) -> str:
-        return self._version
+        return "7400"
 
     @property
     def can_export(self) -> bool:

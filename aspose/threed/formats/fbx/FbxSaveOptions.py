@@ -5,18 +5,20 @@ from ..SaveOptions import SaveOptions
 if TYPE_CHECKING:
     from aspose.threed import FileFormat
 
+
 class FbxSaveOptions(SaveOptions):
-    def __init__(self, file_format=None):
+    def __init__(self, format=None):
         super().__init__()
-        if file_format is not None:
-            self._file_format = file_format
         self._export_textures = False
         self._reuse_primitive_mesh = False
         self._enable_compression = True
+        self._fold_repeated_curve_data = None
         self._export_legacy_material_properties = True
         self._video_for_texture = False
         self._embed_textures = False
         self._generate_vertex_element_material = False
+        if format is not None:
+            self._file_format = format
 
     @property
     def export_textures(self) -> bool:
@@ -41,6 +43,14 @@ class FbxSaveOptions(SaveOptions):
     @enable_compression.setter
     def enable_compression(self, value: bool):
         self._enable_compression = bool(value)
+
+    @property
+    def fold_repeated_curve_data(self):
+        return self._fold_repeated_curve_data
+
+    @fold_repeated_curve_data.setter
+    def fold_repeated_curve_data(self, value):
+        self._fold_repeated_curve_data = value
 
     @property
     def export_legacy_material_properties(self) -> bool:

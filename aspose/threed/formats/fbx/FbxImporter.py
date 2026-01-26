@@ -1,301 +1,283 @@
-from typing import TYPE_CHECKING, List, Optional, Any
-import struct
+from typing import TYPE_CHECKING, Optional, List, Dict, Any
+import io
 
 from ..Importer import Importer
 
 if TYPE_CHECKING:
+    from .FbxLoadOptions import FbxLoadOptions
     from aspose.threed import Scene
-    from aspose.threed.formats import LoadOptions
-    from aspose.threed.formats.fbx import FbxLoadOptions
-
-
-class FbxNode:
-    def __init__(self, name: str = ""):
-        self.name: str = name
-        self.properties: List[Any] = []
-        self.children: List['FbxNode'] = []
 
 
 class FbxImporter(Importer):
-    MAGIC = b'Kaydara FBX Binary  \x00'
-    FOOTER_SIZE = 27
-
     def __init__(self):
         super().__init__()
-        self._document: Optional[FbxNode] = None
 
     def supports_format(self, file_format) -> bool:
         from .FbxFormat import FbxFormat
         return isinstance(file_format, FbxFormat)
 
-    def import_scene(self, scene: 'Scene', stream, options: 'FbxLoadOptions'):
-        from .FbxLoadOptions import FbxLoadOptions
-        from aspose.threed import Node
-        from aspose.threed.entities import Mesh
-
-        if not isinstance(options, FbxLoadOptions):
+    def open(self, filename: str, options: Optional['FbxLoadOptions'] = None) -> 'Scene':
+        if options is None:
+            from .FbxLoadOptions import FbxLoadOptions
             options = FbxLoadOptions()
 
-        if not hasattr(stream, 'read'):
-            raise TypeError("Stream must support read() method")
+        with open(filename, 'r', encoding='utf-8') as f:
+            content = f.read()
 
-        if hasattr(stream, 'seek'):
-            stream.seek(0)
+        from .parser import FbxParser
+        from .tokenizer import FbxTokenizer
 
-        data = stream.read()
-        if isinstance(data, str):
-            data = data.encode('utf-8')
+        tokenizer = FbxTokenizer(content)
+        tokens = tokenizer.tokenize()
+        parser = FbxParser(tokens)
 
-        root_node = self._parse_binary(data)
+        from aspose.threed import Scene
+        scene = Scene()
 
-        if root_node:
-            self._build_scene(scene, root_node, options)
+        self.import_scene(scene, io.StringIO(content), options)
 
-    def _parse_binary(self, data: bytes) -> Optional[FbxNode]:
-        if not data.startswith(self.MAGIC):
-            raise ValueError("Invalid FBX binary file")
+        return scene
 
-        reader = _BinaryReader(data)
-        reader.pos = self.FOOTER_SIZE
+    def open_from_stream(self, stream: io.IOBase, options: Optional['FbxLoadOptions'] = None) -> 'Scene':
+        if options is None:
+            from .FbxLoadOptions import FbxLoadOptions
+            options = FbxLoadOptions()
 
-        root = FbxNode("FBXHeader")
-        node_count = 0
-        max_nodes = 1000
-        last_pos = reader.pos
-        
-        while reader.pos < len(data) and node_count < max_nodes:
-            node = self._read_node(reader)
-            if node:
-                root.children.append(node)
-                node_count += 1
-                last_pos = reader.pos
-            else:
-                if reader.pos >= len(data) - 1 or reader.pos == last_pos:
-                    break
+        content = stream.read()
+        if isinstance(content, bytes):
+            content = content.decode('utf-8')
 
-        return root
+        from .parser import FbxParser
+        from .tokenizer import FbxTokenizer
 
-    def _read_node(self, reader: '_BinaryReader') -> Optional[FbxNode]:
-        start_pos = reader.pos
-        end_offset = reader.read_uint32()
+        tokenizer = FbxTokenizer(content)
+        tokens = tokenizer.tokenize()
+        parser = FbxParser(tokens)
 
-        if end_offset == 0:
-            reader.skip(9)
-            return None
+        from aspose.threed import Scene
+        scene = Scene()
 
-        if end_offset > len(reader.data):
-            return None
+        self.import_scene(scene, io.StringIO(content), options)
 
-        num_properties = reader.read_uint32()
-        property_list_len = reader.read_uint32()
-        name_len = reader.read_uint8()
-        name = reader.read_bytes(name_len).decode('utf-8', errors='ignore')
+        return scene
 
-        node = FbxNode(name)
+    def import_scene(self, scene: 'Scene', stream: io.IOBase, options: 'FbxLoadOptions'):
+        from .parser import FbxParser
+        from .tokenizer import FbxTokenizer
 
-        properties_start = reader.pos
-        for i in range(num_properties):
-            prop = self._read_property(reader)
-            if prop is not None:
-                node.properties.append(prop)
-            else:
-                break
-        
-        if reader.pos < properties_start + property_list_len:
-            reader.pos = properties_start + property_list_len
+        content = stream.read()
+        if isinstance(content, bytes):
+            content = content.decode('utf-8')
 
-        safety_count = 0
-        max_safety = 10000
-        while reader.pos < end_offset and safety_count < max_safety:
-            child = self._read_node(reader)
-            if child is not None:
-                node.children.append(child)
-            safety_count += 1
-            
-            if reader.pos == start_pos:
-                break
+        tokenizer = FbxTokenizer(content)
+        tokens = tokenizer.tokenize()
+        parser = FbxParser(tokens)
 
-        return node
+        self._parse_scene(parser.root_scope, scene)
 
-    def _read_property(self, reader: '_BinaryReader') -> Any:
-        if reader.pos >= len(reader.data):
-            return None
+    def _parse_scene(self, root_scope, scene):
+        objects_element = root_scope.get_first_element('Objects')
+        if objects_element is None or objects_element.compound is None:
+            return
 
-        prop_type = reader.data[reader.pos:reader.pos + 1]
-        reader.pos += 1
+        objects_scope = objects_element.compound
+        self._object_map = {}
 
-        if prop_type == b'Y':
-            return reader.read_int16()
-        elif prop_type == b'C':
-            return bool(reader.data[reader.pos])
-        elif prop_type == b'I':
-            return reader.read_int32()
-        elif prop_type == b'F':
-            return reader.read_float32()
-        elif prop_type == b'D':
-            return reader.read_float64()
-        elif prop_type == b'L':
-            return reader.read_int64()
-        elif prop_type == b'i':
-            count = reader.read_uint32()
-            values = []
-            for _ in range(count):
-                values.append(reader.read_int32())
-            return values
-        elif prop_type == b'f':
-            count = reader.read_uint32()
-            values = []
-            for _ in range(count):
-                values.append(reader.read_float32())
-            return values
-        elif prop_type == b'd':
-            count = reader.read_uint32()
-            values = []
-            for _ in range(count):
-                values.append(reader.read_float64())
-            return values
-        elif prop_type == b'l':
-            count = reader.read_uint32()
-            values = []
-            for _ in range(count):
-                values.append(reader.read_int64())
-            return values
-        elif prop_type == b'b':
-            count = reader.read_uint32()
-            values = []
-            for _ in range(count):
-                values.append(bool(reader.data[reader.pos]))
-                reader.pos += 1
-            return values
-        elif prop_type == b'S':
-            length = reader.read_uint32()
-            return reader.read_bytes(length)
-        elif prop_type == b'R':
-            length = reader.read_uint32()
-            return reader.read_bytes(length)
-        else:
-            return None
+        geometry_elements = objects_scope.get_elements('Geometry')
+        model_elements = objects_scope.get_elements('Model')
+        material_elements = objects_scope.get_elements('Material')
 
-    def _build_scene(self, scene: 'Scene', root: FbxNode, options):
-        from aspose.threed import Node
+        self._parse_geometries(geometry_elements, scene)
+        self._parse_models(model_elements, scene)
+        self._parse_materials(material_elements, scene)
+        self._parse_connections(root_scope, scene)
+
+    def _parse_geometries(self, geometry_elements, scene):
         from aspose.threed.entities import Mesh
         from aspose.threed.utilities import Vector4
 
-        for child in root.children:
-            if child.name == "Objects":
-                for obj in child.children:
-                    if obj.name == "Geometry":
-                        model_node = Node("Model")
-                        mesh = Mesh("Mesh")
-                        model_node.entity = mesh
+        for geom_elem in geometry_elements:
+            geom_scope = geom_elem.compound
+            if geom_scope is None:
+                continue
 
-                        for geom_child in obj.children:
-                            if geom_child.name == "Vertices" and geom_child.properties:
-                                vertices_data = geom_child.properties[0]
-                                if isinstance(vertices_data, list):
-                                    for i in range(0, len(vertices_data), 3):
-                                        if i + 2 < len(vertices_data):
-                                            x = vertices_data[i]
-                                            y = vertices_data[i + 1]
-                                            z = vertices_data[i + 2]
-                                            mesh._control_points.append(Vector4(x, y, z, 1.0))
+            geom_id = self._parse_id(geom_elem.tokens[0].text) if len(geom_elem.tokens) > 0 else None
+            if geom_id is None:
+                continue
 
-                            elif geom_child.name == "PolygonVertexIndex" and geom_child.properties:
-                                indices = geom_child.properties[0]
-                                if isinstance(indices, list):
-                                    polygon = []
-                                    for idx in indices:
-                                        if idx < 0:
-                                            polygon.append(-(idx + 1))
-                                            if len(polygon) >= 3:
-                                                mesh.create_polygon(list(polygon))
-                                            polygon = []
-                                        else:
-                                            polygon.append(idx)
-                                    if len(polygon) >= 3:
-                                        mesh.create_polygon(list(polygon))
+            mesh = Mesh()
+            self._object_map[geom_id] = mesh
 
-                        if mesh._control_points or mesh.polygons:
-                            scene.root_node.add_child_node(model_node)
+            vertices_element = geom_scope.get_first_element('Vertices')
+            if vertices_element and vertices_element.compound:
+                a_elem = vertices_element.compound.get_first_element('a')
+                if a_elem:
+                    vertices = self._parse_float_array_from_tokens(a_elem.tokens)
+                    for i in range(0, len(vertices), 3):
+                        if i + 2 < len(vertices):
+                            mesh._control_points.append(Vector4(vertices[i], vertices[i + 1], vertices[i + 2], 1.0))
 
-    def _parse_double_array(self, data: bytes) -> List[float]:
-        reader = _BinaryReader(data)
+            polygon_element = geom_scope.get_first_element('PolygonVertexIndex')
+            if polygon_element and polygon_element.compound:
+                a_elem = polygon_element.compound.get_first_element('a')
+                if a_elem:
+                    indices = self._parse_int_array_from_tokens(a_elem.tokens)
+                    for idx in indices:
+                        if idx < 0:
+                            mesh._polygons.append(abs(idx) - 1)
+                            mesh._polygons.append(0xFFFFFFFF)
+                        else:
+                            mesh._polygons.append(idx)
+
+            normal_element = geom_scope.get_first_element('Normals')
+            if normal_element and normal_element.compound:
+                a_elem = normal_element.compound.get_first_element('a')
+                if a_elem:
+                    normals = self._parse_float_array_from_tokens(a_elem.tokens)
+                    from aspose.threed.entities import VertexElementNormal
+                    vertex_element = mesh.create_element(VertexElementNormal)
+                    vertex_element.mapping_mode = VertexElementNormal.MappingMode.CONTROL_POINT
+                    for i in range(0, len(normals), 3):
+                        if i + 2 < len(normals):
+                            vertex_element.data.append((normals[i], normals[i + 1], normals[i + 2]))
+
+            uv_element = geom_scope.get_first_element('UV')
+            if uv_element and uv_element.compound:
+                a_elem = uv_element.compound.get_first_element('a')
+                if a_elem:
+                    uvs = self._parse_float_array_from_tokens(a_elem.tokens)
+                    from aspose.threed.entities import VertexElementUV
+                    vertex_element = mesh.create_element(VertexElementUV)
+                    vertex_element.mapping_mode = VertexElementUV.MappingMode.CONTROL_POINT
+                    for i in range(0, len(uvs), 2):
+                        if i + 1 < len(uvs):
+                            vertex_element.data.append((uvs[i], uvs[i + 1]))
+
+    def _parse_models(self, model_elements, scene):
+        from aspose.threed import Node
+
+        for model_elem in model_elements:
+            model_id = self._parse_id(model_elem.tokens[0].text) if len(model_elem.tokens) > 0 else None
+            if model_id is None:
+                continue
+
+            node = Node()
+            self._object_map[model_id] = node
+
+            if len(model_elem.tokens) > 1:
+                node.name = model_elem.tokens[1].text.strip('"')
+
+    def _parse_materials(self, material_elements, scene):
+        from aspose.threed.shading import LambertMaterial
+
+        for mat_elem in material_elements:
+            mat_id = self._parse_id(mat_elem.tokens[0].text) if len(mat_elem.tokens) > 0 else None
+            if mat_id is None:
+                continue
+
+            material = LambertMaterial()
+            self._object_map[mat_id] = material
+
+            if len(mat_elem.tokens) > 1:
+                material.name = mat_elem.tokens[1].text.strip('"')
+
+            mat_scope = mat_elem.compound
+            if mat_scope is None:
+                continue
+
+            shading_elem = mat_scope.get_first_element('ShadingModel')
+            if shading_elem and shading_elem.tokens:
+                material.shading_model = shading_elem.tokens[0].text.strip('"')
+
+    def _parse_connections(self, root_scope, scene):
+        connections_element = root_scope.get_first_element('Connections')
+        if connections_element is None or connections_element.compound is None:
+            return
+
+        connections_scope = connections_element.compound
+        connection_elements = connections_scope.get_elements('C')
+
+        for conn_elem in connection_elements:
+            if len(conn_elem.tokens) < 3:
+                continue
+
+            conn_type = conn_elem.tokens[0].text.strip('"')
+            if conn_type == 'OO':
+                child_id = self._parse_id(conn_elem.tokens[1].text)
+                parent_id = self._parse_id(conn_elem.tokens[2].text)
+
+                self._connect_objects(child_id, parent_id, scene)
+
+    def _connect_objects(self, child_id, parent_id, scene):
+        if child_id is None:
+            return
+
+        child_obj = self._object_map.get(child_id)
+        if child_obj is None:
+            return
+
+        if parent_id == 0:
+            parent_obj = scene.root_node
+        else:
+            parent_obj = self._object_map.get(parent_id)
+            if parent_obj is None:
+                return
+
+        from aspose.threed.entities import Mesh
+        from aspose.threed import Node
+        from aspose.threed.shading import Material
+
+        if isinstance(child_obj, Mesh) and isinstance(parent_obj, Node):
+            parent_obj._entities.append(child_obj)
+        elif isinstance(child_obj, Material) and isinstance(parent_obj, Node):
+            parent_obj._materials.append(child_obj)
+        elif isinstance(child_obj, Node) and isinstance(parent_obj, Node):
+            parent_obj._child_nodes.append(child_obj)
+
+    def _parse_id(self, text):
+        try:
+            return int(text)
+        except ValueError:
+            return None
+
+    def _parse_int_array_from_tokens(self, tokens):
         values = []
-        while reader.pos + 8 <= len(data):
-            values.append(reader.read_float64())
+        for token in tokens:
+            text = token.text
+            if text.startswith('*'):
+                continue
+            if text.startswith('a:'):
+                text = text[2:]
+            import re
+            found = re.findall(r'-?\d+', text)
+            for v in found:
+                values.append(int(v))
         return values
 
+    def _parse_float_array_from_tokens(self, tokens):
+        values = []
+        for token in tokens:
+            text = token.text
+            if text.startswith('*'):
+                continue
+            if text.startswith('a:'):
+                text = text[2:]
+            import re
+            found = re.findall(r'-?\d+\.?\d*', text)
+            for v in found:
+                values.append(float(v))
+        return values
 
-class _BinaryReader:
-    def __init__(self, data: bytes):
-        self.data = data
-        self.pos = 0
+    def _parse_float_array(self, text):
+        import re
+        if text.startswith('a:'):
+            text = text[2:]
+        values = re.findall(r'-?\d+\.?\d*', text)
+        return [float(v) for v in values]
 
-    def read_uint8(self) -> int:
-        if self.pos + 1 > len(self.data):
-            return 0
-        value = self.data[self.pos]
-        self.pos += 1
-        return value
-
-    def read_uint32(self) -> int:
-        if self.pos + 4 > len(self.data):
-            return 0
-        value = struct.unpack('<I', self.data[self.pos:self.pos + 4])[0]
-        self.pos += 4
-        return value
-
-    def read_int32(self) -> int:
-        if self.pos + 4 > len(self.data):
-            return 0
-        value = struct.unpack('<i', self.data[self.pos:self.pos + 4])[0]
-        self.pos += 4
-        return value
-
-    def read_int16(self) -> int:
-        if self.pos + 2 > len(self.data):
-            return 0
-        value = struct.unpack('<h', self.data[self.pos:self.pos + 2])[0]
-        self.pos += 2
-        return value
-
-    def read_int64(self) -> int:
-        if self.pos + 8 > len(self.data):
-            return 0
-        value = struct.unpack('<q', self.data[self.pos:self.pos + 8])[0]
-        self.pos += 8
-        return value
-
-    def read_float32(self) -> float:
-        if self.pos + 4 > len(self.data):
-            return 0.0
-        value = struct.unpack('<f', self.data[self.pos:self.pos + 4])[0]
-        self.pos += 4
-        return value
-
-    def read_float64(self) -> float:
-        if self.pos + 8 > len(self.data):
-            return 0.0
-        value = struct.unpack('<d', self.data[self.pos:self.pos + 8])[0]
-        self.pos += 8
-        return value
-
-    def read_string(self) -> str:
-        end = self.data.find(b'\x00', self.pos)
-        if end == -1:
-            result = self.data[self.pos:].decode('utf-8', errors='ignore')
-            self.pos = len(self.data)
-        else:
-            result = self.data[self.pos:end].decode('utf-8', errors='ignore')
-            self.pos = end + 1
-        return result
-
-    def read_bytes(self, length: int) -> bytes:
-        if self.pos + length > len(self.data):
-            length = len(self.data) - self.pos
-        result = self.data[self.pos:self.pos + length]
-        self.pos += length
-        return result
-
-    def skip(self, count: int):
-        self.pos += count
+    def _parse_int_array(self, text):
+        import re
+        if text.startswith('a:'):
+            text = text[2:]
+        values = re.findall(r'-?\d+', text)
+        return [int(v) for v in values]
