@@ -1,7 +1,8 @@
 from typing import List
+from ...FileFormat import FileFormat
 
 
-class FbxFormat:
+class FbxFormat(FileFormat):
     _instance = None
 
     def __new__(cls):

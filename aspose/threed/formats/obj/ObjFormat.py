@@ -1,7 +1,8 @@
 from typing import List
+from ...FileFormat import FileFormat
 
 
-class ObjFormat:
+class ObjFormat(FileFormat):
     _instance = None
 
     def __new__(cls):

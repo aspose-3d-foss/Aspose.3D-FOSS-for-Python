@@ -16,25 +16,56 @@ class FbxImporter(Importer):
         from .FbxFormat import FbxFormat
         return isinstance(file_format, FbxFormat)
 
+    def _is_binary_file(self, data):
+        if isinstance(data, str):
+            return False
+        if len(data) < 18:
+            return False
+        return data[0:18] == b'Kaydara FBX Binary'
+
+    def _get_tokens_from_file(self, filename: str):
+        with open(filename, 'rb') as f:
+            data = f.read()
+
+        if self._is_binary_file(data):
+            from .binary_tokenizer import BinaryTokenizer
+            tokenizer = BinaryTokenizer(data)
+            return tokenizer.tokenize()
+        else:
+            content = data.decode('utf-8')
+            from .tokenizer import FbxTokenizer
+            tokenizer = FbxTokenizer(content)
+            return tokenizer.tokenize()
+
+    def _get_tokens_from_stream(self, stream: io.IOBase):
+        content = stream.read()
+
+        if isinstance(content, bytes):
+            if self._is_binary_file(content):
+                from .binary_tokenizer import BinaryTokenizer
+                tokenizer = BinaryTokenizer(content)
+                return tokenizer.tokenize()
+            else:
+                content = content.decode('utf-8')
+
+        from .tokenizer import FbxTokenizer
+        tokenizer = FbxTokenizer(content)
+        return tokenizer.tokenize()
+
     def open(self, filename: str, options: Optional['FbxLoadOptions'] = None) -> 'Scene':
         if options is None:
             from .FbxLoadOptions import FbxLoadOptions
             options = FbxLoadOptions()
 
-        with open(filename, 'r', encoding='utf-8') as f:
-            content = f.read()
+        tokens = self._get_tokens_from_file(filename)
 
         from .parser import FbxParser
-        from .tokenizer import FbxTokenizer
-
-        tokenizer = FbxTokenizer(content)
-        tokens = tokenizer.tokenize()
         parser = FbxParser(tokens)
 
         from aspose.threed import Scene
         scene = Scene()
 
-        self.import_scene(scene, io.StringIO(content), options)
+        self._parse_scene(parser.root_scope, scene)
 
         return scene
 
@@ -43,34 +74,22 @@ class FbxImporter(Importer):
             from .FbxLoadOptions import FbxLoadOptions
             options = FbxLoadOptions()
 
-        content = stream.read()
-        if isinstance(content, bytes):
-            content = content.decode('utf-8')
+        tokens = self._get_tokens_from_stream(stream)
 
         from .parser import FbxParser
-        from .tokenizer import FbxTokenizer
-
-        tokenizer = FbxTokenizer(content)
-        tokens = tokenizer.tokenize()
         parser = FbxParser(tokens)
 
         from aspose.threed import Scene
         scene = Scene()
 
-        self.import_scene(scene, io.StringIO(content), options)
+        self._parse_scene(parser.root_scope, scene)
 
         return scene
 
     def import_scene(self, scene: 'Scene', stream: io.IOBase, options: 'FbxLoadOptions'):
+        tokens = self._get_tokens_from_stream(stream)
+
         from .parser import FbxParser
-        from .tokenizer import FbxTokenizer
-
-        content = stream.read()
-        if isinstance(content, bytes):
-            content = content.decode('utf-8')
-
-        tokenizer = FbxTokenizer(content)
-        tokens = tokenizer.tokenize()
         parser = FbxParser(tokens)
 
         self._parse_scene(parser.root_scope, scene)
@@ -112,7 +131,7 @@ class FbxImporter(Importer):
             if vertices_element and vertices_element.compound:
                 a_elem = vertices_element.compound.get_first_element('a')
                 if a_elem:
-                    vertices = self._parse_float_array_from_tokens(a_elem.tokens)
+                    vertices = self._parse_float_array(a_elem.tokens[0].text)
                     for i in range(0, len(vertices), 3):
                         if i + 2 < len(vertices):
                             mesh._control_points.append(Vector4(vertices[i], vertices[i + 1], vertices[i + 2], 1.0))
@@ -121,7 +140,7 @@ class FbxImporter(Importer):
             if polygon_element and polygon_element.compound:
                 a_elem = polygon_element.compound.get_first_element('a')
                 if a_elem:
-                    indices = self._parse_int_array_from_tokens(a_elem.tokens)
+                    indices = self._parse_int_array(a_elem.tokens[0].text)
                     for idx in indices:
                         if idx < 0:
                             mesh._polygons.append(abs(idx) - 1)
@@ -133,25 +152,34 @@ class FbxImporter(Importer):
             if normal_element and normal_element.compound:
                 a_elem = normal_element.compound.get_first_element('a')
                 if a_elem:
-                    normals = self._parse_float_array_from_tokens(a_elem.tokens)
+                    normals = self._parse_float_array(a_elem.tokens[0].text)
                     from aspose.threed.entities import VertexElementNormal
-                    vertex_element = mesh.create_element(VertexElementNormal)
-                    vertex_element.mapping_mode = VertexElementNormal.MappingMode.CONTROL_POINT
+                    from aspose.threed.entities.VertexElementType import VertexElementType
+                    from aspose.threed.utilities.FVector4 import FVector4
+                    vertex_element = mesh.create_element(VertexElementType.NORMAL)
+                    from aspose.threed.entities.MappingMode import MappingMode
+                    vertex_element.mapping_mode = MappingMode.CONTROL_POINT
+                    normal_data = []
                     for i in range(0, len(normals), 3):
                         if i + 2 < len(normals):
-                            vertex_element.data.append((normals[i], normals[i + 1], normals[i + 2]))
+                            normal_data.append(FVector4(normals[i], normals[i + 1], normals[i + 2], 0.0))
+                    vertex_element.set_data(normal_data)
 
             uv_element = geom_scope.get_first_element('UV')
             if uv_element and uv_element.compound:
                 a_elem = uv_element.compound.get_first_element('a')
                 if a_elem:
-                    uvs = self._parse_float_array_from_tokens(a_elem.tokens)
-                    from aspose.threed.entities import VertexElementUV
-                    vertex_element = mesh.create_element(VertexElementUV)
-                    vertex_element.mapping_mode = VertexElementUV.MappingMode.CONTROL_POINT
+                    uvs = self._parse_float_array(a_elem.tokens[0].text)
+                    from aspose.threed.entities.TextureMapping import TextureMapping
+                    from aspose.threed.utilities.FVector2 import FVector2
+                    vertex_element = mesh.create_element_uv(TextureMapping.DIFFUSE)
+                    from aspose.threed.entities.MappingMode import MappingMode
+                    vertex_element.mapping_mode = MappingMode.CONTROL_POINT
+                    uv_data = []
                     for i in range(0, len(uvs), 2):
                         if i + 1 < len(uvs):
-                            vertex_element.data.append((uvs[i], uvs[i + 1]))
+                            uv_data.append(FVector2(uvs[i], uvs[i + 1]))
+                    vertex_element.set_data(uv_data)
 
     def _parse_models(self, model_elements, scene):
         from aspose.threed import Node
@@ -165,7 +193,9 @@ class FbxImporter(Importer):
             self._object_map[model_id] = node
 
             if len(model_elem.tokens) > 1:
-                node.name = model_elem.tokens[1].text.strip('"')
+                token_value = model_elem.tokens[1].text
+                if isinstance(token_value, str):
+                    node.name = token_value.strip('"')
 
     def _parse_materials(self, material_elements, scene):
         from aspose.threed.shading import LambertMaterial
@@ -179,15 +209,13 @@ class FbxImporter(Importer):
             self._object_map[mat_id] = material
 
             if len(mat_elem.tokens) > 1:
-                material.name = mat_elem.tokens[1].text.strip('"')
+                token_value = mat_elem.tokens[1].text
+                if isinstance(token_value, str):
+                    material.name = token_value.strip('"')
 
             mat_scope = mat_elem.compound
             if mat_scope is None:
                 continue
-
-            shading_elem = mat_scope.get_first_element('ShadingModel')
-            if shading_elem and shading_elem.tokens:
-                material.shading_model = shading_elem.tokens[0].text.strip('"')
 
     def _parse_connections(self, root_scope, scene):
         connections_element = root_scope.get_first_element('Connections')
@@ -201,7 +229,12 @@ class FbxImporter(Importer):
             if len(conn_elem.tokens) < 3:
                 continue
 
-            conn_type = conn_elem.tokens[0].text.strip('"')
+            conn_type = conn_elem.tokens[0].text
+            if isinstance(conn_type, str):
+                conn_type = conn_type.strip('"')
+            else:
+                continue
+
             if conn_type == 'OO':
                 child_id = self._parse_id(conn_elem.tokens[1].text)
                 parent_id = self._parse_id(conn_elem.tokens[2].text)
@@ -234,50 +267,34 @@ class FbxImporter(Importer):
         elif isinstance(child_obj, Node) and isinstance(parent_obj, Node):
             parent_obj._child_nodes.append(child_obj)
 
-    def _parse_id(self, text):
+    def _parse_id(self, value):
         try:
-            return int(text)
-        except ValueError:
+            if isinstance(value, int):
+                return value
+            if isinstance(value, str):
+                return int(value)
+            if isinstance(value, bytes):
+                return int(value.decode('utf-8'))
+            return int(value)
+        except (ValueError, TypeError):
             return None
 
-    def _parse_int_array_from_tokens(self, tokens):
-        values = []
-        for token in tokens:
-            text = token.text
-            if text.startswith('*'):
-                continue
-            if text.startswith('a:'):
-                text = text[2:]
-            import re
-            found = re.findall(r'-?\d+', text)
-            for v in found:
-                values.append(int(v))
-        return values
-
-    def _parse_float_array_from_tokens(self, tokens):
-        values = []
-        for token in tokens:
-            text = token.text
-            if text.startswith('*'):
-                continue
-            if text.startswith('a:'):
-                text = text[2:]
-            import re
-            found = re.findall(r'-?\d+\.?\d*', text)
-            for v in found:
-                values.append(float(v))
-        return values
-
-    def _parse_float_array(self, text):
+    def _parse_int_array(self, value):
+        if isinstance(value, list):
+            return value
         import re
-        if text.startswith('a:'):
-            text = text[2:]
-        values = re.findall(r'-?\d+\.?\d*', text)
-        return [float(v) for v in values]
-
-    def _parse_int_array(self, text):
-        import re
+        text = str(value)
         if text.startswith('a:'):
             text = text[2:]
         values = re.findall(r'-?\d+', text)
         return [int(v) for v in values]
+
+    def _parse_float_array(self, value):
+        if isinstance(value, list):
+            return value
+        import re
+        text = str(value)
+        if text.startswith('a:'):
+            text = text[2:]
+        values = re.findall(r'-?\d+\.?\d*', text)
+        return [float(v) for v in values]
