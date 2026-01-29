@@ -22,6 +22,9 @@ from .threemf.ThreeMfFormat import ThreeMfFormat
 from .fbx.FbxLoadOptions import FbxLoadOptions
 from .fbx.FbxSaveOptions import FbxSaveOptions
 from .fbx.FbxPlugin import FbxPlugin
+from .collada.ColladaLoadOptions import ColladaLoadOptions
+from .collada.ColladaSaveOptions import ColladaSaveOptions
+from .collada.ColladaPlugin import ColladaPlugin
 
 
 def _register_plugins():
@@ -31,6 +34,7 @@ def _register_plugins():
     io_service.register_plugin(GltfPlugin())
     io_service.register_plugin(ThreeMfPlugin())
     io_service.register_plugin(FbxPlugin())
+    io_service.register_plugin(ColladaPlugin())
 
 
 _register_plugins()
@@ -54,5 +58,7 @@ __all__ = [
     'ThreeMfSaveOptions',
     'ThreeMfFormat',
     'FbxLoadOptions',
-    'FbxSaveOptions'
+    'FbxSaveOptions',
+    'ColladaLoadOptions',
+    'ColladaSaveOptions'
 ]

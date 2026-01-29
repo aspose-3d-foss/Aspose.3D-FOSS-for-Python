@@ -161,6 +161,9 @@ class FileFormat:
         elif ext.lower() == 'fbx':
             from .formats.fbx.FbxFormat import FbxFormat
             return FbxFormat()
+        elif ext == 'dae':
+            from .formats.collada.ColladaFormat import ColladaFormat
+            return ColladaFormat()
         return None
 
     def create_load_options(self) -> 'LoadOptions':
