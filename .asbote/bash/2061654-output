@@ -1,0 +1,300 @@
+commit 8c981b3bdb2da28f94d208b58a39dd78724c992f
+Author: Bot Lex Chou <bot_lex.chou@aspose.com>
+Date:   Mon Jun 22 10:54:06 2026 +0800
+
+    feat: Enhance Pose class with BonePose/PoseType and fix matrix serialization
+    
+    - Add BonePose class and PoseType enum to support skinning poses
+    - Extend Pose with PoseType property, BonePoses collection, and AddBonePose methods
+    - Implement INamedObject interface on Pose
+    - Add FMatrix4 * FVector4 multiplication operator
+    - Fix IOExtension matrix write order (was writing duplicate elements)
+    - Clean up animation enum XML doc comments
+    - Remove obsolete scripts and progress tracking doc
+    
+    Co-Authored-By: Claude <noreply@anthropic.com>
+
+diff --git a/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/ExtrapolationType.cs b/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/ExtrapolationType.cs
+index 93761e8..2f2af75 100644
+--- a/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/ExtrapolationType.cs
++++ b/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/ExtrapolationType.cs
+@@ -5,29 +5,10 @@ namespace Aspose.ThreeD.Animation
+     /// </summary>
+     public enum ExtrapolationType
+     {
+-        /// <summary>
+-        /// Constant extrapolation
+-        /// </summary>
+         Constant,
+-
+-        /// <summary>
+-        /// Gradient extrapolation
+-        /// </summary>
+         Gradient,
+-
+-        /// <summary>
+-        /// Cycle extrapolation
+-        /// </summary>
+         Cycle,
+-
+-        /// <summary>
+-        /// CycleRelative extrapolation
+-        /// </summary>
+         CycleRelative,
+-
+-        /// <summary>
+-        /// Oscillate extrapolation
+-        /// </summary>
+-        Oscillate
++        Oscillate,
+     }
+ }
+diff --git a/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/Interpolation.cs b/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/Interpolation.cs
+index 8d24ca3..a02a7e6 100644
+--- a/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/Interpolation.cs
++++ b/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/Interpolation.cs
+@@ -5,34 +5,11 @@ namespace Aspose.ThreeD.Animation
+     /// </summary>
+     public enum Interpolation
+     {
+-        /// <summary>
+-        /// Constant interpolation
+-        /// </summary>
+         Constant,
+-
+-        /// <summary>
+-        /// Linear interpolation
+-        /// </summary>
+         Linear,
+-
+-        /// <summary>
+-        /// Bezier interpolation
+-        /// </summary>
+         Bezier,
+-
+-        /// <summary>
+-        /// BSpline interpolation
+-        /// </summary>
+         BSpline,
+-
+-        /// <summary>
+-        /// CardinalSpline interpolation
+-        /// </summary>
+         CardinalSpline,
+-
+-        /// <summary>
+-        /// TCBSpline interpolation
+-        /// </summary>
+-        TCBSpline
++        TCBSpline,
+     }
+ }
+diff --git a/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/StepMode.cs b/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/StepMode.cs
+index 9568a39..a860830 100644
+--- a/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/StepMode.cs
++++ b/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/StepMode.cs
+@@ -1,8 +1,11 @@
+ namespace Aspose.ThreeD.Animation
+ {
++    /// <summary>
++    /// Interpolation step mode.
++    /// </summary>
+     public enum StepMode
+     {
+         PreviousValue,
+-        NextValue
++        NextValue,
+     }
+ }
+diff --git a/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/WeightedMode.cs b/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/WeightedMode.cs
+index 06103b0..c5c6f34 100644
+--- a/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/WeightedMode.cs
++++ b/src/main/Aspose.ThreeD/Aspose/ThreeD/Animation/WeightedMode.cs
+@@ -1,12 +1,13 @@
+-using Aspose.ThreeD.Utilities;
+-
+ namespace Aspose.ThreeD.Animation
+ {
++    /// <summary>
++    /// Weighted mode.
++    /// </summary>
+     public enum WeightedMode
+     {
+         None,
+         OutWeight,
+         NextInWeight,
+-        Both
++        Both,
+     }
+ }
+diff --git a/src/main/Aspose.ThreeD/Aspose/ThreeD/BonePose.cs b/src/main/Aspose.ThreeD/Aspose/ThreeD/BonePose.cs
+new file mode 100644
+index 0000000..e489314
+--- /dev/null
++++ b/src/main/Aspose.ThreeD/Aspose/ThreeD/BonePose.cs
+@@ -0,0 +1,32 @@
++using Aspose.ThreeD.Utilities;
++
++namespace Aspose.ThreeD
++{
++    /// <summary>
++    /// The  contains the transformation matrix for a bone node
++    /// </summary>
++    public class BonePose : A3DObject
++    {
++        /// <summary>
++        /// Initializes a new instance of the BonePose class
++        /// </summary>
++        public BonePose() : base()
++        {
++        }
++
++        /// <summary>
++        /// Gets or sets the scene node, points to a skinned skeleton node
++        /// </summary>
++        public Node Node { get; set; }
++
++        /// <summary>
++        /// Gets or sets the transform matrix of the node in current pose.
++        /// </summary>
++        public Matrix4 Matrix { get; set; }
++
++        /// <summary>
++        /// Gets or sets if the matrix is defined in local coordinate.
++        /// </summary>
++        public bool IsLocal { get; set; }
++    }
++}
+diff --git a/src/main/Aspose.ThreeD/Aspose/ThreeD/Pose.cs b/src/main/Aspose.ThreeD/Aspose/ThreeD/Pose.cs
+index 6db725c..068fc8f 100644
+--- a/src/main/Aspose.ThreeD/Aspose/ThreeD/Pose.cs
++++ b/src/main/Aspose.ThreeD/Aspose/ThreeD/Pose.cs
+@@ -1,22 +1,67 @@
++using System.Collections.Generic;
++using Aspose.ThreeD.Utilities;
++
+ namespace Aspose.ThreeD
+ {
+     /// <summary>
+-    /// Pose
++    /// The pose is used to store transformation matrix when the geometry is skinned.
++    /// The pose is a set of <see cref="BonePose"/>, each <see cref="BonePose"/> saves the concrete transformation information of the bone node.
+     /// </summary>
+-    public class Pose : A3DObject
++    public class Pose : A3DObject, INamedObject
+     {
++        private readonly List<BonePose> bonePoses = new List<BonePose>();
++
+         /// <summary>
+-        /// Initializes a new instance of the Pose class
++        /// Initializes a new instance of the <see cref="Pose"/> class.
+         /// </summary>
+         public Pose() : base()
+         {
+         }
+ 
+         /// <summary>
+-        /// Initializes a new instance of the Pose class
++        /// Initializes a new instance of the <see cref="Pose"/> class.
+         /// </summary>
++        /// <param name="name">The name of the pose.</param>
+         public Pose(string name) : base(name)
+         {
+         }
++
++        /// <summary>
++        /// Gets or sets the type of the pose.
++        /// </summary>
++        public PoseType PoseType { get; set; }
++
++        /// <summary>
++        /// Gets all <see cref="BonePose"/> instances.
++        /// </summary>
++        public IList<BonePose> BonePoses => bonePoses;
++
++        /// <summary>
++        /// Saves pose transformation matrix for the given bone node.
++        /// </summary>
++        /// <param name="node">The scene node, points to a skinned skeleton node.</param>
++        /// <param name="matrix">The transform matrix of the node in current pose.</param>
++        /// <param name="localMatrix">If true, the matrix is defined in local coordinate; otherwise, global transformation matrix is implied.</param>
++        public void AddBonePose(Node node, Matrix4 matrix, bool localMatrix)
++        {
++            var bonePose = new BonePose
++            {
++                Node = node,
++                Matrix = matrix,
++                IsLocal = localMatrix
++            };
++            bonePoses.Add(bonePose);
++        }
++
++        /// <summary>
++        /// Saves pose transformation matrix for the given bone node.
++        /// Global transformation matrix is implied.
++        /// </summary>
++        /// <param name="node">The scene node, points to a skinned skeleton node.</param>
++        /// <param name="matrix">The transform matrix of the node in current pose.</param>
++        public void AddBonePose(Node node, Matrix4 matrix)
++        {
++            AddBonePose(node, matrix, false);
++        }
+     }
+ }
+diff --git a/src/main/Aspose.ThreeD/Aspose/ThreeD/PoseType.cs b/src/main/Aspose.ThreeD/Aspose/ThreeD/PoseType.cs
+new file mode 100644
+index 0000000..353409f
+--- /dev/null
++++ b/src/main/Aspose.ThreeD/Aspose/ThreeD/PoseType.cs
+@@ -0,0 +1,11 @@
++namespace Aspose.ThreeD
++{
++    /// <summary>
++    /// Pose type.
++    /// </summary>
++    public enum PoseType
++    {
++        BindPose,
++        Snapshot,
++    }
++}
+diff --git a/src/main/Aspose.ThreeD/Aspose/ThreeD/Utilities/FMatrix4.cs b/src/main/Aspose.ThreeD/Aspose/ThreeD/Utilities/FMatrix4.cs
+index b576ccf..9a467b4 100644
+--- a/src/main/Aspose.ThreeD/Aspose/ThreeD/Utilities/FMatrix4.cs
++++ b/src/main/Aspose.ThreeD/Aspose/ThreeD/Utilities/FMatrix4.cs
+@@ -65,6 +65,7 @@ namespace Aspose.ThreeD.Utilities
+ 
+         public static FMatrix4 operator *(FMatrix4 lhs, float v) => new FMatrix4(lhs.m00 * v, lhs.m01 * v, lhs.m02 * v, lhs.m03 * v, lhs.m10 * v, lhs.m11 * v, lhs.m12 * v, lhs.m13 * v, lhs.m20 * v, lhs.m21 * v, lhs.m22 * v, lhs.m23 * v, lhs.m30 * v, lhs.m31 * v, lhs.m32 * v, lhs.m33 * v);
+         public static FVector3 operator *(FMatrix4 lhs, FVector3 v) => new FVector3(lhs.m00 * v.X + lhs.m01 * v.Y + lhs.m02 * v.Z + lhs.m03, lhs.m10 * v.X + lhs.m11 * v.Y + lhs.m12 * v.Z + lhs.m13, lhs.m20 * v.X + lhs.m21 * v.Y + lhs.m22 * v.Z + lhs.m23);
++        public static FVector4 operator *(FMatrix4 lhs, FVector4 v) => new FVector4(lhs.m00 * v.X + lhs.m01 * v.Y + lhs.m02 * v.Z + lhs.m03 * v.W, lhs.m10 * v.X + lhs.m11 * v.Y + lhs.m12 * v.Z + lhs.m13 * v.W, lhs.m20 * v.X + lhs.m21 * v.Y + lhs.m22 * v.Z + lhs.m23 * v.W, lhs.m30 * v.X + lhs.m31 * v.Y + lhs.m32 * v.Z + lhs.m33 * v.W);
+ 
+         public static bool operator ==(FMatrix4 left, FMatrix4 right) => left.Equals(right);
+ 
+diff --git a/src/main/Aspose.ThreeD/Aspose/ThreeD/Utilities/IOExtension.cs b/src/main/Aspose.ThreeD/Aspose/ThreeD/Utilities/IOExtension.cs
+index 2e7eb87..a061b33 100644
+--- a/src/main/Aspose.ThreeD/Aspose/ThreeD/Utilities/IOExtension.cs
++++ b/src/main/Aspose.ThreeD/Aspose/ThreeD/Utilities/IOExtension.cs
+@@ -31,17 +31,17 @@ namespace Aspose.ThreeD.Utilities
+             writer.Write(mat.m02);
+             writer.Write(mat.m03);
+             writer.Write(mat.m10);
+-            writer.Write(mat.m00);
+-            writer.Write(mat.m01);
+-            writer.Write(mat.m02);
+-            writer.Write(mat.m20);
+-            writer.Write(mat.m10);
+             writer.Write(mat.m11);
+             writer.Write(mat.m12);
+-            writer.Write(mat.m30);
++            writer.Write(mat.m13);
+             writer.Write(mat.m20);
+             writer.Write(mat.m21);
+             writer.Write(mat.m22);
++            writer.Write(mat.m23);
++            writer.Write(mat.m30);
++            writer.Write(mat.m31);
++            writer.Write(mat.m32);
++            writer.Write(mat.m33);
+         }
+ 
+         public static void Write(BinaryWriter writer, FVector2 v)

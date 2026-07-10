@@ -49,6 +49,20 @@ Verify module structure:
 python3 tests/verify_module.py
 ```
 
+
+## Folder Structures
+
+- *examples* Contains test 3D files.
+- *specs* 3D specifications.
+- *references* 3rd party open source implementations for references.
+- *tests* Test cases
+- *aspose* Source code
+- *pyi* The type annotations, public source code in *aspose* should follow the signatures defined in this folder.  
+
+NOTE: *examples*, *specs*, *references*, *pyi* are ignored in git repository.
+
+
+
 ## Code Style Guidelines
 
 ### File Naming

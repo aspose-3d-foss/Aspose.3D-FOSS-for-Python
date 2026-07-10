@@ -1,0 +1,2 @@
+class PlyFormat:
+    """PLY format"""

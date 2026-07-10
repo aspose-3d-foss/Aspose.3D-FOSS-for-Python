@@ -1,0 +1,205 @@
+# FOSS Python Progress
+
+## Current Version
+- Target: 26.2.0
+- Last Sync: 2026-07-04
+- Last Sync SHA: (initial port complete)
+
+## Porting Status
+
+### Stage: Source Port (Initial Sync) - COMPLETE
+
+### Completed Ports
+
+#### Core Classes (Stage 1)
+- A3DObject, INamedObject, SceneObject, Scene, Node, Entity, Transform, GlobalTransform
+- Property, PropertyCollection, AssetInfo, CustomObject
+- BoundingBox, BoundingBoxExtent (with enum-like values NULL, FINITE, INFINITE)
+- PolygonBuilder.InvalidOperationException (stub)
+
+#### Core Classes (Stage 1 - Complete)
+- A3DObject
+- INamedObject
+- SceneObject
+- Scene
+- Node
+- Entity
+- Transform
+- GlobalTransform
+- Property
+- PropertyCollection
+- AssetInfo
+- CustomObject
+
+#### Entities
+- Mesh
+- Light
+- Camera
+- Geometry
+- Primitive (now properly inherits from Geometry)
+- Box, Cylinder, Sphere, Plane, Dish, Circle, Ellipse, Frustum, Pyramid, Torus
+- Curve, Line, NurbsCurve, NurbsDirection
+
+#### Animation
+- ExtrapolationType
+- Interpolation
+- WeightedMode
+- StepMode
+- Extrapolation
+- KeyFrame
+- KeyframeSequence
+- AnimationChannel
+- BindPoint
+- AnimationNode
+
+#### Animation
+- ExtrapolationType
+- Interpolation
+- WeightedMode
+- StepMode
+- Extrapolation
+- KeyFrame
+- KeyframeSequence
+- AnimationChannel
+- BindPoint
+- AnimationNode
+- AnimationClip
+
+#### File Format I/O (FOSS Supported)
+- OBJ (import/export)
+- STL (import/export)
+- GLTF (import/export)
+- 3MF (import/export)
+- FBX (import/export)
+- Collada (import/export)
+
+#### Utilities
+- Vector2, Vector3, Vector4
+- Matrix4
+- Quaternion
+- BoundingBox
+- FVector2, FVector3, FVector4
+- ArrayListAdapter (implements IArrayList interface for list-like collections)
+
+#### Materials
+- Material
+- PhongMaterial
+- LambertMaterial
+- PbrMaterial
+
+#### Profiles (New in 26.2.0)
+- Profile (base class)
+- ArbitraryProfile
+- CenterLineProfile
+- ParameterizedProfile
+- Shape profiles: CircleShape, EllipseShape, RectangleShape, HShape, LShape, TShape, UShape, ZShape, CShape
+- HollowCircleShape, HollowRectangleShape, TrapeziumShape
+- MirroredProfile
+- Text, FontFile
+
+#### New in 26.2.0
+- PoseType (enum)
+- BonePose
+- Pose
+
+#### Vertex Elements
+- VertexElement (base class with SetIndices and Clear methods)
+- VertexElementFVector (helper class with Data property using ArrayListAdapter)
+- VertexElementUV, VertexElementVertexColor, VertexElementMaterial, VertexElementNormal, etc.
+
+#### Deformers
+- Deformer (base class with owner property)
+- SkinDeformer
+- MorphTargetDeformer
+- Bone
+
+## .NET FOSS Sync
+
+### Last Synced Commit
+- 8caf604 (June 12, 2026) - Update API signatures for FOSS compatibility with On-Premise 26.2.0
+
+### Commits Since Last Sync
+- 7460409 - fix: Use PNG icon for nuget package (no code changes)
+- 19f0b01 - Merge branch 'main'
+- a1221bf - chore: Add nuget package logo (no code changes)
+- 76ee798 - README updated with correct nuget reference csproj updated with multiple framework version support (no code changes)
+- 71581fd - chore: Rename assembly and package to Aspose.3D.FOSS (no code changes)
+- 61580ea - feat: Geometry ToMesh() implementation and API signature alignment (partial - see below)
+- de3212b - feat: Implement Dish.ToMesh() with dome generation algorithm (partial - see below)
+- 8caf604 - fix: Update API signatures for FOSS compatibility with On-Premise 26.2.0 (partial - see below)
+
+### Changes Ported from Commits
+- **Geometry**: Added `deformers` property and `GetDeformers<T>()` method
+- **Geometry**: Changed `ControlPoints` to use `ArrayListAdapter` instead of plain list
+- **VertexElement**: Added `SetIndices()` and `Clear()` methods with proper indices handling
+- **VertexElementFVector**: Added `Data` property using `ArrayListAdapter`
+- **Primitive**: Fixed inheritance from `Geometry` (was incorrectly inheriting from `Entity`)
+- **Mesh**: Removed override of `deformers` property that returned empty list
+- **ArrayList**: Added `ArrayListAdapter` class that wraps `List[T]` and implements IArrayList-like interface
+
+## API Classification
+
+### Category 1: Excluded (Not Implemented)
+- License: License class
+- Metered: Metered class
+- Trial: TrialException
+- DRM: All DRM-related functionality
+
+### Category 2: Stub (Raises NotImplementedError)
+- Scene.render()
+- ImageRenderOptions
+
+### Category 3: Full Implementation
+- All core classes, entities, file format I/O, utilities, materials, and Pose/BonePose/PoseType
+
+## Deviations from .NET FOSS
+
+### Pose Class Implementation
+- The .NET FOSS uses `IList<BonePose>` for BonePoses property
+- Python implementation uses `List[BonePose]` (Pythonic typing)
+- Both `AddBonePose` overloads are ported
+
+### PoseType Enum
+- .NET: `BindPose`, `Snapshot`
+- Python: `BIND_POSE`, `SNAPSHOT` (Pythonic constant naming)
+
+## Tests
+- Total Tests: 101
+- Passing: 99
+- Failing: 2 (pre-existing issues unrelated to this port)
+
+## Deviations from .NET FOSS
+
+### ArrayListAdapter
+- Python implementation of `ArrayListAdapter` wraps a Python `list` and provides IArrayList-like interface
+- The .NET FOSS uses `IArrayList<T>` interface with `ArrayListAdapter<T>` implementation
+- Python uses direct class without explicit interface
+
+### Primitive Inheritance
+- .NET FOSS: `Primitive : Geometry`
+- Python FOSS: Fixed to match .NET (was incorrectly `Primitive : Entity`)
+
+### ControlPoints Property
+- .NET FOSS: Returns `IArrayList<Vector4>` via `ArrayListAdapter`
+- Python FOSS: Returns `ArrayListAdapter[Vector4]`
+
+### Deformers Property
+- .NET FOSS: Returns `IList<Deformer>` (direct list)
+- Python FOSS: Returns `List[Deformer]`
+
+### Pose Class Implementation
+- The .NET FOSS uses `IList<BonePose>` for BonePoses property
+- Python implementation uses `List[BonePose]` (Pythonic typing)
+- Both `AddBonePose` overloads are ported
+
+### PoseType Enum
+- .NET: `BindPose`, `Snapshot`
+- Python: `BIND_POSE`, `SNAPSHOT` (Pythonic constant naming)
+
+### Boolean Types
+- New types ported: `BooleanOperand`, `BooleanOperator`, `BooleanOperation`
+
+## Next Steps
+1. Continue monitoring .NET FOSS for new commits
+2. Port any new types as they are added
+3. Update pyproject.toml version to 26.2.0 when .NET FOSS version is bumped

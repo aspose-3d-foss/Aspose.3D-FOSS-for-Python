@@ -1,4 +1,4 @@
-from typing import List, Optional, TYPE_CHECKING
+from typing import List, Optional, TypeVar, Generic, TYPE_CHECKING
 
 from ..Entity import Entity
 from ..utilities.Vector4 import Vector4
@@ -10,6 +10,10 @@ if TYPE_CHECKING:
     from .ReferenceMode import ReferenceMode
     from .TextureMapping import TextureMapping
     from .VertexElementType import VertexElementType
+    from ..utilities.ArrayList import ArrayListAdapter
+    from ..deformers.Deformer import Deformer
+
+T = TypeVar('T')
 
 
 class Geometry(Entity):
@@ -19,9 +23,11 @@ class Geometry(Entity):
         super().__init__(name)
         self._vertex_elements: List['VertexElement'] = []
         self._control_points: List[Vector4] = []
+        self._deformers: List['Deformer'] = []
         self._visible = True
         self._cast_shadows = True
         self._receive_shadows = True
+        self._control_points_adapter: 'ArrayListAdapter[Vector4]' = None
 
     @property
     def visible(self) -> bool:
@@ -48,12 +54,25 @@ class Geometry(Entity):
         self._receive_shadows = bool(value)
 
     @property
+    def deformers(self) -> List['Deformer']:
+        return self._deformers
+
+    def get_deformers(self, deformer_type: type = None) -> List['Deformer']:
+        """Gets all deformers of the specified type, or all deformers if no type is specified."""
+        if deformer_type is None:
+            return list(self._deformers)
+        return [d for d in self._deformers if isinstance(d, deformer_type)]
+
+    @property
     def vertex_elements(self) -> List['VertexElement']:
         return list(self._vertex_elements)
 
     @property
-    def control_points(self) -> List[Vector4]:
-        return list(self._control_points)
+    def control_points(self) -> 'ArrayListAdapter[Vector4]':
+        if self._control_points_adapter is None:
+            from ..utilities.ArrayList import ArrayListAdapter
+            self._control_points_adapter = ArrayListAdapter(self._control_points)
+        return self._control_points_adapter
 
     def create_element(self, element_type: 'VertexElementType', mapping_mode: 'MappingMode' = None, reference_mode: 'ReferenceMode' = None) -> 'VertexElement':
         from .VertexElementType import VertexElementType

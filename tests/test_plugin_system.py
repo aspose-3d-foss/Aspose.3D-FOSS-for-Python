@@ -12,8 +12,7 @@ from aspose.threed.formats.stl import StlPlugin
 class TestPluginSystem(unittest.TestCase):
     def test_plugin_registration(self):
         io_service = IOService()
-        self.assertEqual(len(io_service._plugins), 5)
-
+        self.assertEqual(len(io_service._plugins), 6)
         obj_plugin = io_service.get_plugin_for_extension('.obj')
         stl_plugin = io_service.get_plugin_for_extension('.stl')
         gltf_plugin = io_service.get_plugin_for_extension('.gltf')

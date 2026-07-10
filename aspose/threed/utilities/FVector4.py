@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .vector3 import Vector3
-    from .vector4 import Vector4
-    from .fvector3 import FVector3
+    from .Vector3 import Vector3
+    from .Vector4 import Vector4
+    from .FVector3 import FVector3
 
 
 class FVector4:
@@ -25,9 +25,9 @@ class FVector4:
                 self._z = float(z)
                 self._w = float(w)
         else:
-            from .vector3 import Vector3
-            from .vector4 import Vector4
-            from .fvector3 import FVector3
+            from .Vector3 import Vector3
+            from .Vector4 import Vector4
+            from .FVector3 import FVector3
             if isinstance(x, FVector3):
                 self._x = x.x
                 self._y = x.y

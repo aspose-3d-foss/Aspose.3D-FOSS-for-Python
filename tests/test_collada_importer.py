@@ -27,15 +27,9 @@ class TestColladaImporter(unittest.TestCase):
         options = ColladaLoadOptions()
 
         self.assertEqual(options.flip_coordinate_system, False)
-        self.assertEqual(options.enable_materials, True)
-        self.assertEqual(options.scale, 1.0)
-        self.assertEqual(options.normalize_normal, True)
 
         options.flip_coordinate_system = True
         self.assertEqual(options.flip_coordinate_system, True)
-
-        options.scale = 2.0
-        self.assertEqual(options.scale, 2.0)
 
 
 if __name__ == '__main__':

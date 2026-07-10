@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from aspose.threed.utilities.FVector2 import FVector2 as FVector2Type
     from aspose.threed.utilities.FVector3 import FVector3 as FVector3Type
     from aspose.threed.utilities.FVector4 import FVector4 as FVector4Type
+    from aspose.threed.utilities.ArrayList import ArrayListAdapter
 
 
 class VertexElementFVector(VertexElement):
@@ -16,6 +17,7 @@ class VertexElementFVector(VertexElement):
         super().__init__(element_type, name, mapping_mode, reference_mode)
         self._data: List['FVector4'] = []
         self._indices: List[int] = []
+        self._data_adapter: 'ArrayListAdapter[FVector4]' = None
 
     def set_data(self, data):
         from aspose.threed.utilities.FVector2 import FVector2
@@ -44,8 +46,11 @@ class VertexElementFVector(VertexElement):
         target._indices = list(self._indices)
 
     @property
-    def data(self) -> List['FVector4']:
-        return list(self._data)
+    def data(self) -> 'ArrayListAdapter[FVector4]':
+        if self._data_adapter is None:
+            from aspose.threed.utilities.ArrayList import ArrayListAdapter
+            self._data_adapter = ArrayListAdapter(self._data)
+        return self._data_adapter
 
     @property
     def indices(self) -> List[int]:

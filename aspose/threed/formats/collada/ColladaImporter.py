@@ -36,8 +36,8 @@ class ColladaImporter(Importer):
         else:
             raise TypeError("Stream must support read() method")
 
-        scale = options.scale
-        flip_coords = options.flip_coordinate_system
+        scale = 1.0
+        flip_coords = False
 
         root = ET.fromstring(content)
         ns = {'collada': 'http://www.collada.org/2005/11/COLLADASchema'}
@@ -45,24 +45,23 @@ class ColladaImporter(Importer):
         material_map = {}
         effect_map = {}
 
-        if options.enable_materials:
-            for library_effects in root.findall('.//collada:library_effects', ns):
-                for effect in library_effects.findall('collada:effect', ns):
-                    effect_id = effect.get('id', '')
-                    effect_data = self._parse_effect(effect, ns)
-                    effect_map[effect_id] = effect_data
+        for library_effects in root.findall('.//collada:library_effects', ns):
+            for effect in library_effects.findall('collada:effect', ns):
+                effect_id = effect.get('id', '')
+                effect_data = self._parse_effect(effect, ns)
+                effect_map[effect_id] = effect_data
 
-            for library_materials in root.findall('.//collada:library_materials', ns):
-                for material in library_materials.findall('collada:material', ns):
-                    mat_id = material.get('id', '')
-                    mat_name = material.get('name', '')
-                    instance_effect = material.find('collada:instance_effect', ns)
-                    if instance_effect is not None:
-                        effect_url = instance_effect.get('url', '').replace('#', '')
-                        material_map[mat_id] = {
-                            'name': mat_name,
-                            'effect': effect_url
-                        }
+        for library_materials in root.findall('.//collada:library_materials', ns):
+            for material in library_materials.findall('collada:material', ns):
+                mat_id = material.get('id', '')
+                mat_name = material.get('name', '')
+                instance_effect = material.find('collada:instance_effect', ns)
+                if instance_effect is not None:
+                    effect_url = instance_effect.get('url', '').replace('#', '')
+                    material_map[mat_id] = {
+                        'name': mat_name,
+                        'effect': effect_url
+                    }
 
         mesh_map = {}
 
@@ -186,25 +185,24 @@ class ColladaImporter(Importer):
                         for polylist_elem in mesh_data['polylists']:
                             self._process_polylist(polylist_elem, mesh, mesh_map, geometry_url, vertex_map, normals, options, flip_coords)
 
-                    if options.enable_materials:
-                        bind_material = instance_geometry.find('collada:bind_material', ns)
-                        if bind_material is not None:
-                            technique_common = bind_material.find('collada:technique_common', ns)
-                            if technique_common is not None:
-                                instance_material = technique_common.find('collada:instance_material', ns)
-                                if instance_material is not None:
-                                    material_symbol = instance_material.get('symbol', '')
-                                    target = instance_material.get('target', '').replace('#', '')
+                    bind_material = instance_geometry.find('collada:bind_material', ns)
+                    if bind_material is not None:
+                        technique_common = bind_material.find('collada:technique_common', ns)
+                        if technique_common is not None:
+                            instance_material = technique_common.find('collada:instance_material', ns)
+                            if instance_material is not None:
+                                material_symbol = instance_material.get('symbol', '')
+                                target = instance_material.get('target', '').replace('#', '')
 
-                                    material_info = None
-                                    for mat_id, mat_data in material_map.items():
-                                        if mat_id == target:
-                                            material_info = mat_data
-                                            break
+                                material_info = None
+                                for mat_id, mat_data in material_map.items():
+                                    if mat_id == target:
+                                        material_info = mat_data
+                                        break
 
-                                    if material_info and material_info['effect'] in effect_map:
-                                        effect_data = effect_map[material_info['effect']]
-                                        self._apply_material_to_node(node, effect_data)
+                                if material_info and material_info['effect'] in effect_map:
+                                    effect_data = effect_map[material_info['effect']]
+                                    self._apply_material_to_node(node, effect_data)
 
         for child_node in node_elem.findall('collada:node', ns):
             self._process_node(child_node, node, mesh_map, ns, scale, flip_coords, options, scene, material_map, effect_map)

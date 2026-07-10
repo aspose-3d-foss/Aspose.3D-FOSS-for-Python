@@ -1,0 +1,253 @@
+=== TShape.cs ===
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using Aspose.ThreeD;
+
+using Aspose.ThreeD.Utilities;
+
+namespace Aspose.ThreeD.Profiles;
+
+/// <summary>
+/// IFC compatible T-shape defined by parameters.
+/// </summary>
+public class TShape : ParameterizedProfile, INamedObject
+{
+    /// <summary>
+    /// Constructor of
+    /// </summary>
+    public TShape()
+    {
+    }
+
+    /// <summary>
+    /// Gets or sets the length of the web.
+    /// </summary>
+    public double Depth { get; set; }
+
+    /// <summary>
+    /// Gets or sets the length of the flange.
+    /// </summary>
+    public double FlangeWidth { get; set; }
+
+    /// <summary>
+    /// Gets or sets the wall thickness of web.
+    /// </summary>
+    public double WebThickness { get; set; }
+
+    /// <summary>
+    /// Gets or sets the wall thickness of flange.
+    /// </summary>
+    public double FlangeThickness { get; set; }
+
+    /// <summary>
+    /// Gets or sets the radius of fillet between web and flange.
+    /// </summary>
+    public double FilletRadius { get; set; }
+
+    /// <summary>
+    /// Gets or sets the flange edge radius.
+    /// </summary>
+    public double FlangeEdgeRadius { get; set; }
+=== UShape.cs ===
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using Aspose.ThreeD;
+
+using Aspose.ThreeD.Utilities;
+
+namespace Aspose.ThreeD.Profiles;
+
+/// <summary>
+/// IFC compatible U-shape defined by parameters.
+/// </summary>
+public class UShape : ParameterizedProfile, INamedObject
+{
+    /// <summary>
+    /// Constructor of
+    /// </summary>
+    public UShape()
+    {
+    }
+
+    /// <summary>
+    /// Gets or sets the depth of the profile.
+    /// </summary>
+    public double Depth { get; set; }
+
+    /// <summary>
+    /// Gets or sets the flange width of the profile.
+    /// </summary>
+    public double FlangeWidth { get; set; }
+
+    /// <summary>
+    /// Gets or sets the flange thickness.
+    /// </summary>
+    public double FlangeThickness { get; set; }
+
+    /// <summary>
+    /// Gets or sets the web thickness.
+    /// </summary>
+    public double WebThickness { get; set; }
+
+    /// <summary>
+    /// Gets or sets the radius of the fillet.
+    /// </summary>
+    public double FilletRadius { get; set; }
+
+    /// <summary>
+    /// Gets or sets the radius of the edge.
+    /// </summary>
+    public double EdgeRadius { get; set; }
+=== ZShape.cs ===
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using Aspose.ThreeD;
+
+using Aspose.ThreeD.Utilities;
+
+namespace Aspose.ThreeD.Profiles;
+
+/// <summary>
+/// IFC compatible Z-shape profile that defined by parameters.
+/// </summary>
+public class ZShape : ParameterizedProfile, INamedObject
+{
+    /// <summary>
+    /// Constructor of
+    /// </summary>
+    public ZShape()
+    {
+    }
+
+    /// <summary>
+    /// Gets or sets the depth of the profile.
+    /// </summary>
+    public double Depth { get; set; }
+
+    /// <summary>
+    /// Gets or sets the flange width of the profile.
+    /// </summary>
+    public double FlangeWidth { get; set; }
+
+    /// <summary>
+    /// Gets or sets the flange thickness.
+    /// </summary>
+    public double FlangeThickness { get; set; }
+
+    /// <summary>
+    /// Gets or sets the web thickness.
+    /// </summary>
+    public double WebThickness { get; set; }
+
+    /// <summary>
+    /// Gets or sets the radius of the fillet.
+    /// </summary>
+    public double FilletRadius { get; set; }
+
+    /// <summary>
+    /// Gets or sets the radius of the edge.
+    /// </summary>
+    public double EdgeRadius { get; set; }
+=== HollowCircleShape.cs ===
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using Aspose.ThreeD;
+
+namespace Aspose.ThreeD.Profiles;
+
+/// <summary>
+/// IFC compatible hollow circle profile.
+/// </summary>
+public class HollowCircleShape : CircleShape, INamedObject
+{
+    public HollowCircleShape()
+    {
+    }
+
+    /// <summary>
+    /// Gets or sets the difference between the outer and inner radius.
+    /// </summary>
+    public double WallThickness { get; set; }
+}
+=== HollowRectangleShape.cs ===
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using Aspose.ThreeD;
+
+namespace Aspose.ThreeD.Profiles;
+
+/// <summary>
+/// IFC compatible hollow rectangular shape with both inner/outer rounding corners.
+/// </summary>
+public class HollowRectangleShape : RectangleShape, INamedObject
+{
+    public HollowRectangleShape()
+    {
+    }
+
+    /// <summary>
+    /// The thickness between the boundary of the rectangle and the inner hole
+    /// </summary>
+    public double WallThickness { get; set; }
+
+    /// <summary>
+    /// The inner fillet radius of the inner rectangle.
+    /// </summary>
+    public double InnerFilletRadius { get; set; }
+}
+=== TrapeziumShape.cs ===
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using Aspose.ThreeD;
+
+using Aspose.ThreeD.Utilities;
+
+namespace Aspose.ThreeD.Profiles;
+
+/// <summary>
+/// IFC compatible Trapezium shape defined by parameters.
+/// </summary>
+public class TrapeziumShape : ParameterizedProfile, INamedObject
+{
+    /// <summary>
+    /// Constructor of
+    /// </summary>
+    public TrapeziumShape()
+    {
+    }
+
+    /// <summary>
+    /// Gets or sets the extent of the bottom line measured along the x-axis.
+    /// </summary>
+    public double BottomXDim { get; set; }
+
+    /// <summary>
+    /// Gets or sets the extent of the top line measured along the x-axis.
+    /// </summary>
+    public double TopXDim { get; set; }
+
+    /// <summary>
+    /// Gets or sets the distance between the top and bottom lines measured along the y-axis.
+    /// </summary>
+    public double YDim { get; set; }
+
+    /// <summary>
+    /// Gets or sets the offset from the beginning of the top line to the bottom line.
+    /// </summary>
+    public double TopXOffset { get; set; }
+
+    /// <summary>
+    /// Gets the extent in x and y dimension.
+    /// </summary>
+    /// <returns></returns>
+    public Vector2 GetExtent()
+    {
+        return new Vector2();
+    }
+}

@@ -197,3 +197,9 @@ class Node(SceneObject):
 
     def __repr__(self) -> str:
         return f"Node({self.name}, children={len(self._child_nodes)}, entities={len(self._entities)})"
+
+    def get_entity(self, entity_type: type):
+        for entity in self._entities:
+            if isinstance(entity, entity_type):
+                return entity
+        return None

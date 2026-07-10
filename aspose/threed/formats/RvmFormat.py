@@ -1,0 +1,2 @@
+class RvmFormat:
+    """RVM format"""

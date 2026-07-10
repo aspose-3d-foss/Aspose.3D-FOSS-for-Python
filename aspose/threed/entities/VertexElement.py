@@ -4,6 +4,7 @@ if TYPE_CHECKING:
     from .MappingMode import MappingMode
     from .ReferenceMode import ReferenceMode
     from .VertexElementType import VertexElementType
+    from .IIndexedVertexElement import IIndexedVertexElement
 
 
 class VertexElement:
@@ -12,6 +13,7 @@ class VertexElement:
         self._name = name
         self._mapping_mode = mapping_mode
         self._reference_mode = reference_mode
+        self._indices: List[int] = []
 
     @property
     def vertex_element_type(self) -> 'VertexElementType':
@@ -42,11 +44,11 @@ class VertexElement:
         self._reference_mode = value
 
     def set_indices(self, data: List[int]):
-        raise NotImplementedError("set_indices is not implemented")
+        self._indices = list(data)
 
     def clear(self):
-        raise NotImplementedError("clear is not implemented")
+        self._indices.clear()
 
     @property
     def indices(self) -> List[int]:
-        raise NotImplementedError()
+        return list(self._indices)

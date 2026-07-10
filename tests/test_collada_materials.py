@@ -11,7 +11,6 @@ from aspose.threed.formats import ColladaLoadOptions
 class TestColladaMaterials(unittest.TestCase):
     def test_phong_material_import(self):
         options = ColladaLoadOptions()
-        options.enable_materials = True
 
         file_path = os.path.join(os.path.dirname(__file__), '..', 'examples', 'collada', 'cube_triangulate.dae')
         
@@ -48,7 +47,6 @@ class TestColladaMaterials(unittest.TestCase):
 
     def test_lambert_material_import(self):
         options = ColladaLoadOptions()
-        options.enable_materials = True
 
         file_path = os.path.join(os.path.dirname(__file__), '..', 'examples', 'collada', 'sphere.dae')
         
@@ -76,9 +74,8 @@ class TestColladaMaterials(unittest.TestCase):
         else:
             self.skipTest(f"File not found: {file_path}")
 
-    def test_materials_disabled(self):
+    def test_materials_always_loaded(self):
         options = ColladaLoadOptions()
-        options.enable_materials = False
 
         file_path = os.path.join(os.path.dirname(__file__), '..', 'examples', 'collada', 'cube_triangulate.dae')
         
@@ -95,7 +92,7 @@ class TestColladaMaterials(unittest.TestCase):
                     break
 
             self.assertIsNotNone(box_node)
-            self.assertIsNone(box_node.material)
+            self.assertIsNotNone(box_node.material)
         else:
             self.skipTest(f"File not found: {file_path}")
 

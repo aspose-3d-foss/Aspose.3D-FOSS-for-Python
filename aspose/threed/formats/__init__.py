@@ -25,6 +25,44 @@ from .fbx.FbxPlugin import FbxPlugin
 from .collada.ColladaLoadOptions import ColladaLoadOptions
 from .collada.ColladaSaveOptions import ColladaSaveOptions
 from .collada.ColladaPlugin import ColladaPlugin
+from .ColladaTransformStyle import ColladaTransformStyle
+from .DracoCompressionLevel import DracoCompressionLevel
+from .PdfFormat import PdfFormat
+from .PdfLightingScheme import PdfLightingScheme
+from .PdfRenderMode import PdfRenderMode
+from .PlyFormat import PlyFormat
+from .RvmFormat import RvmFormat
+from .Microsoft3MFFormat import Microsoft3MFFormat
+from .GltfEmbeddedImageFormat import GltfEmbeddedImageFormat
+from .ColladaSaveOptions import ColladaSaveOptions
+from .FbxSaveOptions import FbxSaveOptions
+from .GltfSaveOptions import GltfSaveOptions
+from .PdfSaveOptions import PdfSaveOptions
+from .StlSaveOptions import StlSaveOptions
+from .ObjSaveOptions import ObjSaveOptions
+from .AmfSaveOptions import AmfSaveOptions
+from .A3dwSaveOptions import A3dwSaveOptions
+from .DracoSaveOptions import DracoSaveOptions
+from .Html5SaveOptions import Html5SaveOptions
+from .UsdSaveOptions import UsdSaveOptions
+from .XLoadOptions import XLoadOptions
+from .U3dLoadOptions import U3dLoadOptions
+from .U3dSaveOptions import U3dSaveOptions
+from .RvmLoadOptions import RvmLoadOptions
+from .RvmSaveOptions import RvmSaveOptions
+from .PlyLoadOptions import PlyLoadOptions
+from .PlySaveOptions import PlySaveOptions
+from .PdfLoadOptions import PdfLoadOptions
+from .GltfLoadOptions import GltfLoadOptions
+from .FbxLoadOptions import FbxLoadOptions
+from .ColladaLoadOptions import ColladaLoadOptions
+from .ObjLoadOptions import ObjLoadOptions
+from .StlLoadOptions import StlLoadOptions
+from .DracoFormat import DracoFormat
+from .Discreet3dsLoadOptions import Discreet3dsLoadOptions
+from .Discreet3dsSaveOptions import Discreet3dsSaveOptions
+from .Microsoft3MFSaveOptions import Microsoft3MFSaveOptions
+from .JtLoadOptions import JtLoadOptions
 
 
 def _register_plugins():
@@ -40,25 +78,27 @@ def _register_plugins():
 _register_plugins()
 
 __all__ = [
-    'Exporter',
-    'Importer',
-    'FormatDetector',
-    'IOService',
-    'IOConfig',
-    'LoadOptions',
-    'SaveOptions',
-    'Plugin',
-    'ObjLoadOptions',
-    'ObjSaveOptions',
-    'StlLoadOptions',
-    'StlSaveOptions',
-    'GltfLoadOptions',
-    'GltfSaveOptions',
-    'ThreeMfLoadOptions',
-    'ThreeMfSaveOptions',
-    'ThreeMfFormat',
-    'FbxLoadOptions',
-    'FbxSaveOptions',
-    'ColladaLoadOptions',
-    'ColladaSaveOptions'
+    'Exporter', 'Importer', 'FormatDetector', 'IOService', 'IOConfig',
+    'LoadOptions', 'SaveOptions', 'Plugin',
+    'ObjLoadOptions', 'ObjSaveOptions',
+    'StlLoadOptions', 'StlSaveOptions',
+    'GltfLoadOptions', 'GltfSaveOptions',
+    'ThreeMfLoadOptions', 'ThreeMfSaveOptions', 'ThreeMfFormat',
+    'FbxLoadOptions', 'FbxSaveOptions',
+    'ColladaLoadOptions', 'ColladaSaveOptions', 'ColladaTransformStyle',
+    'DracoCompressionLevel', 'PdfFormat', 'PdfLightingScheme', 'PdfRenderMode',
+    'PlyFormat', 'RvmFormat', 'Microsoft3MFFormat',
+    'GltfEmbeddedImageFormat',
+    'ColladaSaveOptions', 'FbxSaveOptions', 'GltfSaveOptions',
+    'PdfSaveOptions', 'StlSaveOptions', 'ObjSaveOptions',
+    'AmfSaveOptions', 'A3dwSaveOptions', 'DracoSaveOptions',
+    'Html5SaveOptions', 'UsdSaveOptions',
+    'XLoadOptions', 'U3dLoadOptions', 'U3dSaveOptions',
+    'RvmLoadOptions', 'RvmSaveOptions',
+    'PlyLoadOptions', 'PlySaveOptions',
+    'PdfLoadOptions', 'GltfLoadOptions',
+    'FbxLoadOptions', 'ColladaLoadOptions',
+    'ObjLoadOptions', 'StlLoadOptions',
+    'DracoFormat', 'Discreet3dsLoadOptions', 'Discreet3dsSaveOptions',
+    'Microsoft3MFSaveOptions', 'JtLoadOptions'
 ]

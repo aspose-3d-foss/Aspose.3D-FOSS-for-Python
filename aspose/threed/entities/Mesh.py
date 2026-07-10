@@ -4,6 +4,7 @@ from .Geometry import Geometry
 from .BooleanOperation import BooleanOperation
 from ..utilities.Matrix4 import Matrix4
 from ..utilities.Vector4 import Vector4
+from ..utilities.ArrayList import ArrayListAdapter
 
 if TYPE_CHECKING:
     from .VertexElement import VertexElement
@@ -24,17 +25,23 @@ class Mesh(Geometry):
         self._edges: List[int] = []
         self._polygons: List[int] = []
         self._polygon_sizes: List[int] = []
+        self._control_points_adapter: 'ArrayListAdapter[Vector4]' = None
+        self._edges_adapter: 'ArrayListAdapter[int]' = None
 
         if height_map is not None:
             raise NotImplementedError("height_map constructor is not implemented")
 
     @property
-    def control_points(self) -> List[Vector4]:
-        return list(self._control_points)
+    def control_points(self) -> ArrayListAdapter[Vector4]:
+        if self._control_points_adapter is None:
+            self._control_points_adapter = ArrayListAdapter(self._control_points)
+        return self._control_points_adapter
 
     @property
-    def edges(self) -> List[int]:
-        return list(self._edges)
+    def edges(self) -> ArrayListAdapter[int]:
+        if self._edges_adapter is None:
+            self._edges_adapter = ArrayListAdapter(self._edges)
+        return self._edges_adapter
 
     @property
     def polygon_count(self) -> int:
@@ -112,10 +119,6 @@ class Mesh(Geometry):
         from .PolygonModifier import PolygonModifier
 
         return PolygonModifier.triangulate(self)
-
-    @property
-    def deformers(self):
-        return []
 
     def get_bounding_box(self):
         from ..utilities import BoundingBox

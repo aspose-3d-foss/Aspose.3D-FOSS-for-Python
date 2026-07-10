@@ -1,4 +1,6 @@
 import math
+from .Vector3 import Vector3
+from .BoundingBoxExtent import BoundingBoxExtent
 
 
 class BoundingBox:
@@ -8,7 +10,6 @@ class BoundingBox:
             self._maximum = None
             self._is_null = True
         elif len(args) == 2:
-            from .vector3 import Vector3
             min_arg, max_arg = args
 
             if isinstance(min_arg, Vector3):
@@ -37,21 +38,18 @@ class BoundingBox:
     @property
     def minimum(self):
         if self._is_null:
-            from .vector3 import Vector3
             return Vector3(float('inf'), float('inf'), float('inf'))
         return self._minimum
 
     @property
     def maximum(self):
         if self._is_null:
-            from .vector3 import Vector3
             return Vector3(float('-inf'), float('-inf'), float('-inf'))
         return self._maximum
 
     @property
     def center(self):
         if self._is_null:
-            from .vector3 import Vector3
             return Vector3(0, 0, 0)
         return Vector3(
             (self._minimum.x + self._maximum.x) * 0.5,
@@ -62,7 +60,6 @@ class BoundingBox:
     @property
     def size(self):
         if self._is_null:
-            from .vector3 import Vector3
             return Vector3(0, 0, 0)
         return Vector3(
             self._maximum.x - self._minimum.x,
@@ -82,7 +79,6 @@ class BoundingBox:
 
     @staticmethod
     def get_infinite() -> 'BoundingBox':
-        from .vector3 import Vector3
         return BoundingBox(
             Vector3(float('-inf'), float('-inf'), float('-inf')),
             Vector3(float('inf'), float('inf'), float('inf'))
@@ -91,8 +87,7 @@ class BoundingBox:
     infinite = property(get_infinite)
 
     def merge(self, *args):
-        from .vector3 import Vector3
-        from .vector4 import Vector4
+        from .Vector4 import Vector4
 
         if self._is_null:
             if len(args) == 1:
@@ -148,8 +143,6 @@ class BoundingBox:
             self._maximum.z = max(self._maximum.z, z)
 
     def contains(self, arg):
-        from .vector3 import Vector3
-
         if isinstance(arg, BoundingBox):
             return (self._minimum.x <= arg._minimum.x and
                     self._minimum.y <= arg._minimum.y and
@@ -191,40 +184,13 @@ class BoundingBox:
 
     @property
     def extent(self):
-        from .bounding_box_extent import BoundingBoxExtent
         if self._is_null:
-            return BoundingBoxExtent(0, 0, 0)
-        center = self.center
-        size = self.size
-        return BoundingBoxExtent(
-            abs(size.x * 0.5),
-            abs(size.y * 0.5),
-            abs(size.z * 0.5)
-        )
+            return BoundingBoxExtent.NULL
+        if self._minimum is None and self._maximum is None:
+            return BoundingBoxExtent.NULL
+        return BoundingBoxExtent.FINITE
 
     def __repr__(self) -> str:
         if self._is_null:
-            return f"BoundingBox(null)"
+            return "BoundingBox(null)"
         return f"BoundingBox({self._minimum}, {self._maximum})"
-
-
-class BoundingBoxExtent:
-    def __init__(self, extent_x: float = 0.0, extent_y: float = 0.0, extent_z: float = 0.0):
-        self._extent_x = float(extent_x)
-        self._extent_y = float(extent_y)
-        self._extent_z = float(extent_z)
-
-    @property
-    def extent_x(self) -> float:
-        return self._extent_x
-
-    @property
-    def extent_y(self) -> float:
-        return self._extent_y
-
-    @property
-    def extent_z(self) -> float:
-        return self._extent_z
-
-    def __repr__(self) -> str:
-        return f"BoundingBoxExtent({self._extent_x}, {self._extent_y}, {self._extent_z})"

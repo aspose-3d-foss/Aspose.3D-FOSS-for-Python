@@ -1,0 +1,1303 @@
+- aspose.threed.utilities.BoundingBox.BoundingBoxExtent
+## Changed types
+### aspose.threed.A3DObject
+**Only in pypi aspose-3d:26.2.0:**
+- + @name.setter def name(self, value : str) -> None
+- + @property def properties(self) -> aspose.threed.PropertyCollection
+- + def __init__(self, name : str) -> None
+- + def __init__(self) -> None
+- + def find_property(self, property_name : str) -> aspose.threed.Property
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @name.setter def name(self, value : str)
+- - @property def properties(self) -> PropertyCollection
+- - def __init__(self, name : str)
+- - def __repr__(self) -> str
+- - def find_property(self, property_name : str)
+- - def get_property(self, property : str)
+- - def remove_property(self, property)
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @first.setter def first(self, value : "BooleanOperand")
+- - @operator.setter def operator(self, value : "BooleanOperation")
+- - @property def first(self) -> "BooleanOperand"
+- - @property def operator(self) -> "BooleanOperation"
+- - @property def second(self) -> "BooleanOperand"
+- - @second.setter def second(self, value : "BooleanOperand")
+- - # inherits: Entity
+- - def __init__(self, operation, first, second)
+### aspose.threed.entities.Box
+**Only in pypi aspose-3d:26.2.0:**
+- + @cast_shadows.setter def cast_shadows(self, value : bool) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @height_segments.setter def height_segments(self, value : int) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @height_segments.setter def height_segments(self, value : int)
+- - @height.setter def height(self, value : float)
+- - @length_segments.setter def length_segments(self, value : int)
+- - @length.setter def length(self, value : float)
+- - @width_segments.setter def width_segments(self, value : int)
+- - @width.setter def width(self, value : float)
+- - def __init__(self, name : str, length : float, width : float, height : float, length_segments : int, width_segments : int, height_segments : int)
+- - def to_mesh(self) -> 'Mesh'
+### aspose.threed.entities.Camera
+**Only in pypi aspose-3d:26.2.0:**
+- + @aperture_mode.setter def aperture_mode(self, value : aspose.threed.entities.ApertureMode) -> None
+- + @aspect_ratio.setter def aspect_ratio(self, value : float) -> None
+- + @aspect.setter def aspect(self, value : float) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def move_forward(self, distance : float) -> None
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @aperture_mode.setter def aperture_mode(self, value)
+- - @aspect_ratio.setter def aspect_ratio(self, value : float)
+- - @aspect.setter def aspect(self, value : float)
+- - @direction.setter def direction(self, value)
+- - @excluded.setter def excluded(self, value : bool)
+- - @far_plane.setter def far_plane(self, value : float)
+- - @field_of_view_x.setter def field_of_view_x(self, value : float)
+- - @field_of_view_y.setter def field_of_view_y(self, value : float)
+- - @field_of_view.setter def field_of_view(self, value : float)
+- - @height.setter def height(self, value : float)
+- - @look_at.setter def look_at(self, value)
+- - @magnification.setter def magnification(self, value)
+- - @name.setter def name(self, value : str)
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @property def segments(self) -> int
+- - @property def theta_length(self) -> float
+- - @property def theta_start(self) -> float
+- - @radius.setter def radius(self, value : float)
+- - @segments.setter def segments(self, value : int)
+- - @theta_length.setter def theta_length(self, value : float)
+- - @theta_start.setter def theta_start(self, value : float)
+- - # inherits: Primitive
+- - def __init__(self, name : str, radius : float, segments : int, theta_start : float, theta_length : float)
+- - def to_mesh(self) -> 'Mesh'
+### aspose.threed.entities.CompositeCurve
+**Only in pypi aspose-3d:26.2.0:**
+- + @color.setter def color(self, value : aspose.threed.utilities.Vector3) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @property def segments(self)
+- - def __init__(self)
+- - def add_segment(self, curve, same_direction : bool) -> None
+### aspose.threed.entities.Curve
+**Only in pypi aspose-3d:26.2.0:**
+- + @color.setter def color(self, value : aspose.threed.utilities.Vector3) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def color(self) -> aspose.threed.utilities.Vector3
+- + @property def excluded(self) -> bool
+- + @property def name(self) -> str
+- + @property def parent_node(self) -> aspose.threed.Node
+- + @property def parent_nodes(self) -> System.Collections.Generic.List`1[[Aspose.ThreeD.Node]]
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @color.setter def color(self, value : 'Vector3')
+- - @property def color(self) -> 'Vector3'
+- - # inherits: Entity
+- - def __init__(self, name : str)
+### aspose.threed.entities.CurveDimension
+**Only in pypi aspose-3d:26.2.0:**
+- + THREE_DIMENSIONAL : CurveDimension
+- + TWO_DIMENSIONAL : CurveDimension
+### aspose.threed.entities.Cylinder
+**Only in pypi aspose-3d:26.2.0:**
+- + @cast_shadows.setter def cast_shadows(self, value : bool) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @generate_fan_cylinder.setter def generate_fan_cylinder(self, value : bool) -> None
+- + @height_segments.setter def height_segments(self, value : int) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @generate_fan_cylinder.setter def generate_fan_cylinder(self, value : bool)
+- - @height_segments.setter def height_segments(self, value : int)
+- - @height.setter def height(self, value : float)
+- - @offset_bottom.setter def offset_bottom(self, value)
+- - @offset_top.setter def offset_top(self, value)
+- - @open_ended.setter def open_ended(self, value : bool)
+- - @property def offset_bottom(self)
+- - @property def offset_top(self)
+- - @property def shear_bottom(self)
+- - @property def shear_top(self)
+- - @radial_segments.setter def radial_segments(self, value : int)
+- - @radius_bottom.setter def radius_bottom(self, value : float)
+- - @radius_top.setter def radius_top(self, value : float)
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @height_segments.setter def height_segments(self, value : int)
+- - @height.setter def height(self, value : float)
+- - @radius.setter def radius(self, value : float)
+- - @width_segments.setter def width_segments(self, value : int)
+- - def __init__(self, name : str, radius : float, height : float, width_segments : int, height_segments : int)
+- - def to_mesh(self) -> 'Mesh'
+### aspose.threed.entities.Ellipse
+**Only in pypi aspose-3d:26.2.0:**
+- + @color.setter def color(self, value : aspose.threed.utilities.Vector3) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def color(self) -> aspose.threed.utilities.Vector3
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @property def radius_x(self) -> float
+- - @property def radius_y(self) -> float
+- - @property def segments(self) -> int
+- - @property def theta_length(self) -> float
+- - @property def theta_start(self) -> float
+- - @radius_x.setter def radius_x(self, value : float)
+- - @radius_y.setter def radius_y(self, value : float)
+- - @segments.setter def segments(self, value : int)
+- - @theta_length.setter def theta_length(self, value : float)
+- - @theta_start.setter def theta_start(self, value : float)
+- - # inherits: Primitive
+- - def __init__(self, name : str, radius_x : float, radius_y : float, segments : int, theta_start : float, theta_length : float)
+- - def to_mesh(self) -> 'Mesh'
+### aspose.threed.entities.EndPoint
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @height_segments.setter def height_segments(self, value : int)
+- - @height.setter def height(self, value : float)
+- - @property def height_segments(self) -> int
+- - @property def height(self) -> float
+- - @property def radial_segments(self) -> int
+- - @property def radius_bottom(self) -> float
+- - @property def radius_top(self) -> float
+- - @property def theta_length(self) -> float
+- - @property def theta_start(self) -> float
+- - @radial_segments.setter def radial_segments(self, value : int)
+- - @radius_bottom.setter def radius_bottom(self, value : float)
+- - @radius_top.setter def radius_top(self, value : float)
+- - @theta_length.setter def theta_length(self, value : float)
+- - @theta_start.setter def theta_start(self, value : float)
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_element(self, type : aspose.threed.entities.VertexElementType) -> aspose.threed.entities.VertexElement
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def get_vertex_element_of_uv(self, texture_mapping : aspose.threed.entities.TextureMapping) -> aspose.threed.entities.VertexElementUV
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @cast_shadows.setter def cast_shadows(self, value : bool)
+- - @property def control_points(self) -> 'ArrayListAdapter[Vector4]'
+- - @property def deformers(self) -> List['Deformer']
+- - @property def vertex_elements(self) -> List['VertexElement']
+- - @receive_shadows.setter def receive_shadows(self, value : bool)
+- - @visible.setter def visible(self, value : bool)
+- - # inherits: Entity
+- - def __init__(self, name : str)
+- - def add_element(self, element : 'VertexElement')
+- - def create_element_uv(self, uv_mapping : 'TextureMapping', mapping_mode : 'MappingMode', reference_mode : 'ReferenceMode') -> 'VertexElementUV'
+- - def create_element(self, element_type : 'VertexElementType', mapping_mode : 'MappingMode', reference_mode : 'ReferenceMode') -> 'VertexElement'
+- - def find_property(self, property : str)
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @excluded.setter def excluded(self, value : bool)
+- - @name.setter def name(self, value : str)
+- - @normal.setter def normal(self, value)
+- - @parent_node.setter def parent_node(self, value)
+- - @position.setter def position(self, value)
+- - @property def normal(self)
+- - @property def parent_node(self)
+- - @property def parent_nodes(self)
+- - @property def position(self)
+- - @property def properties(self)
+- - @property def scene(self)
+- - def __init__(self, *args)
+- - def find_property(self, property_name : str)
+- - def get_bounding_box(self)
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - # inherits: Camera
+- - def __init__(self, name : str, light_type)
+### aspose.threed.entities.LightType
+**Only in pypi aspose-3d:26.2.0:**
+- + AREA : LightType
+- + DIRECTIONAL : LightType
+- + POINT : LightType
+- + SPOT : LightType
+- + VOLUME : LightType
+**Only in directory aspose:**
+- - def __init__(self, name : str)
+- - def __str__(self)
+### aspose.threed.entities.Line
+**Only in pypi aspose-3d:26.2.0:**
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + static def from_points(points : List[aspose.threed.utilities.Vector3]) -> aspose.threed.entities.Line
+**Only in directory aspose:**
+- - @property def segments(self)
+- - def __init__(self, name : str)
+- - static def from_points(points)
+### aspose.threed.entities.LinearExtrusion
+**Only in pypi aspose-3d:26.2.0:**
+- + @center.setter def center(self, value : bool) -> None
+- + @direction.setter def direction(self, value : aspose.threed.utilities.Vector3) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @height.setter def height(self, value : float) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def direction(self) -> aspose.threed.utilities.Vector3
+- + @property def excluded(self) -> bool
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @center.setter def center(self, value : bool)
+- - @direction.setter def direction(self, value : 'Vector3')
+- - @height.setter def height(self, value : float)
+- - @property def direction(self) -> 'Vector3'
+- - @property def shape(self) -> 'Profile'
+- - @property def twist_offset(self) -> 'Vector3'
+- - @shape.setter def shape(self, value : 'Profile')
+- - @slices.setter def slices(self, value : int)
+- - @twist_offset.setter def twist_offset(self, value : 'Vector3')
+- - @twist.setter def twist(self, value : float)
+- - # inherits: Entity
+- - def __init__(self, name : str, shape : 'Profile', height : float)
+- - def _init_defaults(self)
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_element(self, type : aspose.threed.entities.VertexElementType) -> aspose.threed.entities.VertexElement
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def get_vertex_element_of_uv(self, texture_mapping : aspose.threed.entities.TextureMapping) -> aspose.threed.entities.VertexElementUV
+- + def optimize(self, vertex_elements : bool, tolerance_control_point : float, tolerance_normal : float, tolerance_uv : float) -> aspose.threed.entities.Mesh
+- + def optimize(self, vertex_elements : bool) -> aspose.threed.entities.Mesh
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+- + def triangulate(self) -> aspose.threed.entities.Mesh
+- + static def difference(a : aspose.threed.entities.Mesh, b : aspose.threed.entities.Mesh) -> aspose.threed.entities.Mesh
+- + static def do_boolean(op : aspose.threed.entities.BooleanOperation, a : aspose.threed.entities.Mesh, transform_a : System.Nullable`1[[Aspose.ThreeD.Utilities.Matrix4]], b : aspose.threed.entities.Mesh, transform_b : System.Nullable`1[[Aspose.ThreeD.Utilities.Matrix4]]) -> aspose.threed.entities.Mesh
+- + static def intersect(a : aspose.threed.entities.Mesh, b : aspose.threed.entities.Mesh) -> aspose.threed.entities.Mesh
+- + static def union(a : aspose.threed.entities.Mesh, b : aspose.threed.entities.Mesh) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @property def control_points(self) -> ArrayListAdapter[Vector4]
+- - @property def edges(self) -> ArrayListAdapter[int]
+- - @property def polygons(self) -> List[List[int]]
+- - def __init__(self, name : str, height_map, transform : Matrix4, tri_mesh : bool)
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @curve_type.setter def curve_type(self, value : 'NurbsType')
+- - @degree.setter def degree(self, value : int)
+- - @dimension.setter def dimension(self, value : 'CurveDimension')
+- - @order.setter def order(self, value : int)
+- - @property def control_points(self)
+- - @property def curve_type(self) -> 'NurbsType'
+- - @property def dimension(self) -> 'CurveDimension'
+- - @property def knot_vectors(self)
+- - @property def multiplicity(self)
+- - @rational.setter def rational(self, value : bool)
+- - def __init__(self, name : str)
+- - def _init_defaults(self)
+- - def evaluate_at(self, u : float)
+- - def evaluate(self, steps : int)
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_element(self, type : aspose.threed.entities.VertexElementType) -> aspose.threed.entities.VertexElement
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def get_vertex_element_of_uv(self, texture_mapping : aspose.threed.entities.TextureMapping) -> aspose.threed.entities.VertexElementUV
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @property def u(self) -> 'NurbsDirection'
+- - @property def v(self) -> 'NurbsDirection'
+- - def __init__(self, name : str)
+- - def to_mesh(self)
+### aspose.threed.entities.NurbsType
+**Only in pypi aspose-3d:26.2.0:**
+- + CLOSED : NurbsType
+- + OPEN : NurbsType
+- + PERIODIC : NurbsType
+### aspose.threed.entities.Patch
+**Only in pypi aspose-3d:26.2.0:**
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_element(self, type : aspose.threed.entities.VertexElementType) -> aspose.threed.entities.VertexElement
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def get_vertex_element_of_uv(self, texture_mapping : aspose.threed.entities.TextureMapping) -> aspose.threed.entities.VertexElementUV
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @property def u(self) -> 'PatchDirection'
+- - @property def v(self) -> 'PatchDirection'
+- - def __init__(self, name : str)
+### aspose.threed.entities.PatchDirection
+**Only in pypi aspose-3d:26.2.0:**
+- + @closed.setter def closed(self, value : bool) -> None
+- + @control_points.setter def control_points(self, value : int) -> None
+- + @divisions.setter def divisions(self, value : int) -> None
+- + @property def type(self) -> aspose.threed.entities.PatchDirectionType
+- + @type.setter def type(self, value : aspose.threed.entities.PatchDirectionType) -> None
+- + def __init__(self) -> None
+**Only in directory aspose:**
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @length_segments.setter def length_segments(self, value : int)
+- - @length.setter def length(self, value : float)
+- - @property def up(self) -> Vector3
+- - @up.setter def up(self, value : Vector3)
+- - @width_segments.setter def width_segments(self, value : int)
+- - @width.setter def width(self, value : float)
+- - def __init__(self, name : str, length : float, width : float, length_segments : int, width_segments : int)
+- - def to_mesh(self) -> 'Mesh'
+### aspose.threed.entities.PointCloud
+**Only in pypi aspose-3d:26.2.0:**
+- + @cast_shadows.setter def cast_shadows(self, value : bool) -> None
+- + @dimension.setter def dimension(self, value : System.Nullable`1[[Aspose.ThreeD.Utilities.Vector2]]) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_element(self, type : aspose.threed.entities.VertexElementType) -> aspose.threed.entities.VertexElement
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def get_vertex_element_of_uv(self, texture_mapping : aspose.threed.entities.TextureMapping) -> aspose.threed.entities.VertexElementUV
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + static def from_geometry(g : aspose.threed.entities.Geometry, density : int) -> aspose.threed.entities.PointCloud
+- + static def from_geometry(g : aspose.threed.entities.Geometry) -> aspose.threed.entities.PointCloud
+**Only in directory aspose:**
+- - @dimension.setter def dimension(self, value : 'Vector2')
+- - @property def dimension(self) -> 'Vector2'
+- - def __init__(self, name : str)
+- - def get_entity_renderer_key(self) -> 'EntityRendererKey'
+- - static def from_geometry_with_density(g : 'Geometry', density : int) -> 'PointCloud'
+- - static def from_geometry(g : 'Geometry') -> 'PointCloud'
+### aspose.threed.entities.PolygonBuilder
+**Only in pypi aspose-3d:26.2.0:**
+- + def __init__(self, mesh : aspose.threed.entities.Mesh) -> None
+- + def add_vertex(self, index : int) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @cast_shadows.setter def cast_shadows(self, value : bool)
+- - @receive_shadows.setter def receive_shadows(self, value : bool)
+- - # inherits: Geometry
+- - def __init__(self, name : str)
+- - def to_mesh(self)
+### aspose.threed.entities.ProjectionType
+**Only in pypi aspose-3d:26.2.0:**
+- + ORTHOGRAPHIC : ProjectionType
+- + PERSPECTIVE : ProjectionType
+**Only in directory aspose:**
+- - def __init__(self, name : str)
+- - def __str__(self)
+### aspose.threed.entities.Pyramid
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @height_segments.setter def height_segments(self, value)
+- - @height.setter def height(self, value)
+- - @length_segments.setter def length_segments(self, value)
+- - @length.setter def length(self, value)
+- - @property def height_segments(self)
+- - @property def height(self)
+- - @property def length_segments(self)
+- - @property def length(self)
+- - @property def width_segments(self)
+- - @property def width(self)
+- - @width_segments.setter def width_segments(self, value)
+- - @width.setter def width(self, value)
+- - # inherits: Curve
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @height_segments.setter def height_segments(self, value)
+- - @property def height_segments(self)
+- - @property def radial_segments(self)
+- - @property def radius_major(self)
+- - @property def radius_minor(self)
+- - @property def square(self)
+- - @radial_segments.setter def radial_segments(self, value)
+- - @radius_major.setter def radius_major(self, value)
+- - @radius_minor.setter def radius_minor(self, value)
+- - @square.setter def square(self, value : bool)
+- - # inherits: Curve
+- - def __init__(self, name : str)
+### aspose.threed.entities.ReferenceMode
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @axis.setter def axis(self, value)
+- - @end_angle.setter def end_angle(self, value)
+- - @profile.setter def profile(self, value)
+- - @property def axis(self)
+- - @property def end_angle(self)
+- - @property def profile(self)
+- - @property def start_angle(self)
+- - @start_angle.setter def start_angle(self, value)
+- - # inherits: Curve
+- - def __init__(self, name : str)
+### aspose.threed.entities.RotationMode
+**Only in pypi aspose-3d:26.2.0:**
+- + FIXED_DIRECTION : RotationMode
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_element(self, type : aspose.threed.entities.VertexElementType) -> aspose.threed.entities.VertexElement
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def get_vertex_element_of_uv(self, texture_mapping : aspose.threed.entities.TextureMapping) -> aspose.threed.entities.VertexElementUV
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + static def from_control_points(control_points : List[aspose.threed.utilities.Vector3]) -> aspose.threed.entities.Shape
+**Only in directory aspose:**
+- - @property def segments(self)
+- - # inherits: Curve
+- - def __init__(self, name : str)
+### aspose.threed.entities.Skeleton
+**Only in pypi aspose-3d:26.2.0:**
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def excluded(self) -> bool
+- + @property def name(self) -> str
+- + @property def parent_node(self) -> aspose.threed.Node
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @property def joints(self)
+- - @property def mesh(self)
+- - @property def skeleton_type(self)
+- - @skeleton_type.setter def skeleton_type(self, value)
+- - # inherits: Curve
+- - def __init__(self, name : str)
+### aspose.threed.entities.SkeletonType
+**Only in pypi aspose-3d:26.2.0:**
+- + BONE : SkeletonType
+- + SKELETON : SkeletonType
+### aspose.threed.entities.Sphere
+**Only in pypi aspose-3d:26.2.0:**
+- + @cast_shadows.setter def cast_shadows(self, value : bool) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @height_segments.setter def height_segments(self, value : int)
+- - @phi_length.setter def phi_length(self, value : float)
+- - @phi_start.setter def phi_start(self, value : float)
+- - @radius.setter def radius(self, value : float)
+- - @theta_length.setter def theta_length(self, value : float)
+- - @theta_start.setter def theta_start(self, value : float)
+- - @width_segments.setter def width_segments(self, value : int)
+- - def __init__(self, name : str, radius : float, width_segments : int, height_segments : int, phi_start : float, phi_length : float, theta_start : float, theta_length : float)
+- - def to_mesh(self)
+### aspose.threed.entities.SplitMeshPolicy
+**Only in pypi aspose-3d:26.2.0:**
+- + CLONE_DATA : SplitMeshPolicy
+- + COMPACT_DATA : SplitMeshPolicy
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @area.setter def area(self, value)
+- - @path.setter def path(self, value)
+- - @property def area(self)
+- - @property def path(self)
+- - # inherits: Curve
+- - def __init__(self, name : str)
+### aspose.threed.entities.TextureMapping
+**Only in pypi aspose-3d:26.2.0:**
+- + AMBIENT : TextureMapping
+- + BUMP : TextureMapping
+- + DIFFUSE : TextureMapping
+- + DISPLACEMENT : TextureMapping
+- + EMISSIVE : TextureMapping
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def to_mesh(self) -> aspose.threed.entities.Mesh
+**Only in directory aspose:**
+- - @height_segments.setter def height_segments(self, value)
+- - @property def height_segments(self)
+- - @property def radial_segments(self)
+- - @property def radius_major(self)
+- - @property def radius_minor(self)
+- - @radial_segments.setter def radial_segments(self, value)
+- - @radius_major.setter def radius_major(self, value)
+- - @radius_minor.setter def radius_minor(self, value)
+- - # inherits: Curve
+- - def __init__(self, name : str)
+### aspose.threed.entities.TransformedCurve
+**Only in pypi aspose-3d:26.2.0:**
+- + @basis_curve.setter def basis_curve(self, value : aspose.threed.entities.Curve) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @property def source(self)
+- - @property def transform(self)
+- - @source.setter def source(self, value)
+- - @transform.setter def transform(self, value)
+- - def __init__(self, name : str)
+### aspose.threed.entities.TriMesh
+**Only in pypi aspose-3d:26.2.0:**
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def capacity(self) -> int
+- + @property def excluded(self) -> bool
+- + @property def indices_count(self) -> int
+- + @property def name(self) -> str
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def indices_to_array(self, result : List[List[int]]) -> None
+- + def load_vertices_from_bytes(self, vertices_in_bytes : List[int]) -> None
+- + def read_double(self, idx : int, field : aspose.threed.utilities.VertexField) -> float
+- + def read_f_vector2(self, idx : int, field : aspose.threed.utilities.VertexField) -> aspose.threed.utilities.FVector2
+- + def read_f_vector3(self, idx : int, field : aspose.threed.utilities.VertexField) -> aspose.threed.utilities.FVector3
+- + def read_f_vector4(self, idx : int, field : aspose.threed.utilities.VertexField) -> aspose.threed.utilities.FVector4
+- + def read_float(self, idx : int, field : aspose.threed.utilities.VertexField) -> float
+- + def read_vector2(self, idx : int, field : aspose.threed.utilities.VertexField) -> aspose.threed.utilities.Vector2
+- + def read_vector3(self, idx : int, field : aspose.threed.utilities.VertexField) -> aspose.threed.utilities.Vector3
+- + def read_vector4(self, idx : int, field : aspose.threed.utilities.VertexField) -> aspose.threed.utilities.Vector4
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+- + def vertices_to_array(self) -> List[int]
+- + def write_16b_indices_to(self, stream : io._IOBase) -> None
+- + def write_32b_indices_to(self, stream : io._IOBase) -> None
+- + def write_vertices_to(self, stream : io._IOBase) -> None
+- + static def copy_from(input : aspose.threed.entities.TriMesh, vd : aspose.threed.utilities.VertexDeclaration) -> aspose.threed.entities.TriMesh
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @end_parameter.setter def end_parameter(self, value)
+- - @property def end_parameter(self)
+- - @property def source(self)
+- - @property def start_parameter(self)
+- - @source.setter def source(self, value)
+- - @start_parameter.setter def start_parameter(self, value)
+- - def __init__(self, name : str)
+### aspose.threed.entities.VertexElement
+**Only in pypi aspose-3d:26.2.0:**
+- + @mapping_mode.setter def mapping_mode(self, value : aspose.threed.entities.MappingMode) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @property def indices(self) -> System.Collections.Generic.IList`1[[System.Int32]]
+- + @property def mapping_mode(self) -> aspose.threed.entities.MappingMode
+- + @property def reference_mode(self) -> aspose.threed.entities.ReferenceMode
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @excluded.setter def excluded(self, value : bool)
+- - @parent_node.setter def parent_node(self, value : Optional['Node'])
+- - @property def parent_node(self) -> Optional['Node']
+- - @property def parent_nodes(self) -> List['Node']
+- - def __init__(self, name : str)
+- - def get_bounding_box(self) -> BoundingBox
+- - def get_entity_renderer_key(self)
+### aspose.threed.ExportException
+**Only in pypi aspose-3d:26.2.0:**
+- + def __init__(self, msg : str) -> None
+**Only in directory aspose:**
+- - # inherits: Exception
+- - def __init__(self, msg : str)
+### aspose.threed.FileContentType
+**Only in pypi aspose-3d:26.2.0:**
+- + ASCII : FileContentType
+- + BINARY : FileContentType
+**Only in directory aspose:**
+- - def __init__(self, value : int, name : str)
+- - def __repr__(self)
+- - def __str__(self)
+### aspose.threed.FileFormat
+**Only in pypi aspose-3d:26.2.0:**
+- + @property def AMF(self) -> aspose.threed.FileFormat
+- + @property def ASE(self) -> aspose.threed.FileFormat
+- + @property def ASPOSE_3D_WEB(self) -> aspose.threed.FileFormat
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_child(self, index : int) -> aspose.threed.Node
+- + def get_child(self, node_name : str) -> aspose.threed.Node
+- + def get_property(self, property : str) -> Any
+- + def merge(self, node : aspose.threed.Node) -> None
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def select_objects(self, path : str) -> System.Collections.Generic.List`1[[System.Object]]
+- + def select_single_object(self, path : str) -> Any
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @asset_info.setter def asset_info(self, value)
+- - @entity.setter def entity(self, value : Optional['Entity'])
+- - @excluded.setter def excluded(self, value : bool)
+- - @material.setter def material(self, value : Optional['Material'])
+- - @parent_node.setter def parent_node(self, value : Optional['Node'])
+- - @property def asset_info(self)
+- - @property def child_nodes(self) -> List['Node']
+- - @property def entities(self) -> List['Entity']
+- - @property def entity(self) -> Optional['Entity']
+- - @property def global_transform(self) -> GlobalTransform
+--
+- - def get_bounding_box(self) -> BoundingBox
+- - def get_child(self, index_or_name)
+- - def merge(self, node : 'Node')
+- - def select_objects(self, path : str)
+- - def select_single_object(self, path : str)
+### aspose.threed.Pose
+**Only in pypi aspose-3d:26.2.0:**
+- + @name.setter def name(self, value : str) -> None
+- + @pose_type.setter def pose_type(self, value : aspose.threed.PoseType) -> None
+- + @property def bone_poses(self) -> System.Collections.Generic.IList`1[[Aspose.ThreeD.BonePose]]
+- + @property def name(self) -> str
+- + @property def pose_type(self) -> aspose.threed.PoseType
+- + @property def properties(self) -> aspose.threed.PropertyCollection
+- + # inherits: A3DObject
+- + def __init__(self, name : str) -> None
+- + def __init__(self) -> None
+- + def add_bone_pose(self, node : aspose.threed.Node, matrix : aspose.threed.utilities.Matrix4, local_matrix : bool) -> None
+- + def add_bone_pose(self, node : aspose.threed.Node, matrix : aspose.threed.utilities.Matrix4) -> None
+- + def find_property(self, property_name : str) -> aspose.threed.Property
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @curve.setter def curve(self, value : 'Curve')
+- - @property def curve(self) -> 'Curve'
+- - @property def holes(self) -> List['Curve']
+- - def __init__(self, name : str)
+- - def add_hole(self, hole : 'Curve')
+### aspose.threed.profiles.CenterLineProfile
+**Only in pypi aspose-3d:26.2.0:**
+- + @curve.setter def curve(self, value : aspose.threed.entities.Curve) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def curve(self) -> aspose.threed.entities.Curve
+- + @property def excluded(self) -> bool
+- + @property def name(self) -> str
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @curve.setter def curve(self, value : 'Curve')
+- - @property def curve(self) -> 'Curve'
+- - @thickness.setter def thickness(self, value : float)
+- - def __init__(self, name : str, curve : 'Curve', thickness : float)
+### aspose.threed.profiles.CircleShape
+**Only in pypi aspose-3d:26.2.0:**
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def excluded(self) -> bool
+- + @property def name(self) -> str
+- + @property def parent_node(self) -> aspose.threed.Node
+- + @property def parent_nodes(self) -> System.Collections.Generic.List`1[[Aspose.ThreeD.Node]]
+- + @property def properties(self) -> aspose.threed.PropertyCollection
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @radius.setter def radius(self, value : float)
+- - def __init__(self, name : str, radius : float)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.CShape
+**Only in pypi aspose-3d:26.2.0:**
+- + @depth.setter def depth(self, value : float) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @girth.setter def girth(self, value : float) -> None
+- + @internal_fillet_radius.setter def internal_fillet_radius(self, value : float) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def excluded(self) -> bool
+- + @property def name(self) -> str
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @depth.setter def depth(self, value : float)
+- - @girth.setter def girth(self, value : float)
+- - @internal_fillet_radius.setter def internal_fillet_radius(self, value : float)
+- - @wall_thickness.setter def wall_thickness(self, value : float)
+- - @width.setter def width(self, value : float)
+- - def __init__(self, name : str)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.EllipseShape
+**Only in pypi aspose-3d:26.2.0:**
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def excluded(self) -> bool
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @semi_axis1.setter def semi_axis1(self, value : float)
+- - @semi_axis2.setter def semi_axis2(self, value : float)
+- - def __init__(self, name : str, semi_axis1 : float, semi_axis2 : float)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.FontFile
+**Only in pypi aspose-3d:26.2.0:**
+- + @name.setter def name(self, value : str) -> None
+- + @property def name(self) -> str
+- + @property def properties(self) -> aspose.threed.PropertyCollection
+- + # inherits: aspose.threed.A3DObject
+- + def find_property(self, property_name : str) -> aspose.threed.Property
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @wall_thickness.setter def wall_thickness(self, value : float)
+- - def __init__(self, name : str)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.HollowRectangleShape
+**Only in pypi aspose-3d:26.2.0:**
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @inner_fillet_radius.setter def inner_fillet_radius(self, value : float) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def excluded(self) -> bool
+- + @property def inner_fillet_radius(self) -> float
+- + @property def name(self) -> str
+- + @property def parent_node(self) -> aspose.threed.Node
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @external_fillet_radius.setter def external_fillet_radius(self, value : float)
+- - @internal_fillet_radius.setter def internal_fillet_radius(self, value : float)
+- - @property def external_fillet_radius(self) -> float
+- - @property def internal_fillet_radius(self) -> float
+- - @wall_thickness.setter def wall_thickness(self, value : float)
+- - def __init__(self, name : str)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.HShape
+**Only in pypi aspose-3d:26.2.0:**
+- + @bottom_flange_edge_radius.setter def bottom_flange_edge_radius(self, value : float) -> None
+- + @bottom_flange_fillet_radius.setter def bottom_flange_fillet_radius(self, value : float) -> None
+- + @bottom_flange_thickness.setter def bottom_flange_thickness(self, value : float) -> None
+- + @bottom_flange_width.setter def bottom_flange_width(self, value : float) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @depth.setter def depth(self, value : float)
+- - @flange_thickness.setter def flange_thickness(self, value : float)
+- - @property def depth(self) -> float
+- - @property def flange_thickness(self) -> float
+- - @property def width(self) -> float
+- - @web_thickness.setter def web_thickness(self, value : float)
+- - @width.setter def width(self, value : float)
+- - def __init__(self, name : str, width : float, depth : float, web_thickness : float, flange_thickness : float)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.LShape
+**Only in pypi aspose-3d:26.2.0:**
+- + @depth.setter def depth(self, value : float) -> None
+- + @edge_radius.setter def edge_radius(self, value : float) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @depth.setter def depth(self, value : float)
+- - @edge_radius.setter def edge_radius(self, value : float)
+- - @fillet_radius.setter def fillet_radius(self, value : float)
+- - @thickness.setter def thickness(self, value : float)
+- - @width.setter def width(self, value : float)
+- - def __init__(self, name : str)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.MirroredProfile
+**Only in pypi aspose-3d:26.2.0:**
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def base_profile(self) -> aspose.threed.profiles.Profile
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @base_profile.setter def base_profile(self, value : Profile)
+- - @property def base_profile(self) -> Profile
+- - def __init__(self, base_profile : Profile)
+### aspose.threed.profiles.ParameterizedProfile
+**Only in pypi aspose-3d:26.2.0:**
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def excluded(self) -> bool
+- + @property def name(self) -> str
+- + @property def parent_node(self) -> aspose.threed.Node
+- + @property def parent_nodes(self) -> System.Collections.Generic.List`1[[Aspose.ThreeD.Node]]
+- + @property def properties(self) -> aspose.threed.PropertyCollection
+- + @property def scene(self) -> aspose.threed.Scene
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - def __init__(self, name : str)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.Profile
+**Only in pypi aspose-3d:26.2.0:**
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def excluded(self) -> bool
+- + @property def name(self) -> str
+- + @property def parent_node(self) -> aspose.threed.Node
+- + @property def parent_nodes(self) -> System.Collections.Generic.List`1[[Aspose.ThreeD.Node]]
+- + @property def properties(self) -> aspose.threed.PropertyCollection
+- + @property def scene(self) -> aspose.threed.Scene
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - # inherits: Entity
+- - def __init__(self, name : str)
+- - def get_entity_renderer_key(self)
+### aspose.threed.profiles.RectangleShape
+**Only in pypi aspose-3d:26.2.0:**
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def excluded(self) -> bool
+- + @property def name(self) -> str
+- + @property def parent_node(self) -> aspose.threed.Node
+- + @property def parent_nodes(self) -> System.Collections.Generic.List`1[[Aspose.ThreeD.Node]]
+- + @property def properties(self) -> aspose.threed.PropertyCollection
+- + @property def rounding_radius(self) -> float
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @depth.setter def depth(self, value : float)
+- - @property def depth(self) -> float
+- - @property def width(self) -> float
+- - @width.setter def width(self, value : float)
+- - def __init__(self, name : str, width : float, depth : float)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.Text
+**Only in pypi aspose-3d:26.2.0:**
+- + @content.setter def content(self, value : str) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @font_size.setter def font_size(self, value : float) -> None
+- + @font.setter def font(self, value : aspose.threed.profiles.FontFile) -> None
+- + @name.setter def name(self, value : str) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @content.setter def content(self, value : str)
+- - @font_size.setter def font_size(self, value : float)
+- - @font.setter def font(self, value)
+- - @property def font(self)
+- - def __init__(self, name : str)
+### aspose.threed.profiles.TrapeziumShape
+**Only in pypi aspose-3d:26.2.0:**
+- + @bottom_x_dim.setter def bottom_x_dim(self, value : float) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @name.setter def name(self, value : str) -> None
+- + @parent_node.setter def parent_node(self, value : aspose.threed.Node) -> None
+- + @property def excluded(self) -> bool
+- + @property def name(self) -> str
+- + @property def parent_node(self) -> aspose.threed.Node
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @bottom_x_dim.setter def bottom_x_dim(self, value : float)
+- - @top_x_dim.setter def top_x_dim(self, value : float)
+- - @top_x_offset.setter def top_x_offset(self, value : float)
+- - @y_dim.setter def y_dim(self, value : float)
+- - def __init__(self, name : str)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.TShape
+**Only in pypi aspose-3d:26.2.0:**
+- + @depth.setter def depth(self, value : float) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+- + @fillet_radius.setter def fillet_radius(self, value : float) -> None
+- + @flange_edge_radius.setter def flange_edge_radius(self, value : float) -> None
+- + @flange_thickness.setter def flange_thickness(self, value : float) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @depth.setter def depth(self, value : float)
+- - @fillet_radius.setter def fillet_radius(self, value : float)
+- - @flange_edge_radius.setter def flange_edge_radius(self, value : float)
+- - @flange_thickness.setter def flange_thickness(self, value : float)
+- - @flange_width.setter def flange_width(self, value : float)
+- - @web_thickness.setter def web_thickness(self, value : float)
+- - def __init__(self, name : str)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.UShape
+**Only in pypi aspose-3d:26.2.0:**
+- + @depth.setter def depth(self, value : float) -> None
+- + @edge_radius.setter def edge_radius(self, value : float) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @depth.setter def depth(self, value : float)
+- - @edge_radius.setter def edge_radius(self, value : float)
+- - @fillet_radius.setter def fillet_radius(self, value : float)
+- - @flange_thickness.setter def flange_thickness(self, value : float)
+- - @flange_width.setter def flange_width(self, value : float)
+- - @web_thickness.setter def web_thickness(self, value : float)
+- - def __init__(self, name : str)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.profiles.ZShape
+**Only in pypi aspose-3d:26.2.0:**
+- + @depth.setter def depth(self, value : float) -> None
+- + @edge_radius.setter def edge_radius(self, value : float) -> None
+- + @excluded.setter def excluded(self, value : bool) -> None
+--
+- + def get_bounding_box(self) -> aspose.threed.utilities.BoundingBox
+- + def get_entity_renderer_key(self) -> aspose.threed.render.EntityRendererKey
+- + def get_extent(self) -> aspose.threed.utilities.Vector2
+- + def get_property(self, property : str) -> Any
+- + def remove_property(self, property : aspose.threed.Property) -> bool
+- + def remove_property(self, property : str) -> bool
+- + def set_property(self, property : str, value : Any) -> None
+**Only in directory aspose:**
+- - @depth.setter def depth(self, value : float)
+- - @edge_radius.setter def edge_radius(self, value : float)
+- - @fillet_radius.setter def fillet_radius(self, value : float)
+- - @flange_thickness.setter def flange_thickness(self, value : float)
+- - @flange_width.setter def flange_width(self, value : float)
+- - @web_thickness.setter def web_thickness(self, value : float)
+- - def __init__(self, name : str)
+- - def get_extent(self) -> 'Vector2'
+### aspose.threed.Property
+**Only in pypi aspose-3d:26.2.0:**
+- + @property def value_type(self) -> System.Type
+- + @property def value(self) -> Any
+- + @value.setter def value(self, value : Any) -> None
+--
+### aspose.threed.utilities.BoundingBox
+**Only in pypi aspose-3d:26.2.0:**
+- + @property def center(self) -> aspose.threed.utilities.Vector3
+- + @property def extent(self) -> aspose.threed.utilities.BoundingBoxExtent
+- + @property def infinite(self) -> aspose.threed.utilities.BoundingBox
+- + @property def maximum(self) -> aspose.threed.utilities.Vector3
+- + @property def minimum(self) -> aspose.threed.utilities.Vector3
+- + @property def null(self) -> aspose.threed.utilities.BoundingBox
+- + @property def size(self) -> aspose.threed.utilities.Vector3
+- + def __init__(self, min_x : float, min_y : float, min_z : float, max_x : float, max_y : float, max_z : float) -> None
+- + def __init__(self, minimum : aspose.threed.utilities.FVector3, maximum : aspose.threed.utilities.FVector3) -> None
+- + def __init__(self, minimum : aspose.threed.utilities.Vector3, maximum : aspose.threed.utilities.Vector3) -> None
+- + def __init__(self) -> None
+- + def contains(self, bbox : aspose.threed.utilities.BoundingBox) -> bool
+- + def contains(self, p : aspose.threed.utilities.Vector3) -> bool
+- + def merge(self, bb : aspose.threed.utilities.BoundingBox) -> None
+- + def merge(self, pt : aspose.threed.utilities.FVector3) -> None
+- + def merge(self, pt : aspose.threed.utilities.Vector3) -> None
+- + def merge(self, pt : aspose.threed.utilities.Vector4) -> None
+- + def merge(self, x : float, y : float, z : float) -> None
+- + def overlaps_with(self, box : aspose.threed.utilities.BoundingBox) -> bool
+- + static def from_geometry(geometry : aspose.threed.entities.Geometry) -> aspose.threed.utilities.BoundingBox
+**Only in directory aspose:**
+- - @property def center(self)
+- - @property def extent(self)
+- - @property def maximum(self)
+- - @property def minimum(self)
+- - @property def size(self)
+- - def __init__(self, *args)
+- - def __repr__(self) -> str
+- - def contains(self, arg)
+- - def merge(self, *args)
+- - def overlaps_with(self, box : 'BoundingBox') -> bool
+- - static def from_geometry(geometry)
+- - static def get_infinite() -> 'BoundingBox'
+- - static def get_null() -> 'BoundingBox'
+### aspose.threed.utilities.BoundingBox2D
+**Only in pypi aspose-3d:26.2.0:**
+- + @property def extent(self) -> aspose.threed.utilities.BoundingBoxExtent
+- + @property def INFINITE(self) -> aspose.threed.utilities.BoundingBox2D
+- + @property def maximum(self) -> aspose.threed.utilities.Vector2
+- + @property def minimum(self) -> aspose.threed.utilities.Vector2
+- + @property def NULL(self) -> aspose.threed.utilities.BoundingBox2D
+- + def __init__(self, minimum : aspose.threed.utilities.Vector2, maximum : aspose.threed.utilities.Vector2) -> None
+- + def __init__(self) -> None
+- + def merge(self, bb : aspose.threed.utilities.BoundingBox2D) -> None
+- + def merge(self, pt : aspose.threed.utilities.Vector2) -> None
+**Only in directory aspose:**
+- - @property def extent(self) -> 'BoundingBoxExtent'
+- - @property def INFINITE(self) -> 'BoundingBox2D'
+- - @property def maximum(self) -> 'Vector2'
+- - @property def minimum(self) -> 'Vector2'
+- - @property def NULL(self) -> 'BoundingBox2D'
+- - def __init__(self, minimum : 'Vector2', maximum : 'Vector2')
+- - def merge(self, bb : 'BoundingBox2D')
+- - def merge(self, pt : 'Vector2')
+### aspose.threed.utilities.BoundingBoxExtent
+**Only in pypi aspose-3d:26.2.0:**
+- + FINITE : BoundingBoxExtent
+- + INFINITE : BoundingBoxExtent
+- + NULL : BoundingBoxExtent
+### aspose.threed.utilities.ComposeOrder
+**Only in pypi aspose-3d:26.2.0:**
+- + APPEND : ComposeOrder
+- + PREPEND : ComposeOrder
+### aspose.threed.utilities.FileSystem
+**Only in pypi aspose-3d:26.2.0:**
+- + def read_file(self, file_name : str, options : aspose.threed.formats.IOConfig) -> io._IOBase
+- + def write_file(self, file_name : str, options : aspose.threed.formats.IOConfig) -> io._IOBase
+- + static def create_dummy_file_system() -> aspose.threed.utilities.FileSystem
+- + static def create_local_file_system(directory : str) -> aspose.threed.utilities.FileSystem
+- + static def create_zip_file_system(file_name : str) -> aspose.threed.utilities.FileSystem
+- + static def create_zip_file_system(stream : io._IOBase, base_dir : str) -> aspose.threed.utilities.FileSystem
+**Only in directory aspose:**
+- - def __init__(self)
+- - def read_file(self, file_name : str, options) -> 'io.IOBase'
+- - def write_file(self, file_name : str, options) -> 'io.IOBase'
+- - static def create_dummy_file_system() -> 'FileSystem'
+- - static def create_local_file_system(directory : str) -> 'FileSystem'
+- - static def create_zip_file_system(file_name : str) -> 'FileSystem'
+- - static def create_zip_file_system(stream, base_dir : str) -> 'FileSystem'
