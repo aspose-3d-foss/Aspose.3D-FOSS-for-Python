@@ -8,3 +8,8 @@ examples
 references/
 *.obj
 test.*
+
+# Local-only: sibling-repo symlink, test data, AI agent working files
+foss.net
+testdata
+.asbote
