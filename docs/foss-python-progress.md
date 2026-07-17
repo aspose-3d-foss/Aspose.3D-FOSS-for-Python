@@ -2,8 +2,8 @@
 
 ## Current Version
 - Target: 26.2.0
-- Last Sync: 2026-07-04
-- Last Sync SHA: 8c981b3 (June 22, 2026) - Pose/BonePose/PoseType enhancements
+- Last Sync: 2026-07-17
+- Last Sync SHA: a0efe5e (July 10, 2026) - API surface alignment, Scene.Version to "FOSS"
 
 ## Porting Status
 
@@ -215,10 +215,10 @@
 - **BasicLoadOptions**: Added concrete `LoadOptions` subclass
 - **VertexElementTemplate**: Generic abstract base class for typed vertex elements
 - **VertexElementDoublesTemplate**: Updated to inherit from `VertexElementTemplate[float]`
-- **VertexElementIntsTemplate**: Updated to inherit from `VertexElementTemplate[int]`
-- **VertexElementTemplate**: Exported in `aspose.threed.entities` package
+- **VertexElementIntsTemplate**: Updated to inherit from `VertexElementTemplate[int]`- **VertexElementTemplate**: Exported in \u0060aspose.threed.entities\u0060 package
 
 ## Next Steps
-1. Continue monitoring .NET FOSS for new commits
-2. Port any new types as they are added
-3. Update pyproject.toml version to 26.2.0 when .NET FOSS version is bumped
+- Stage 2 (Git-History Sync) is now complete - Python FOSS is synced with .NET FOSS HEAD
+- Continue monitoring .NET FOSS for new commits with code changes
+- Port any new types as they are added
+- Update pyproject.toml version to 26.2.0 when .NET FOSS version is bumped
