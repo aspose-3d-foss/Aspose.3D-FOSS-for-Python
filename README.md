@@ -1,6 +1,18 @@
 # Aspose.3D FOSS for Python
 
-A powerful and open-source 3D file format library for Python. Aspose.3D for Python enables developers to create, manipulate, and convert 3D scenes and models programmatically. Supports popular 3D file formats including OBJ, STL, FBX, GLTF, and more.
+A powerful, free, and open-source 3D file format library for Python. Aspose.3D FOSS for Python enables developers to create, manipulate, and convert 3D scenes and models programmatically. It supports popular 3D file formats including OBJ, STL, glTF, 3MF, and more, and is released under the permissive **MIT License**.
+
+> 🏠 **Aspose.3D FOSS** lives on [aspose.org](https://products.aspose.org/3d/python/) — Aspose's home for free, open-source file-format libraries. The full commercial edition, [Aspose.3D for Python via .NET](https://products.aspose.com/3d/python-net/), is available on [aspose.com](https://products.aspose.com/3d).
+
+## About Aspose.3D FOSS
+
+Aspose.3D FOSS is the free, open-source edition of Aspose.3D. It shares the same public API design as the commercial Aspose.3D On-Premise library, so you can:
+
+- **Build and ship 3D applications at no cost** under a permissive MIT License.
+- **Start free and grow without rewriting code** — code written against the FOSS edition works with the commercial edition.
+- **Upgrade only when you need to** — when you require the broader feature set, higher performance, or proprietary format support of the [commercial On-Premise edition](https://products.aspose.com/3d/python-net/), simply swap in the commercial package, no API rewrites required.
+
+The FOSS edition focuses on the most widely used open 3D formats. The commercial edition additionally covers proprietary and high-performance scenarios such as rendering, advanced mesh operations, and formats like FBX, USD, PDF, and more.
 
 ## Features
 
@@ -74,10 +86,6 @@ for node in scene.root_node.child_nodes:
 - **STL** - Export to STL format
 - **3MF** - Export to 3MF format
 - More formats coming soon...
-
-## Documentation
-
-- [API Reference](https://reference.aspose.com/3d/python-net/) - Complete API documentation
 
 ## Python Version Support
 
@@ -154,9 +162,28 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+## Resources
+
+### Aspose.3D FOSS — free & open source (aspose.org)
+- [Aspose.3D FOSS for Python](https://products.aspose.org/3d/python/) — product page
+- [Aspose.3D FOSS family](https://products.aspose.org/3d/) — all platforms (Python, .NET, Java, TypeScript)
+- [Aspose FOSS documentation](https://docs.aspose.org/) — guides for all open-source libraries
+- [Aspose FOSS blog](https://blog.aspose.org/) — tutorials and announcements
+
+### Aspose.3D — commercial On-Premise edition (aspose.com)
+- [Aspose.3D for Python via .NET](https://products.aspose.com/3d/python-net/) — full-featured commercial edition
+- [Aspose.3D product family](https://products.aspose.com/3d) — overview
+- [Developer documentation](https://docs.aspose.com/3d/python-net/) — API guides
+- [API reference](https://reference.aspose.com/3d/python-net/) — complete API documentation
+- [Download / free trial](https://downloads.aspose.com/3d) — get the commercial package
+
+### Community & support
+- [Aspose.3D support forum](https://forum.aspose.com/c/3d/19) — questions and help
+- [Free online 3D apps](https://products.aspose.app/3d/) — convert and view 3D files in your browser
 
 ## Acknowledgments
 
-- Aspose.3D for Python is inspired by the original Aspose.3D API
-- 3D format specification maintained by various 3D software vendors
+- Aspose.3D FOSS is inspired by the Aspose.3D API.
+- 3D format specifications are maintained by various 3D software vendors and standards bodies.
