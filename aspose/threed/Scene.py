@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class Scene(SceneObject):
-    VERSION = "24.12.0"
+    VERSION = "FOSS"
 
     def __init__(self, entity: Optional[Entity] = None, parent_scene=None, name: Optional[str] = None):
         super().__init__(name if name is not None else "")
