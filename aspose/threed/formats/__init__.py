@@ -4,6 +4,7 @@ from .FormatDetector import FormatDetector
 from .IOService import IOService
 from .IOConfig import IOConfig
 from .LoadOptions import LoadOptions
+from .BasicLoadOptions import BasicLoadOptions
 from .SaveOptions import SaveOptions
 from .Plugin import Plugin
 from .obj.ObjLoadOptions import ObjLoadOptions
@@ -92,9 +93,7 @@ __all__ = [
     'ColladaSaveOptions', 'FbxSaveOptions', 'GltfSaveOptions',
     'PdfSaveOptions', 'StlSaveOptions', 'ObjSaveOptions',
     'AmfSaveOptions', 'A3dwSaveOptions', 'DracoSaveOptions',
-    'Html5SaveOptions', 'UsdSaveOptions',
-    'XLoadOptions', 'U3dLoadOptions', 'U3dSaveOptions',
-    'RvmLoadOptions', 'RvmSaveOptions',
+    'Html5SaveOptions', 'UsdSaveOptions',    'LoadOptions', 'SaveOptions',    'RvmLoadOptions', 'RvmSaveOptions',
     'PlyLoadOptions', 'PlySaveOptions',
     'PdfLoadOptions', 'GltfLoadOptions',
     'FbxLoadOptions', 'ColladaLoadOptions',

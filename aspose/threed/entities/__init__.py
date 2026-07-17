@@ -56,6 +56,7 @@ from .TrimmedCurve import TrimmedCurve
 from .VertexElement import VertexElement
 from .VertexElementBinormal import VertexElementBinormal
 from .VertexElementDoublesTemplate import VertexElementDoublesTemplate
+from .VertexElementTemplate import VertexElementTemplate
 from .VertexElementEdgeCrease import VertexElementEdgeCrease
 from .VertexElementFVector import VertexElementFVector
 from .VertexElementHole import VertexElementHole
@@ -86,7 +87,7 @@ __all__ = [
     'Pyramid', 'RectangularTorus', 'ReferenceMode', 'RevolvedAreaSolid',
     'RotationMode', 'Shape', 'Skeleton', 'SkeletonType', 'Sphere', 'SplitMeshPolicy',
     'SweptAreaSolid', 'TextureMapping', 'Torus', 'TransformedCurve', 'TriMesh',
-    'TrimmedCurve', 'VertexElement', 'VertexElementBinormal', 'VertexElementDoublesTemplate',
+    'TrimmedCurve',     'VertexElement', 'VertexElementBinormal', 'VertexElementDoublesTemplate', 'VertexElementTemplate',
     'VertexElementEdgeCrease', 'VertexElementFVector', 'VertexElementHole',
     'VertexElementIntsTemplate', 'VertexElementMaterial', 'VertexElementNormal',
     'VertexElementPolygonGroup', 'VertexElementSmoothingGroup', 'VertexElementSpecular',

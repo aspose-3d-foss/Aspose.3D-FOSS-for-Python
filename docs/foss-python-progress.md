@@ -116,7 +116,7 @@
 ## .NET FOSS Sync
 
 ### Last Synced Commit
-- 8caf604 (June 12, 2026) - Update API signatures for FOSS compatibility with On-Premise 26.2.0
+- 61580ea (June 12, 2026) - Geometry ToMesh() implementation and API signature alignment
 ### Commits Since Last Sync
 - 7460409 - fix: Use PNG icon for nuget package (no code changes)
 - 19f0b01 - Merge branch \u0027main\u0027
@@ -208,6 +208,15 @@
 
 ### Boolean Types
 - New types ported: `BooleanOperand`, `BooleanOperator`, `BooleanOperation`
+
+### Commit 61580ea (June 12, 2026)
+- **Torus**: Changed from `Curve` to `Primitive`, implemented `ToMesh()` method with proper torus geometry
+- **RectangularTorus**: Changed from `Curve` to `Primitive`, implemented `ToMesh()` method with rectangular cross-section
+- **BasicLoadOptions**: Added concrete `LoadOptions` subclass
+- **VertexElementTemplate**: Generic abstract base class for typed vertex elements
+- **VertexElementDoublesTemplate**: Updated to inherit from `VertexElementTemplate[float]`
+- **VertexElementIntsTemplate**: Updated to inherit from `VertexElementTemplate[int]`
+- **VertexElementTemplate**: Exported in `aspose.threed.entities` package
 
 ## Next Steps
 1. Continue monitoring .NET FOSS for new commits
