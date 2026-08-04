@@ -42,6 +42,7 @@ flowchart LR
     C4["Material system"]
     C5["Primitive-to-mesh conversion"]
     C6["Vector, matrix, and quaternion math"]
+    C7["Keyframe animation"]
   end
 
   subgraph Outputs["Outputs and accessible content"]
@@ -50,6 +51,7 @@ flowchart LR
     O3["Textured, materialed meshes"]
     O4["Triangulated polygon data"]
     O5["Bounding boxes and transform matrices"]
+    O6["Keyframe animation data"]
   end
 
   I1 --- PRODUCT
@@ -64,12 +66,14 @@ flowchart LR
   PRODUCT --- C4
   PRODUCT --- C5
   PRODUCT --- C6
+  PRODUCT --- C7
   C1 --- O1
   C2 --- O1
   C3 --- O2
   C4 --- O3
   C5 --- O4
   C6 --- O5
+  C7 --- O6
 ```
 
 ## Key capabilities
@@ -87,6 +91,9 @@ flowchart LR
   `Dish`, ...) into triangulated `Mesh` objects with `to_mesh()`.
 - Work with `Vector2`/`Vector3`/`Vector4`, `Matrix4`, `Quaternion`, and `BoundingBox` utilities
   for transforms and spatial queries.
+- Animate scene properties with keyframe sequences (`AnimationClip`, `KeyframeSequence.add(time,
+  value, interpolation)`, `KeyFrame`) bound to node/material properties via
+  `AnimationNode`/`BindPoint`.
 
 ## Installation
 
@@ -356,6 +363,19 @@ data in and out of a scene is `Scene.open()` / `Scene.save()` with the matching 
 - `Matrix4` — `translate()`, `scale()`, `rotate()`, `decompose()`, `inverse()`, `get_identity()`
 - `Quaternion` — `slerp(t, v1, v2)`, `to_matrix()`, `from_euler_angle()`, `from_angle_axis()`
 - `BoundingBox` — `minimum`, `maximum`, `center`, `size`, `merge()`, `contains()`
+
+### Animation (`aspose.threed.animation`)
+
+- `AnimationClip` — `create_animation_node(name) -> AnimationNode`, `animations`, `start`, `stop`
+- `AnimationNode` — `create_bind_point(obj, prop_name)`, `get_keyframe_sequence(target, prop_name,
+  channel_name, create)`, `bind_points`, `sub_animations`
+- `AnimationChannel` (extends `KeyframeSequence`) — `component_type`, `default_value`,
+  `keyframe_sequence`
+- `KeyframeSequence` — `add(time, value, interpolation)`, `key_frames`, `pre_behavior`/
+  `post_behavior` (`Extrapolation`)
+- `KeyFrame` — `time`, `value`, `interpolation` (`Interpolation`), tangent/weight fields
+  (`tangent_weight_mode`, `step_mode`, `tension`, `continuity`, `bias`)
+- `BindPoint`, `Interpolation`, `Extrapolation`/`ExtrapolationType`, `StepMode`, `WeightedMode`
 
 ### Exceptions
 
