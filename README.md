@@ -312,7 +312,7 @@ data in and out of a scene is `Scene.open()` / `Scene.save()` with the matching 
 <details>
 <summary>View the supported public API surface</summary>
 
-### Scene graph
+### Scene graph (`aspose.threed`)
 
 - `Scene`
   - `open(file_or_stream, options)`, `save(file_or_stream, format_or_options)`, `from_file(file_name)`
@@ -349,11 +349,15 @@ data in and out of a scene is `Scene.open()` / `Scene.save()` with the matching 
 
 ### Format load/save options (`aspose.threed.formats`)
 
-- `ObjLoadOptions` / `ObjSaveOptions` — `flip_coordinate_system`, `enable_materials`, `scale`, `normalize_normal`
-- `StlLoadOptions` / `StlSaveOptions` — `binary_mode`, `scale`, `flip_coordinate_system`
-- `GltfLoadOptions` / `GltfSaveOptions` — `binary_mode`, `flip_tex_coord_v`, `export_textures`
-- `ColladaLoadOptions` / `ColladaSaveOptions` — `flip_coordinate_system`, `enable_materials`, `indented`
-- `ThreeMfLoadOptions` / `ThreeMfSaveOptions` — `enable_compression`, `build_all`, `pretty_print`, `unit`
+- `ObjLoadOptions` — `flip_coordinate_system`, `enable_materials`, `scale`, `normalize_normal`
+- `ObjSaveOptions` — `apply_unit_scale`, `point_cloud`, `verbose`, `serialize_w`,
+  `enable_materials`, `flip_coordinate_system`, `axis_system`
+- `StlLoadOptions` / `StlSaveOptions` — `binary_mode` (save only), `scale`, `flip_coordinate_system`
+- `GltfLoadOptions` / `GltfSaveOptions` — `binary_mode` (save only), `flip_tex_coord_v`
+- `ColladaLoadOptions` / `ColladaSaveOptions` — `flip_coordinate_system`, `enable_materials`
+  (save only), `indented` (save only)
+- `ThreeMfLoadOptions` / `ThreeMfSaveOptions` — `flip_coordinate_system`, `enable_compression`
+  (save only), `build_all` (save only), `pretty_print` (save only), `unit` (save only)
 - `FbxLoadOptions` / `FbxSaveOptions` — `compatible_mode`, `export_textures`, `embed_textures` (see [Scope and limitations](#scope-and-limitations))
 - `FileFormat` — `detect(stream, file_name)`, `get_format_by_extension(extension_name)`, `can_import`, `can_export`
 
