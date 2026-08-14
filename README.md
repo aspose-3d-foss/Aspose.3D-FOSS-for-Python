@@ -23,8 +23,9 @@ cameras, lights, and materials, and moves that graph in and out of OBJ, STL, glT
 ## At a glance
 
 ```mermaid
-flowchart LR
-  subgraph Inputs["Inputs and formats"]
+flowchart TD
+  subgraph StartingPoints["Starting Points"]
+    direction TB
     I1["OBJ / MTL files"]
     I2["STL files (binary and ASCII)"]
     I3["glTF 2.0 / GLB files"]
@@ -32,20 +33,25 @@ flowchart LR
     I5["3MF files"]
     I6["File paths or binary streams"]
   end
-
   PRODUCT["Aspose.3D FOSS for Python"]
-
-  subgraph Capabilities["Core capabilities"]
-    C1["Scene-graph modeling"]
-    C2["Per-format import"]
-    C3["Per-format export"]
-    C4["Material system"]
-    C5["Primitive-to-mesh conversion"]
-    C6["Vector, matrix, and quaternion math"]
-    C7["Keyframe animation"]
+  subgraph Capabilities["Core Capabilities"]
+    direction LR
+    subgraph capl[" "]
+      direction TB
+      C1["Scene-graph modeling"]
+      C2["Per-format import"]
+      C3["Per-format export"]
+      C4["Material system"]
+    end
+    subgraph capr[" "]
+      direction TB
+      C5["Primitive-to-mesh conversion"]
+      C6["Vector, matrix, and quaternion math"]
+      C7["Keyframe animation"]
+    end
   end
-
-  subgraph Outputs["Outputs and accessible content"]
+  subgraph Outputs["Outputs"]
+    direction TB
     O1["In-memory Scene object model"]
     O2["OBJ, STL, glTF, and 3MF files"]
     O3["Textured, materialed meshes"]
@@ -53,27 +59,7 @@ flowchart LR
     O5["Bounding boxes and transform matrices"]
     O6["Keyframe animation data"]
   end
-
-  I1 --- PRODUCT
-  I2 --- PRODUCT
-  I3 --- PRODUCT
-  I4 --- PRODUCT
-  I5 --- PRODUCT
-  I6 --- PRODUCT
-  PRODUCT --- C1
-  PRODUCT --- C2
-  PRODUCT --- C3
-  PRODUCT --- C4
-  PRODUCT --- C5
-  PRODUCT --- C6
-  PRODUCT --- C7
-  C1 --- O1
-  C2 --- O1
-  C3 --- O2
-  C4 --- O3
-  C5 --- O4
-  C6 --- O5
-  C7 --- O6
+  StartingPoints --> PRODUCT --> Capabilities --> Outputs
 ```
 
 ## Key capabilities
