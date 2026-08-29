@@ -1,6 +1,7 @@
 pyi/
 dist
 aspose_3d.egg-info
+aspose_3d_foss.egg-info
 build
 __pycache__
 specs

@@ -16,7 +16,7 @@ setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
-        "Topic :: Multimedia :: 3D Graphics",
+        "Topic :: Multimedia :: Graphics :: 3D Modeling",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
